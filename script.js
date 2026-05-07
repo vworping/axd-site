@@ -14,3 +14,15 @@ if (navToggle && siteNav) {
     }
   });
 }
+
+document.addEventListener("contextmenu", (event) => {
+  if (event.target.closest("img, video, .placeholder-image")) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener("dragstart", (event) => {
+  if (event.target.closest("img, video, .placeholder-image")) {
+    event.preventDefault();
+  }
+});
