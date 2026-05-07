@@ -228,7 +228,7 @@ h1 {
 
 .project-copy p,
 .about-grid p,
-.resume-panel p {
+.experience-item p {
   color: var(--muted);
   font-size: clamp(18px, 2vw, 26px);
 }
@@ -250,24 +250,36 @@ h1 {
 }
 
 .about-grid,
-.resume-panel,
 .contact-links {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(24px, 5vw, 80px);
 }
 
-.resume-panel {
-  align-items: end;
-  padding: 32px 0;
+.experience-list {
   border-top: 1px solid var(--line);
+}
+
+.experience-item {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.3fr) minmax(0, 1fr);
+  gap: clamp(22px, 5vw, 80px);
+  padding: clamp(26px, 5vw, 52px) 0;
   border-bottom: 1px solid var(--line);
 }
 
-.text-link {
-  width: fit-content;
-  font-size: clamp(24px, 4vw, 56px);
-  line-height: 1;
+.experience-item h3 {
+  margin-bottom: 12px;
+  font-size: clamp(28px, 4vw, 62px);
+  line-height: 0.96;
+}
+
+.experience-date {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .contact-section {
@@ -335,7 +347,7 @@ h1 {
   .section-heading,
   .project-row,
   .about-grid,
-  .resume-panel,
+  .experience-item,
   .contact-links {
     grid-template-columns: 1fr;
   }
