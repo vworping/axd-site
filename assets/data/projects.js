@@ -13,101 +13,101 @@ window.PROJECTS = [
     ],
     "cover": {
       "src": "assets/images/projects/converse/converse-all-star-01-cover.jpg",
-      "width": 5463,
-      "height": 3642,
-      "aspect": 1.5,
+      "width": 2200,
+      "height": 1467,
+      "aspect": 1.4997,
       "orientation": "landscape"
     },
     "images": [
       {
         "src": "assets/images/projects/converse/converse-all-star-01-cover.jpg",
-        "width": 5463,
-        "height": 3642,
-        "aspect": 1.5,
+        "width": 2200,
+        "height": 1467,
+        "aspect": 1.4997,
         "orientation": "landscape"
       },
       {
         "src": "assets/images/projects/converse/converse-all-star-02-image.jpg",
-        "width": 3371,
-        "height": 5056,
-        "aspect": 0.6667,
+        "width": 1467,
+        "height": 2200,
+        "aspect": 0.6668,
         "orientation": "portrait"
       },
       {
         "src": "assets/images/projects/converse/converse-all-star-03-image.jpg",
-        "width": 5857,
-        "height": 3905,
-        "aspect": 1.4999,
+        "width": 2200,
+        "height": 1467,
+        "aspect": 1.4997,
         "orientation": "landscape"
       },
       {
         "src": "assets/images/projects/converse/converse-all-star-04-image.jpg",
-        "width": 3585,
-        "height": 5378,
-        "aspect": 0.6666,
+        "width": 1467,
+        "height": 2200,
+        "aspect": 0.6668,
         "orientation": "portrait"
       }
     ],
     "palette": [
       {
         "rank": 1,
-        "weight": 0.2594,
-        "hex": "#302b32",
+        "weight": 0.2582,
+        "hex": "#878c8d",
         "lab": {
-          "l": 18.3,
-          "a": 4.0,
-          "b": -4.1
-        },
-        "language": "deep shadow / neutral axis / quiet balance"
-      },
-      {
-        "rank": 2,
-        "weight": 0.2451,
-        "hex": "#878d8f",
-        "lab": {
-          "l": 58.3,
-          "a": -1.9,
-          "b": -1.8
+          "l": 57.9,
+          "a": -1.7,
+          "b": -1.4
         },
         "language": "worked midtone / neutral axis / quiet balance"
       },
       {
-        "rank": 3,
-        "weight": 0.1867,
-        "hex": "#54586a",
+        "rank": 2,
+        "weight": 0.231,
+        "hex": "#302a32",
         "lab": {
-          "l": 37.7,
-          "a": 2.9,
-          "b": -10.9
+          "l": 18.1,
+          "a": 4.1,
+          "b": -3.9
+        },
+        "language": "deep shadow / neutral axis / quiet balance"
+      },
+      {
+        "rank": 3,
+        "weight": 0.2043,
+        "hex": "#535769",
+        "lab": {
+          "l": 37.1,
+          "a": 2.8,
+          "b": -11.0
         },
         "language": "low light / neutral axis / quiet balance"
       },
       {
         "rank": 4,
-        "weight": 0.1847,
-        "hex": "#c1c4bf",
+        "weight": 0.1777,
+        "hex": "#c1c5c0",
         "lab": {
-          "l": 78.8,
-          "a": -2.1,
-          "b": 2.1
+          "l": 79.0,
+          "a": -2.2,
+          "b": 1.9
         },
         "language": "soft highlight / neutral axis / quiet balance"
       },
       {
         "rank": 5,
-        "weight": 0.1242,
-        "hex": "#8b5950",
+        "weight": 0.1287,
+        "hex": "#86554d",
         "lab": {
-          "l": 42.9,
-          "a": 19.5,
-          "b": 13.7
+          "l": 41.5,
+          "a": 19.1,
+          "b": 13.4
         },
         "language": "low light / red warmth / cream cast"
       }
     ],
     "poeticTag": "studio shadow / jersey heat / paper white",
-    "accent": "#8b5950",
-    "wash": "#878d8f"
+    "accent": "#86554d",
+    "wash": "#302a32"
   },
   {
     "slug": "glow-up-for-grad",
@@ -123,100 +123,100 @@ window.PROJECTS = [
     ],
     "cover": {
       "src": "assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
-      "width": 4218,
-      "height": 2812,
-      "aspect": 1.5,
+      "width": 2200,
+      "height": 1467,
+      "aspect": 1.4997,
       "orientation": "landscape"
     },
     "images": [
       {
         "src": "assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
-        "width": 4218,
-        "height": 2812,
-        "aspect": 1.5,
+        "width": 2200,
+        "height": 1467,
+        "aspect": 1.4997,
         "orientation": "landscape"
       },
       {
         "src": "assets/images/projects/glow up for grad/glow-up-for-grad-02-image.jpg",
-        "width": 4797,
-        "height": 3198,
-        "aspect": 1.5,
+        "width": 2200,
+        "height": 1467,
+        "aspect": 1.4997,
         "orientation": "landscape"
       },
       {
         "src": "assets/images/projects/glow up for grad/glow-up-for-grad-03-image.jpg",
-        "width": 5204,
-        "height": 3469,
-        "aspect": 1.5001,
+        "width": 2200,
+        "height": 1467,
+        "aspect": 1.4997,
         "orientation": "landscape"
       },
       {
         "src": "assets/images/projects/glow up for grad/glow-up-for-grad-04-image.jpg",
-        "width": 3645,
-        "height": 5467,
-        "aspect": 0.6667,
+        "width": 1467,
+        "height": 2200,
+        "aspect": 0.6668,
         "orientation": "portrait"
       }
     ],
     "palette": [
       {
         "rank": 1,
-        "weight": 0.4805,
-        "hex": "#372e32",
+        "weight": 0.4532,
+        "hex": "#362e31",
         "lab": {
-          "l": 20.1,
-          "a": 4.8,
-          "b": -0.8
+          "l": 19.8,
+          "a": 4.7,
+          "b": -0.9
         },
         "language": "deep shadow / neutral axis / quiet balance"
       },
       {
         "rank": 2,
-        "weight": 0.231,
-        "hex": "#8a6d60",
+        "weight": 0.216,
+        "hex": "#d3d4ca",
         "lab": {
-          "l": 48.4,
-          "a": 9.5,
-          "b": 11.7
-        },
-        "language": "worked midtone / skin warmth / cream cast"
-      },
-      {
-        "rank": 3,
-        "weight": 0.2247,
-        "hex": "#d2d2c9",
-        "lab": {
-          "l": 84.1,
-          "a": -1.8,
-          "b": 4.8
+          "l": 84.5,
+          "a": -2.1,
+          "b": 4.7
         },
         "language": "soft highlight / neutral axis / quiet balance"
       },
       {
-        "rank": 4,
-        "weight": 0.0499,
-        "hex": "#b8e773",
+        "rank": 3,
+        "weight": 0.2088,
+        "hex": "#7c7167",
         "lab": {
-          "l": 86.4,
-          "a": -33.5,
-          "b": 51.4
+          "l": 48.2,
+          "a": 2.7,
+          "b": 6.8
         },
-        "language": "soft highlight / green pull / amber cast"
+        "language": "worked midtone / neutral axis / quiet balance"
+      },
+      {
+        "rank": 4,
+        "weight": 0.0612,
+        "hex": "#a25747",
+        "lab": {
+          "l": 45.7,
+          "a": 29.1,
+          "b": 23.3
+        },
+        "language": "low light / red warmth / amber cast"
       },
       {
         "rank": 5,
-        "weight": 0.0139,
-        "hex": "#6ea351",
+        "weight": 0.0608,
+        "hex": "#abdb6e",
         "lab": {
-          "l": 61.8,
-          "a": -32.7,
-          "b": 36.9
+          "l": 82.2,
+          "a": -33.3,
+          "b": 48.3
         },
-        "language": "worked midtone / green pull / amber cast"
+        "language": "soft highlight / green pull / amber cast"
       }
     ],
     "poeticTag": "salon light / soft ceremony / electric care",
-    "accent": "#6ea351",
-    "wash": "#8a6d60"
+    "accent": "#abdb6e",
+    "wash": "#d3d4ca"
   }
 ];

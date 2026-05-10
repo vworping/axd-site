@@ -4,6 +4,11 @@ const projectList = document.querySelector("#project-list");
 const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
 const lightboxClose = document.querySelector(".lightbox-close");
+const lightboxPrev = document.querySelector(".lightbox-prev");
+const lightboxNext = document.querySelector(".lightbox-next");
+const lightboxCount = document.querySelector(".lightbox-count");
+let lightboxItems = [];
+let activeLightboxIndex = 0;
 
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
@@ -93,7 +98,7 @@ function balancedSequence(images) {
 
 function imageButton(image, alt, className = "") {
   return `
-    <button class="image-button ${className}" type="button" data-full="${image.src}" data-alt="${alt}">
+    <button class="image-button ${className}" type="button" data-full="${image.src}" data-alt="${alt}" data-project-gallery>
       <img src="${image.src}" alt="${alt}" loading="lazy" style="--image-aspect: ${image.aspect}">
     </button>
   `;
@@ -144,13 +149,36 @@ function renderProjects() {
   observeProjects();
 }
 
-function openLightbox(src, alt) {
+function setLightboxImage(index) {
+  if (!lightboxImage || !lightboxItems.length) return;
+
+  activeLightboxIndex = (index + lightboxItems.length) % lightboxItems.length;
+  const item = lightboxItems[activeLightboxIndex];
+
+  lightboxImage.src = item.src;
+  lightboxImage.alt = item.alt;
+
+  if (lightboxCount) {
+    lightboxCount.textContent = `${activeLightboxIndex + 1} / ${lightboxItems.length}`;
+  }
+}
+
+function openLightbox(trigger) {
   if (!lightbox || !lightboxImage) return;
 
-  lightboxImage.src = src;
-  lightboxImage.alt = alt;
+  const projectRow = trigger.closest(".project-row");
+  lightboxItems = [...(projectRow?.querySelectorAll("[data-project-gallery]") || [])].map((button) => ({
+    src: button.dataset.full,
+    alt: button.dataset.alt || "Expanded project image",
+  }));
+  activeLightboxIndex = Math.max(
+    0,
+    lightboxItems.findIndex((item) => item.src === trigger.dataset.full),
+  );
+
   lightbox.hidden = false;
   document.body.classList.add("is-lightbox-open");
+  setLightboxImage(activeLightboxIndex);
   lightboxClose?.focus();
 }
 
@@ -160,7 +188,15 @@ function closeLightbox() {
   lightbox.hidden = true;
   lightboxImage.src = "";
   lightboxImage.alt = "";
+  if (lightboxCount) lightboxCount.textContent = "";
   document.body.classList.remove("is-lightbox-open");
+  lightboxItems = [];
+  activeLightboxIndex = 0;
+}
+
+function showAdjacentLightboxImage(direction) {
+  if (!lightboxItems.length) return;
+  setLightboxImage(activeLightboxIndex + direction);
 }
 
 document.addEventListener("click", (event) => {
@@ -168,7 +204,7 @@ document.addEventListener("click", (event) => {
   const imageTrigger = target?.closest(".image-button");
 
   if (imageTrigger) {
-    openLightbox(imageTrigger.dataset.full, imageTrigger.dataset.alt || "Expanded project image");
+    openLightbox(imageTrigger);
     return;
   }
 
@@ -178,10 +214,20 @@ document.addEventListener("click", (event) => {
 });
 
 lightboxClose?.addEventListener("click", closeLightbox);
+lightboxPrev?.addEventListener("click", () => showAdjacentLightboxImage(-1));
+lightboxNext?.addEventListener("click", () => showAdjacentLightboxImage(1));
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && lightbox && !lightbox.hidden) {
     closeLightbox();
+  }
+
+  if (event.key === "ArrowLeft" && lightbox && !lightbox.hidden) {
+    showAdjacentLightboxImage(-1);
+  }
+
+  if (event.key === "ArrowRight" && lightbox && !lightbox.hidden) {
+    showAdjacentLightboxImage(1);
   }
 });
 

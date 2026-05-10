@@ -65,17 +65,25 @@
           <p class="section-kicker">About</p>
           <h2 id="about-title">Think. See. Build.</h2>
         </div>
-        <div class="about-grid">
-          <p>
-            Academia taught me how to think. Photography taught me how to see. The work I am most
-            drawn to lives between the two: bringing people, timelines, and creative output into
-            alignment.
-          </p>
-          <p>
-            My background spans psychology research, chemistry teaching, youth programming, and
-            portrait and event photography. The through-line is collaboration: I like the room, the
-            process, and the moment where scattered pieces become something finished.
-          </p>
+        <div class="about-layout">
+          <div class="about-copy">
+            <p>
+              Academia taught me how to think. Photography taught me how to see. The work I am most
+              drawn to lives between the two: bringing people, timelines, and creative output into
+              alignment.
+            </p>
+            <p>
+              My background spans psychology research, chemistry teaching, youth programming, and
+              portrait and event photography. The through-line is collaboration: I like the room, the
+              process, and the moment where scattered pieces become something finished.
+            </p>
+          </div>
+          <aside class="about-card" aria-label="Portrait placeholder">
+            <div class="about-image placeholder-image" role="img" aria-label="Placeholder for a portrait of Andre">
+              <span>Portrait</span>
+            </div>
+            <p>Boston-based creative operator working across people, process, and image-making.</p>
+          </aside>
         </div>
       </section>
 
@@ -148,7 +156,10 @@
 
     <div class="lightbox" id="lightbox" hidden aria-modal="true" role="dialog" aria-label="Expanded image">
       <button class="lightbox-close" type="button" aria-label="Close expanded image">X</button>
+      <button class="lightbox-nav lightbox-prev" type="button" aria-label="Previous image">&lt; Prev</button>
       <img class="lightbox-image" src="" alt="">
+      <button class="lightbox-nav lightbox-next" type="button" aria-label="Next image">Next &gt;</button>
+      <p class="lightbox-count" aria-live="polite"></p>
     </div>
 
     <script src="assets/data/projects.js"></script>
