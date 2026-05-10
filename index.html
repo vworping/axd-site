@@ -43,74 +43,21 @@
       <section id="work" class="section work-section" aria-labelledby="work-title">
         <div class="section-heading">
           <p class="section-kicker">Selected Work</p>
-          <h2 id="work-title">Projects as proof of practice.</h2>
+          <div>
+            <h2 id="work-title">Projects as palette studies.</h2>
+          </div>
         </div>
 
-        <article class="project-row">
-          <div class="project-meta">
-            <p>01</p>
-            <p>Converse / ICA</p>
-          </div>
-          <div class="project-image placeholder-image" role="img" aria-label="Placeholder for Converse project photograph">
-            <span>Project image</span>
-          </div>
-          <div class="project-copy">
-            <h3>All-Star Creative</h3>
-            <p>
-              Documented an artist-led jersey design process through photo and video, capturing the
-              work behind a public creative object.
-            </p>
-            <ul class="tag-list" aria-label="Project tags">
-              <li>Creative process</li>
-              <li>Visual storytelling</li>
-              <li>Collaboration</li>
-            </ul>
-          </div>
-        </article>
+        <div class="palette-note">
+          <p>
+            I have worked across many projects and teams, often sitting at the overlap of data and
+            creative practice. Alongside each selected project, I inspect a curated image set with
+            k-means clustering to study color consistency through LAB values, weighted swatches, and
+            a short visual read.
+          </p>
+        </div>
 
-        <article class="project-row">
-          <div class="project-meta">
-            <p>02</p>
-            <p>Community Event</p>
-          </div>
-          <div class="project-image placeholder-image" role="img" aria-label="Placeholder for event photography project">
-            <span>Project image</span>
-          </div>
-          <div class="project-copy">
-            <h3>Glow Up for Graduation</h3>
-            <p>
-              Photographed a celebratory event centered on care, confidence, and youth transition,
-              translating the atmosphere of the room into a visual record.
-            </p>
-            <ul class="tag-list" aria-label="Project tags">
-              <li>Event documentation</li>
-              <li>Community</li>
-              <li>Portraiture</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="project-row">
-          <div class="project-meta">
-            <p>03</p>
-            <p>Research Systems</p>
-          </div>
-          <div class="project-image placeholder-image" role="img" aria-label="Placeholder for systems project image">
-            <span>Project image</span>
-          </div>
-          <div class="project-copy">
-            <h3>Quantitative Psychopathology Lab</h3>
-            <p>
-              Built and maintained workflows for research teams, turning large streams of data,
-              tools, and people into usable infrastructure.
-            </p>
-            <ul class="tag-list" aria-label="Project tags">
-              <li>Systems</li>
-              <li>Workflow</li>
-              <li>Research</li>
-            </ul>
-          </div>
-        </article>
+        <div class="project-list" id="project-list"></div>
       </section>
 
       <section id="about" class="section about-section" aria-labelledby="about-title">
@@ -199,6 +146,12 @@
       <p>People / Process / Image-making</p>
     </footer>
 
+    <div class="lightbox" id="lightbox" hidden aria-modal="true" role="dialog" aria-label="Expanded image">
+      <button class="lightbox-close" type="button" aria-label="Close expanded image">X</button>
+      <img class="lightbox-image" src="" alt="">
+    </div>
+
+    <script src="assets/data/projects.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
