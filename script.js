@@ -7,6 +7,9 @@ const lightboxClose = document.querySelector(".lightbox-close");
 const lightboxPrev = document.querySelector(".lightbox-prev");
 const lightboxNext = document.querySelector(".lightbox-next");
 const lightboxCount = document.querySelector(".lightbox-count");
+const caseModal = document.querySelector("#case-modal");
+const caseContent = document.querySelector(".case-content");
+const caseClose = document.querySelector(".case-close");
 let lightboxItems = [];
 let activeLightboxIndex = 0;
 
@@ -104,6 +107,16 @@ function imageButton(image, alt, className = "") {
   `;
 }
 
+function readMoreButton(project) {
+  if (!project.caseStudy) return "";
+
+  return `
+    <button class="case-trigger" type="button" data-project-case="${project.slug}">
+      Read more
+    </button>
+  `;
+}
+
 function renderProjects() {
   if (!projectList || !projects.length) return;
 
@@ -137,6 +150,7 @@ function renderProjects() {
               <ul class="tag-list" aria-label="Project tags">
                 ${project.tags.map((tag) => `<li>${tag}</li>`).join("")}
               </ul>
+              ${readMoreButton(project)}
             </div>
             ${paletteStudy(project)}
           </div>
@@ -199,9 +213,75 @@ function showAdjacentLightboxImage(direction) {
   setLightboxImage(activeLightboxIndex + direction);
 }
 
+function caseStudyImages(project) {
+  return project.images
+    .slice(0, 4)
+    .map(
+      (image, index) => `
+        <img src="${image.src}" alt="${project.title} case study image ${index + 1}" loading="lazy">
+      `,
+    )
+    .join("");
+}
+
+function renderCaseStudy(project) {
+  const study = project.caseStudy;
+  if (!study) return "";
+
+  return `
+    <header class="case-header">
+      <p class="case-kicker">Case Study / ${project.meta} / ${project.year}</p>
+      <h3>${study.title || project.title}</h3>
+      <p>${study.summary || project.role}</p>
+    </header>
+    <div class="case-image-strip" aria-label="${project.title} case study images">
+      ${caseStudyImages(project)}
+    </div>
+    <div class="case-body">
+      ${(study.body || []).map((paragraph) => `<p>${paragraph}</p>`).join("")}
+    </div>
+    <dl class="case-facts">
+      ${(study.facts || [])
+        .map(
+          (fact) => `
+            <div>
+              <dt>${fact.label}</dt>
+              <dd>${fact.value}</dd>
+            </div>
+          `,
+        )
+        .join("")}
+    </dl>
+  `;
+}
+
+function openCaseStudy(slug) {
+  const project = projects.find((item) => item.slug === slug);
+  if (!caseModal || !caseContent || !project?.caseStudy) return;
+
+  caseContent.innerHTML = renderCaseStudy(project);
+  caseModal.hidden = false;
+  document.body.classList.add("is-modal-open");
+  caseClose?.focus();
+}
+
+function closeCaseStudy() {
+  if (!caseModal || !caseContent) return;
+
+  caseModal.hidden = true;
+  caseContent.innerHTML = "";
+  document.body.classList.remove("is-modal-open");
+}
+
 document.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
   const imageTrigger = target?.closest(".image-button");
+  const caseTrigger = target?.closest(".case-trigger");
+
+  if (caseTrigger) {
+    openCaseStudy(caseTrigger.dataset.projectCase);
+    return;
+  }
 
   if (imageTrigger) {
     openLightbox(imageTrigger);
@@ -211,13 +291,23 @@ document.addEventListener("click", (event) => {
   if (event.target === lightbox) {
     closeLightbox();
   }
+
+  if (event.target === caseModal) {
+    closeCaseStudy();
+  }
 });
 
 lightboxClose?.addEventListener("click", closeLightbox);
 lightboxPrev?.addEventListener("click", () => showAdjacentLightboxImage(-1));
 lightboxNext?.addEventListener("click", () => showAdjacentLightboxImage(1));
+caseClose?.addEventListener("click", closeCaseStudy);
 
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && caseModal && !caseModal.hidden) {
+    closeCaseStudy();
+    return;
+  }
+
   if (event.key === "Escape" && lightbox && !lightbox.hidden) {
     closeLightbox();
   }

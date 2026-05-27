@@ -19,6 +19,20 @@ PROJECTS = [
         "description": "Photographed Abel Teclemariam's East Coast All-Star jersey process for Converse through an ICA teen creative pathway.",
         "tags": ["creative process", "visual storytelling", "collaboration"],
         "poetic_tag": "studio shadow / jersey heat / paper white",
+        "case_study": {
+            "title": "Converse All-Star Creative",
+            "summary": "Photography, creative coordination, and visual storytelling inside an artist-led jersey process.",
+            "body": [
+                "At the end of high school, the Institute of Contemporary Art connected me with Converse to document the creation of the East Coast team's jersey for the Celebrity All-Star Basketball Game. Cambridge-based artist Abel Teclemariam was designing the jersey, and my job was to capture the process while working directly alongside him and the team around him.",
+                "This was an early signal. I was not just taking pictures; I was inside the creative process, adapting in real time to a live collaborative environment and helping shape how the story got told.",
+                "The project later led to my selection for Converse's All-Star creative community, opening the door to ongoing projects and mentorship.",
+            ],
+            "facts": [
+                {"label": "What I did", "value": "Process photography, on-site coordination, visual narrative"},
+                {"label": "Collaborators", "value": "Abel Teclemariam, Converse, Institute of Contemporary Art"},
+                {"label": "Outcome", "value": "Selected for Converse's All-Star creative community"},
+            ],
+        },
     },
     {
         "slug": "glow-up-for-grad",
@@ -180,6 +194,7 @@ def main() -> None:
                 "poeticTag": project["poetic_tag"],
                 "accent": colors[-1]["hex"],
                 "wash": colors[1]["hex"] if len(colors) > 1 else colors[0]["hex"],
+                "caseStudy": project.get("case_study"),
             }
         )
 
