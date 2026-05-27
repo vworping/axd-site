@@ -764,6 +764,8 @@ body.is-modal-open {
 
 .about-section {
   max-width: none;
+  padding-top: clamp(44px, 6vw, 84px);
+  padding-bottom: clamp(38px, 5vw, 72px);
   color: var(--reverse-ink);
   background: var(--reverse-bg);
 }
@@ -793,13 +795,13 @@ body.is-modal-open {
   grid-template-columns: minmax(0, 0.82fr) minmax(300px, 0.34fr);
   gap: clamp(24px, 5vw, 72px);
   align-items: start;
-  padding-top: clamp(20px, 3vw, 36px);
+  padding-top: clamp(16px, 2.4vw, 28px);
   border-top: 1px solid rgba(245, 242, 236, 0.78);
 }
 
 .about-copy {
   display: grid;
-  gap: clamp(18px, 3vw, 36px);
+  gap: clamp(16px, 2.4vw, 28px);
 }
 
 .about-card {
@@ -927,9 +929,9 @@ body.is-modal-open {
 
   .about-card {
     width: min(100%, 300px);
-    margin-top: 8px;
+    margin-top: -24px;
     margin-right: 0;
-    transform: rotate(2.4deg);
+    transform: translateX(clamp(18px, 4vw, 44px)) rotate(2.4deg);
   }
 }
 
@@ -1053,6 +1055,7 @@ body.is-modal-open {
     margin-top: 0;
     margin-right: 18px;
     margin-left: auto;
+    transform: rotate(2deg);
   }
 
   .contact-links {
