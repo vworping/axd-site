@@ -90,19 +90,9 @@ function paletteStudy(project) {
   `;
 }
 
-function balancedSequence(images) {
-  const landscapes = images.filter((image) => image.orientation === "landscape");
-  const portraits = images.filter((image) => image.orientation === "portrait");
-
-  if (landscapes.length >= 2 && portraits.length >= 1) return [landscapes[0], portraits[0], landscapes[1]];
-  if (portraits.length >= 2 && landscapes.length >= 1) return [portraits[0], landscapes[0], portraits[1]];
-
-  return images;
-}
-
 function imageButton(image, alt, className = "") {
   return `
-    <button class="image-button ${className}" type="button" data-full="${image.src}" data-alt="${alt}" data-project-gallery>
+    <button class="image-button ${className} image-button-${image.orientation}" type="button" data-full="${image.src}" data-alt="${alt}" data-project-gallery>
       <img src="${image.src}" alt="${alt}" loading="lazy" style="--image-aspect: ${image.aspect}">
     </button>
   `;
@@ -125,7 +115,7 @@ function renderProjects() {
     .map((project, index) => {
       const accent = project.accent || project.palette[project.palette.length - 1]?.hex || "#111111";
       const wash = project.wash || project.palette[1]?.hex || "#e7e2d9";
-      const supportingImages = balancedSequence(project.images.filter((image) => image.src !== project.cover.src)).slice(0, 3);
+      const supportingImages = project.images.filter((image) => image.src !== project.cover.src).slice(0, 3);
       const strip = supportingImages
         .map((image, imageIndex) => imageButton(image, `${project.title} supporting image ${imageIndex + 1}`))
         .join("");
@@ -219,7 +209,7 @@ function caseStudyImages(project) {
     .slice(0, 4)
     .map(
       (image, index) => `
-        <img src="${image.src}" alt="${project.title} case study image ${index + 1}" loading="lazy">
+        <img class="case-image-${image.orientation}" src="${image.src}" alt="${project.title} case study image ${index + 1}" loading="lazy">
       `,
     )
     .join("");

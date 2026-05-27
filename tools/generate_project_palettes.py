@@ -11,7 +11,7 @@ from skimage import color
 PROJECTS = [
     {
         "slug": "converse-all-star",
-        "folder": Path("assets/images/projects/converse"),
+        "folder": Path("assets/images/projects-web/converse"),
         "title": "All-Star Creative",
         "meta": "Converse / ICA",
         "year": "2022",
@@ -35,8 +35,58 @@ PROJECTS = [
         },
     },
     {
+        "slug": "ica-city-headshots",
+        "folder": Path("assets/images/projects-web/ica city headshots"),
+        "title": "ICA x City of Boston Headshots",
+        "meta": "ICA / City of Boston",
+        "year": "2022",
+        "role": "Headshot photography, participant coordination, image delivery",
+        "description": "Coordinated and photographed professional headshots for young people connecting with employers and youth resources at a City of Boston career event.",
+        "tags": ["headshots", "career access", "youth resources"],
+        "poetic_tag": "public service / soft confidence / future-facing light",
+        "case_study": {
+            "title": "ICA x City of Boston Headshots",
+            "summary": "A headshot station for youth and young adults navigating work, resources, and first professional impressions.",
+            "body": [
+                "The ICA and City of Boston brought youth and young adults into a free career-focused event with employers, workshops, resources, performances, food, raffles, and giveaways. Inside that larger environment, I helped coordinate a headshot station so participants could leave with a useful image for applications, profiles, and future opportunities.",
+                "I worked with ICA Teen Director Betsy Gibbons on the headshot flow and the later dispersal of images. The project asked for more than a clean portrait; it required making a quick, public setup feel calm enough for people to step in, be seen, and leave with something practical.",
+                "The image set follows Nurys S., Daphnee F., Elka G., and Jasmine T. with a friend across the numbered files, turning a resource table into a compact portrait archive."
+            ],
+            "facts": [
+                {"label": "What I did", "value": "Headshot photography, participant flow, image export and delivery"},
+                {"label": "Collaborators", "value": "ICA Teen Director Betsy Gibbons, ICA, City of Boston"},
+                {"label": "Featured", "value": "Nurys S., Daphnee F., Elka G., Jasmine T. and friend"},
+            ],
+        },
+    },
+    {
+        "slug": "moia-grad",
+        "folder": Path("assets/images/projects-web/moia grad"),
+        "title": "Immigrants Lead Boston Graduation",
+        "meta": "City of Boston MOIA",
+        "year": "2022",
+        "role": "Event photography, staff coordination, image export",
+        "description": "Photographed the Immigrants Lead Boston graduation for MOIA's 2022 cohort of local immigrant residents completing a civic leadership program.",
+        "tags": ["civic leadership", "community", "event documentation"],
+        "poetic_tag": "civic room / gathered pride / city light",
+        "case_study": {
+            "title": "Immigrants Lead Boston Graduation",
+            "summary": "Event documentation for MOIA's civic ownership and leadership development graduation.",
+            "body": [
+                "The Mayor's Office for Immigrant Advancement held the Immigrants Lead Boston graduation for its 2022 cohort on February 17, 2022. The cohort brought together local immigrant residents who had completed a civic ownership and leadership development program focused on serving and leading within immigrant communities.",
+                "I photographed the graduation ceremony and worked with ILB staff around the export and delivery of the final images. The work centered on documenting a public milestone with enough care to preserve the formality of the ceremony and the warmth of the people in the room.",
+                "The resulting image set sits between civic record and community portrait: speakers, graduates, families, and staff sharing a room built around leadership, belonging, and local impact."
+            ],
+            "facts": [
+                {"label": "What I did", "value": "Ceremony photography, image sequencing, export coordination"},
+                {"label": "Collaborators", "value": "City of Boston MOIA and Immigrants Lead Boston staff"},
+                {"label": "Context", "value": "2022 ILB graduation for local immigrant community leaders"},
+            ],
+        },
+    },
+    {
         "slug": "glow-up-for-grad",
-        "folder": Path("assets/images/projects/glow up for grad"),
+        "folder": Path("assets/images/projects-web/glow up for grad"),
         "title": "Glow Up for Graduation",
         "meta": "Community Event",
         "year": "2025",
@@ -44,6 +94,20 @@ PROJECTS = [
         "description": "Photographed eighth graders receiving hair touch-ups from Madison Park Vocational Technical High School students before graduation.",
         "tags": ["event documentation", "community", "portraiture"],
         "poetic_tag": "salon light / soft ceremony / electric care",
+        "case_study": {
+            "title": "Glow Up for Graduation",
+            "summary": "Event documentation of a graduation-prep room built around care, confidence, and community skill-sharing.",
+            "body": [
+                "Glow Up for Graduation centered eighth graders preparing for graduation with hair touch-ups from Madison Park Vocational Technical High School students. The room had the feel of a working salon and a small ceremony at once: practical care, peer attention, and the quiet anticipation before a milestone.",
+                "My role was to photograph the event while reading the room carefully, moving between process details, portraits, and the moments where students settled into being seen. The story was not just the final look; it was the exchange of care that made the day feel held.",
+                "The final sequence emphasizes hands, mirrors, expressions, and the small gestures that turn a school event into a memory."
+            ],
+            "facts": [
+                {"label": "What I did", "value": "Event photography, candid portraiture, image sequencing"},
+                {"label": "Collaborators", "value": "Madison Park Vocational Technical High School students and graduating eighth graders"},
+                {"label": "Focus", "value": "Graduation preparation through care, confidence, and community"},
+            ],
+        },
     },
 ]
 
