@@ -808,15 +808,15 @@ body.is-modal-open {
   display: grid;
   gap: 10px;
   align-self: start;
-  width: min(100%, 340px);
+  width: min(100%, 300px);
   max-width: none;
-  margin-top: clamp(-72px, -4vw, -34px);
-  margin-right: 0;
+  margin-top: clamp(-116px, -6vw, -68px);
+  margin-right: clamp(80px, 8vw, 150px);
   margin-left: auto;
   padding: 8px;
   background: var(--reverse-bg);
   border: 1px solid rgba(245, 242, 236, 0.78);
-  transform: translateX(clamp(24px, 3.8vw, 64px)) rotate(2.8deg);
+  transform: rotate(2.8deg);
 }
 
 .about-image {
@@ -928,10 +928,10 @@ body.is-modal-open {
   }
 
   .about-card {
-    width: min(100%, 300px);
-    margin-top: -24px;
-    margin-right: 0;
-    transform: translateX(clamp(18px, 4vw, 44px)) rotate(2.4deg);
+    width: min(100%, 270px);
+    margin-top: -58px;
+    margin-right: clamp(70px, 8vw, 110px);
+    transform: rotate(2.4deg);
   }
 }
 
@@ -1050,10 +1050,10 @@ body.is-modal-open {
   }
 
   .about-card {
-    width: min(82vw, 300px);
+    width: min(82vw, 270px);
     max-width: none;
     margin-top: 0;
-    margin-right: 18px;
+    margin-right: 24px;
     margin-left: auto;
     transform: rotate(2deg);
   }
