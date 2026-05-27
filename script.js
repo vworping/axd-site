@@ -1,5 +1,6 @@
 const navToggle = document.querySelector(".nav-toggle");
 const siteNav = document.querySelector(".site-nav");
+const hero = document.querySelector(".hero");
 const projectList = document.querySelector("#project-list");
 const lightbox = document.querySelector("#lightbox");
 const lightboxImage = document.querySelector(".lightbox-image");
@@ -330,6 +331,12 @@ function observeProjects() {
   const rows = [...document.querySelectorAll(".project-row")];
   if (!rows.length) return;
 
+  if (!("IntersectionObserver" in window)) {
+    rows[0].classList.add("is-active");
+    updateActiveAccent(projects[0]);
+    return;
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       const active = entries
@@ -353,4 +360,34 @@ function observeProjects() {
   });
 }
 
+function observeHero() {
+  if (!hero) return;
+
+  hero.classList.add("is-active");
+
+  if (!("IntersectionObserver" in window)) {
+    const syncHeroActive = () => {
+      const rect = hero.getBoundingClientRect();
+      const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+      const visibleRatio = Math.max(0, visibleHeight) / rect.height;
+      hero.classList.toggle("is-active", visibleRatio > 0.28);
+    };
+
+    syncHeroActive();
+    window.addEventListener("scroll", syncHeroActive, { passive: true });
+    window.addEventListener("resize", syncHeroActive);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      hero.classList.toggle("is-active", entry.isIntersecting && entry.intersectionRatio > 0.28);
+    },
+    { rootMargin: "-8% 0px -22% 0px", threshold: [0.1, 0.28, 0.5, 0.72] },
+  );
+
+  observer.observe(hero);
+}
+
+observeHero();
 renderProjects();
