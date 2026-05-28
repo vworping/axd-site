@@ -204,15 +204,51 @@ function showAdjacentLightboxImage(direction) {
   setLightboxImage(activeLightboxIndex + direction);
 }
 
-function caseStudyImages(project) {
-  return project.images
-    .slice(0, 4)
-    .map(
-      (image, index) => `
-        <img class="case-image-${image.orientation}" src="${image.src}" alt="${project.title} case study image ${index + 1}" loading="lazy">
-      `,
-    )
-    .join("");
+function caseStudyCarousel(project) {
+  const images = project.images.slice(0, 4);
+
+  if (!images.length) return "";
+
+  return `
+    <div class="case-carousel" data-case-carousel aria-label="${project.title} case study images">
+      <button class="case-control case-carousel-prev" type="button" data-case-carousel-prev aria-label="Previous case study image">&lt;</button>
+      <div class="case-carousel-stage">
+        ${images
+          .map(
+            (image, index) => `
+              <figure class="case-slide${index === 0 ? " is-active" : ""}" data-case-slide${index === 0 ? "" : " hidden"}>
+                <img class="case-image-${image.orientation}" src="${image.src}" alt="${project.title} case study image ${index + 1}" loading="lazy">
+              </figure>
+            `,
+          )
+          .join("")}
+      </div>
+      <button class="case-control case-carousel-next" type="button" data-case-carousel-next aria-label="Next case study image">&gt;</button>
+      <p class="case-carousel-count" aria-live="polite">1 / ${images.length}</p>
+    </div>
+  `;
+}
+
+function updateCaseCarousel(carousel, direction) {
+  const slides = [...carousel.querySelectorAll("[data-case-slide]")];
+  const count = carousel.querySelector(".case-carousel-count");
+  if (!slides.length) return;
+
+  const currentIndex = Math.max(
+    0,
+    slides.findIndex((slide) => !slide.hidden),
+  );
+  const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+
+  slides.forEach((slide, index) => {
+    const isActive = index === nextIndex;
+    slide.hidden = !isActive;
+    slide.classList.toggle("is-active", isActive);
+  });
+
+  if (count) {
+    count.textContent = `${nextIndex + 1} / ${slides.length}`;
+  }
 }
 
 function renderCaseStudy(project) {
@@ -225,9 +261,7 @@ function renderCaseStudy(project) {
       <h3>${study.title || project.title}</h3>
       <p>${study.summary || project.role}</p>
     </header>
-    <div class="case-image-strip" aria-label="${project.title} case study images">
-      ${caseStudyImages(project)}
-    </div>
+    ${caseStudyCarousel(project)}
     <div class="case-body">
       ${(study.body || []).map((paragraph) => `<p>${paragraph}</p>`).join("")}
     </div>
@@ -268,6 +302,14 @@ document.addEventListener("click", (event) => {
   const target = event.target instanceof Element ? event.target : null;
   const imageTrigger = target?.closest(".image-button");
   const caseTrigger = target?.closest(".case-trigger");
+  const caseCarouselPrev = target?.closest("[data-case-carousel-prev]");
+  const caseCarouselNext = target?.closest("[data-case-carousel-next]");
+
+  if (caseCarouselPrev || caseCarouselNext) {
+    const carousel = target.closest("[data-case-carousel]");
+    if (carousel) updateCaseCarousel(carousel, caseCarouselPrev ? -1 : 1);
+    return;
+  }
 
   if (caseTrigger) {
     openCaseStudy(caseTrigger.dataset.projectCase);
@@ -296,6 +338,12 @@ caseClose?.addEventListener("click", closeCaseStudy);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && caseModal && !caseModal.hidden) {
     closeCaseStudy();
+    return;
+  }
+
+  if ((event.key === "ArrowLeft" || event.key === "ArrowRight") && caseModal && !caseModal.hidden) {
+    const carousel = caseModal.querySelector("[data-case-carousel]");
+    if (carousel) updateCaseCarousel(carousel, event.key === "ArrowLeft" ? -1 : 1);
     return;
   }
 
