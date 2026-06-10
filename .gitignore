@@ -6,3 +6,12 @@
 !.env.example
 
 .DS_Store
+
+# Local/generated files
+tools/__pycache__/
+*.save
+
+# Local image experiments and raw source sets
+assets/images/watermark-test/
+assets/images/projects/ica city headshots/
+assets/images/projects/moia grad/

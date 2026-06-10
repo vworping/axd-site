@@ -1186,6 +1186,10 @@ body.is-modal-open {
     bottom: 18px;
   }
 
+  .case-panel {
+    box-shadow: none;
+  }
+
   .about-card {
     width: min(82vw, 270px);
     max-width: none;
