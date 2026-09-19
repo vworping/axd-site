@@ -1,17 +1,14 @@
-# wrangler files
-.wrangler
+# Local configuration and credentials
+.wrangler/
 .dev.vars*
 !.dev.vars.example
 .env*
 !.env.example
 
+# Generated output and local archives
+site/dist/
+.local-archive/
+node_modules/
 .DS_Store
-
-# Local/generated files
-tools/__pycache__/
+__pycache__/
 *.save
-
-# Local image experiments and raw source sets
-assets/images/watermark-test/
-assets/images/projects/ica city headshots/
-assets/images/projects/moia grad/

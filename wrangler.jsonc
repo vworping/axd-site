@@ -6,9 +6,12 @@
     "enabled": true
   },
   "assets": {
-    "directory": "."
+    "directory": "./site/dist"
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "build": {
+    "command": "node site/build.mjs"
+  }
 }

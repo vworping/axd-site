@@ -1,0 +1,27 @@
+{
+  "assets/images/selected-01.webp": {
+    "source": "perceptual-palette-drift/docs/constellation/index.html",
+    "image": "raw/2025/_DSC8824.jpg",
+    "method": "Published five-color LAB palette; unchanged hex values and weights."
+  },
+  "assets/images/selected-02.webp": {
+    "source": "perceptual-palette-drift/docs/constellation/index.html",
+    "image": "raw/2025/_DSC9422-Edit.jpg",
+    "method": "Published five-color LAB palette; unchanged hex values and weights."
+  },
+  "assets/images/selected-03.webp": {
+    "source": "perceptual-palette-drift/docs/constellation/index.html",
+    "image": "raw/2024/_DSC6724.jpg",
+    "method": "Published five-color LAB palette; unchanged hex values and weights."
+  },
+  "assets/images/selected-04.webp": {
+    "source": "perceptual-palette-drift/docs/constellation/index.html",
+    "image": "raw/2023/_DSC9710.jpg",
+    "method": "Published five-color LAB palette; unchanged hex values and weights."
+  },
+  "assets/images/selected-05.webp": {
+    "source": "perceptual-palette-drift/docs/constellation/index.html",
+    "image": "raw/2022/_DSC6532.jpg",
+    "method": "Published five-color LAB palette; unchanged hex values and weights."
+  }
+}

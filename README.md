@@ -1,87 +1,71 @@
-# axd-site
+# [AXD.] — Mind of AXD
 
-Static portfolio site for Andre Weiss / mindofaxd.com.
+**Andre Weiss · Photographer with a researcher's mind.**
 
-The site is plain HTML, CSS, and JavaScript, designed as a minimal editorial portfolio with photography-forward project sections. Project palettes are generated from curated image sets using k-means clustering in LAB color space.
+[Visit mindofaxd.com](https://mindofaxd.com/) · [Editing guide](docs/EDITING.md) · [Deployment & rollback](docs/DEPLOYMENT.md)
 
-## Structure
+![AXD logo](site/assets/images/share-logo.png)
 
-- `index.html`: page structure, metadata, favicon, social preview tags, and static content.
-- `styles.css`: visual design, responsive layout, project modal, carousel, and lightbox styles.
-- `script.js`: navigation, project rendering, modal behavior, carousel controls, and lightbox behavior.
-- `assets/data/projects.js`: generated project data, image dimensions, palette values, and case study text.
-- `assets/images/site-web/`: public optimized site-level images such as the hero and about portrait.
-- `assets/images/projects-web/`: public optimized project images used by cards, case studies, and lightbox previews.
-- `assets/images/projects/`: source/input project images. Some older source sets are tracked; newer raw sets are kept local and ignored.
-- `assets/images/watermark-test/`: local watermark experiments, ignored by Git.
-- `assets/resume/`: public resume assets.
-- `tools/`: local scripts for image watermarking and palette generation.
+A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Three horizontally navigable chapters connect the photographs, project stories, and About & Say Hello.
 
-## Project Structure
+## What's inside
 
-Each project is represented in `assets/data/projects.js` with:
+- Five hero photographs with palettes from **Perceptual Palette Drift**.
+- Project previews, complete stories, photo galleries, and expanded images.
+- A palette-to-brackets intro and a spelling name animation, with reduced-motion and pause support.
+- Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
+- Clean web images with watermarked copies available through **Take a copy**.
 
-- identity fields: `slug`, `title`, `meta`, `year`, `role`, `description`
-- display fields: `tags`, `poeticTag`, `accent`, `wash`
-- image fields: `cover`, `images`
-- color analysis: `palette`
-- expanded copy: `caseStudy`
+Plain HTML, CSS, and JavaScript. No framework or package installation is required to edit, preview, or build.
 
-Project image folders currently use this pattern:
+## Edit content
+
+| Change | File |
+| --- | --- |
+| Project dates, descriptions, collaborators, photos, and links | [`site/assets/data/projects.js`](site/assets/data/projects.js) |
+| Hero photos and measured palettes | [`site/assets/data/photographs.js`](site/assets/data/photographs.js) |
+| About text, portrait, contact links, background | [`site/index.html`](site/index.html) |
+| Layout, spacing, responsive overrides | [`site/layout.css`](site/layout.css) |
+| Fonts, base styles, core visual treatment | [`site/styles.css`](site/styles.css) |
+
+For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
+
+## Preview locally
+
+From the repository root:
+
+```sh
+python3 -m http.server 6767 --bind 0.0.0.0 --directory site
+```
+
+Open **http://localhost:6767/**. For a phone on the same Wi-Fi, use `http://YOUR-MAC-IP:6767/`. On a Mac, `ipconfig getifaddr en0` usually returns the Wi-Fi address. If the port is occupied, use a different port or the already-running server.
+
+## Build and publish
+
+```sh
+node site/build.mjs
+```
+
+The output is `site/dist/`. The build generates production metadata and adds content hashes to script and stylesheet URLs so edited content refreshes correctly.
+
+**Cloudflare Workers Builds** deploys the `main` branch of this repository to the existing `axd-site` Worker. `wrangler.jsonc` runs the build and serves only `site/dist/`. Push a reviewed commit to `main` to publish. See [deployment & rollback](docs/DEPLOYMENT.md).
+
+## Repository layout
 
 ```text
-assets/images/projects-web/<project-name>/
-  <slug>-01-cover.jpg
-  <slug>-02-image.jpg
-  <slug>-03-image.jpg
-  <slug>-04-image.jpg
+site/                  Editable website source
+  assets/data/         Project stories and hero photographs
+  assets/fonts/        Local fonts and their licenses
+  assets/images/       Optimized web photographs and logo assets
+  dist/                Generated public output; ignored by Git
+docs/                  Editing, deployment, and palette provenance
+wrangler.jsonc         Existing Cloudflare Worker + build configuration
 ```
 
-The live site reads from `site-web/` and `projects-web/`, not directly from raw project folders.
+The old portfolio is preserved in Git under **`pre-redesign-2026-09-19`**. On the original working machine, `.local-archive/` also retains the old site, raw inputs, image-processing tools, and a pre-launch redesign snapshot. It is ignored and never deployed.
 
-## Watermarking
+## Images and credits
 
-Watermarks are not added by CSS or JavaScript. The script below bakes `[AXD]` directly into the exported image pixels while resizing/compressing the image for web use:
+Photography and site content © Andre Weiss. Font licenses are included under `site/assets/fonts/`. Palette origins are recorded in [`docs/palette-provenance.json`](docs/palette-provenance.json).
 
-```bash
-python3 tools/watermark_web_images.py --src <source> --out <output> --overwrite
-```
-
-Current convention:
-
-- Public project images in `assets/images/projects-web/` can be watermarked.
-- Hero/about images in `assets/images/site-web/` should be optimized for web use, but the intended direction is to keep them unwatermarked.
-- `assets/images/watermark-test/` is only for local experiments and should not be committed.
-
-## Palette Generation
-
-The palette generator reads the configured project image folders, calculates LAB/k-means palette data, and rewrites `assets/data/projects.js`:
-
-```bash
-python3 tools/generate_project_palettes.py
-```
-
-Project metadata currently lives inside `tools/generate_project_palettes.py`, so adding a new project means adding its metadata and image folder there before regenerating `assets/data/projects.js`.
-
-The image scripts require Python packages such as Pillow, NumPy, and scikit-image.
-
-## Development
-
-Because the site is static, it can be opened directly in a browser or served with any simple local static server.
-
-Useful checks before committing:
-
-```bash
-node --check script.js
-git diff --check
-```
-
-## Git Notes
-
-Avoid `git add .` when raw image folders are present. Stage specific files and public asset folders intentionally.
-
-Ignored local/generated paths include `.DS_Store`, Python cache folders, watermark tests, editor backup files, and selected raw project source folders.
-
-## Deployment
-
-The site is intended to deploy from the GitHub repository through Cloudflare Pages. The Cloudflare project config lives in `wrangler.jsonc`.
+Displayed photographs are resized web copies. Download watermarking does not prevent screenshots or extraction of displayed images.
