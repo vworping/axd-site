@@ -4,7 +4,7 @@
 
 [Visit mindofaxd.com](https://mindofaxd.com/) · [Editing guide](docs/EDITING.md) · [Deployment & rollback](docs/DEPLOYMENT.md)
 
-![AXD logo](site/assets/images/share-logo.png)
+![AXD logo](site/assets/images/share-logo.png?v=13)
 
 A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Three horizontally navigable chapters connect the photographs, project stories, and About & Say Hello.
 

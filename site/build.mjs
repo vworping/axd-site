@@ -20,8 +20,8 @@ for (const [attribute, file] of references) {
   html = html.replaceAll(attribute, attribute.replace(/=".*"/, `="${file}?v=${hash}"`));
 }
 html = html.replaceAll('https://mindofaxd.com/', siteURL.href);
-await writeFile(entry, html.replaceAll('content="assets/images/share-logo.png?v=12"',
-  `content="${new URL('assets/images/share-logo.png?v=12', siteURL).href}"`));
+await writeFile(entry, html.replaceAll('content="assets/images/share-logo.png?v=13"',
+  `content="${new URL('assets/images/share-logo.png?v=13', siteURL).href}"`));
 await writeFile(new URL('robots.txt', output), `User-agent: *\nAllow: /\nSitemap: ${new URL('sitemap.xml', siteURL).href}\n`);
 await writeFile(new URL('sitemap.xml', output), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${siteURL.href}</loc></url></urlset>\n`);
 console.log('Static portfolio built in site/dist.');
