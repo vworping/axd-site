@@ -683,3 +683,25 @@ html[data-input="pointer"] :focus { outline: none !important; }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
  .collab-card.is-active .collab-paper { animation-name: story-print-drift; }
 }
+
+/* Size the hero against its actual rail viewport (after header/browser chrome),
+   rather than a guessed phone height. The photo stage gets the remaining room. */
+@media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .horizontal-layout .section-track > .hero { container-type: size; overflow: hidden; }
+ .horizontal-layout .hero-composition { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); padding: 12px 0 8px; }
+ .horizontal-layout .hero h1 { font-size: min(25.5vw, 28cqh); width: 100%; text-align: center; }
+ .horizontal-layout .hero-composition .photo-deck { display: grid; grid-template-rows: minmax(0, 1fr) auto; width: min(96%, 390px); height: calc(100% + 18px); min-height: 0; margin: -18px auto 0; transform: none; }
+ .horizontal-layout .hero-composition .deck-stage { width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; }
+ .horizontal-layout .photo-deck #deck-hint { position: static; flex-direction: column-reverse; align-items: flex-start; width: max-content; margin: 0 0 0 4%; padding: 0; gap: 0; transform: none; font-size: .75rem; }
+ .horizontal-layout .photo-deck #deck-hint > span { transform: none; }
+ .horizontal-layout .photo-deck #deck-hint svg { width: 34px; height: 24px; margin: 0 0 0 11px; transform: rotate(180deg); }
+ .horizontal-layout .hero-bottom { flex: 0 0 auto; padding: 10px 0; }
+ .horizontal-layout .hero-research > p:first-child { font-size: clamp(.69rem, 3.05vw, .96rem); }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); align-items: center; gap: 12px; }
+ .horizontal-layout .hero h1 { font-size: min(16vw, 35cqh); }
+ .horizontal-layout .hero-composition .photo-deck { height: 100%; margin: 0 auto; }
+ .horizontal-layout .photo-deck #deck-hint { flex-direction: row; align-items: center; gap: 8px; }
+ .horizontal-layout .hero-bottom .work-jump { display: none; }
+}
