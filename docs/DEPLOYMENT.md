@@ -43,3 +43,11 @@ Use Cloudflare's deployment rollback to restore the previous known-good version 
 To reverse the launch in Git, identify the commit titled **Launch redesigned Mind of AXD portfolio**, review its inverse, and revert that commit on `main`. Push the revert and wait for the Cloudflare check. This restores the former root files and the previous Wrangler assets configuration without rewriting Git history. Later edits may require resolving conflicts deliberately.
 
 Do not force-push the old tag over `main`.
+
+## Browser security
+
+`site/worker.mjs` runs before assets and redirects HTTP requests to HTTPS, preserving the path and query. Localhost HTTP previews remain supported. The `ASSETS` binding serves the static build afterward. Requests now invoke this small Worker; Cloudflare Worker request limits apply.
+
+`site/build.mjs` generates `site/dist/_headers`: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP automatically hashes the inline intro bootstrap. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
+
+These controls do not prevent screenshots or scraping. Account MFA is configured separately in Cloudflare, GitHub, and email settings.

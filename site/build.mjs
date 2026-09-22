@@ -25,3 +25,10 @@ await writeFile(entry, html.replaceAll('content="assets/images/share-logo.png?v=
 await writeFile(new URL('robots.txt', output), `User-agent: *\nAllow: /\nSitemap: ${new URL('sitemap.xml', siteURL).href}\n`);
 await writeFile(new URL('sitemap.xml', output), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${siteURL.href}</loc></url></urlset>\n`);
 console.log('Static portfolio built in site/dist.');
+
+// Hash the small inline intro bootstrap; do not allow arbitrary inline scripts.
+const publishedHTML = await readFile(entry, 'utf8');
+const scriptHashes = [...publishedHTML.matchAll(/<script>([\s\S]*?)<\/script>/g)]
+  .map(([, source]) => `'sha256-${createHash('sha256').update(source).digest('base64')}'`);
+const policy = ["default-src 'self'", `script-src 'self' ${scriptHashes.join(' ')}`, "style-src 'self' 'unsafe-inline'", "img-src 'self' data: blob:", "font-src 'self'", "connect-src 'self'", "object-src 'none'", "base-uri 'none'", "frame-ancestors 'none'", "form-action 'none'", 'upgrade-insecure-requests'].join('; ');
+await writeFile(new URL('_headers', output), `/*\n  Content-Security-Policy: ${policy}\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Strict-Transport-Security: max-age=2592000\n`);

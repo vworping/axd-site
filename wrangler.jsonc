@@ -6,12 +6,15 @@
     "enabled": true
   },
   "assets": {
-    "directory": "./site/dist"
+    "directory": "./site/dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
   },
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "build": {
     "command": "node site/build.mjs"
-  }
+  },
+  "main": "site/worker.mjs"
 }

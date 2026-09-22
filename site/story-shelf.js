@@ -3,7 +3,7 @@
   const shelf = document.getElementById('story-shelf');
   if (!shelf) return;
   const projects = window.PROJECTS || [];
-  const compact = matchMedia('(max-width: 700px)');
+  const compact = matchMedia('(max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px)');
   const cards = [];
   let active = 0;
 
