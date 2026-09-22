@@ -728,3 +728,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .project-dialog .dialog-summary { font-size: 1rem; margin-bottom: 18px; }
  .project-dialog .dialog-story #dialog-body p { font-size: .875rem; line-height: 1.5; }
 }
+
+/* Never paint an empty paper while its photograph is downloading/decoding. */
+.collab-paper:not(.is-image-ready) { opacity: 0; }

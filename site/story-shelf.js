@@ -50,20 +50,40 @@
     return el;
   }
 
-  function select(index) {
+  const imageLoads = new WeakMap();
+  let selectionVersion = 0;
+
+  function prepareImage(img) {
+    if (imageLoads.has(img)) return imageLoads.get(img);
+    // Stable sizes prevent a new responsive-image request on every hover.
+    img.sizes = '(max-width: 700px) 60vw, 28vw';
+    img.loading = 'eager';
+    img.srcset = img.dataset.srcset || '';
+    img.src = img.dataset.src;
+    const ready = img.decode().then(() => {
+      img.closest('.collab-paper').classList.add('is-image-ready');
+    }).catch(() => {
+      // A failed image must not prevent choosing a story or opening its details.
+      if (img.naturalWidth) img.closest('.collab-paper').classList.add('is-image-ready');
+    });
+    imageLoads.set(img, ready);
+    return ready;
+  }
+
+  async function select(index) {
+    const version = ++selectionVersion;
+    shelf.setAttribute('aria-busy', 'true');
+    // Keep the current fan visible until the next set is decoded, then switch
+    // all its prints together. Rapid hovering cannot reveal an outdated set.
+    await Promise.all([...cards[index].link.querySelectorAll('img')].map(prepareImage));
+    if (version !== selectionVersion) return;
     active = index;
     cards.forEach(({ card, link, button }, i) => {
       card.classList.toggle('is-active', i === index);
       button.setAttribute('aria-pressed', String(i === index));
-      // Only the selected preview is shown on phones. The selectors stay available.
       link.inert = compact.matches && i !== index;
-      link.querySelectorAll('img').forEach((img, slot) => {
-        img.sizes = i === index ? '(max-width: 700px) 60vw, 28vw' : '(max-width: 700px) 60vw, 16vw';
-        if (slot !== 0 && i !== index || img.hasAttribute('src')) return;
-        img.srcset = img.dataset.srcset || '';
-        img.src = img.dataset.src;
-      });
     });
+    shelf.removeAttribute('aria-busy');
   }
 
   projects.forEach((project, index) => {
@@ -133,5 +153,6 @@
   const syncVisibility = () => shelf.classList.toggle('motion-hidden', document.hidden);
   document.addEventListener('visibilitychange', syncVisibility);
   syncVisibility();
+  cards.forEach(({ link }) => prepareImage(link.querySelector('img')));
   select(0);
 })();
