@@ -32,3 +32,12 @@ const scriptHashes = [...publishedHTML.matchAll(/<script>([\s\S]*?)<\/script>/g)
   .map(([, source]) => `'sha256-${createHash('sha256').update(source).digest('base64')}'`);
 const policy = ["default-src 'self'", `script-src 'self' ${scriptHashes.join(' ')}`, "style-src 'self' 'unsafe-inline'", "img-src 'self' data: blob:", "font-src 'self'", "connect-src 'self'", "object-src 'none'", "base-uri 'none'", "frame-ancestors 'none'", "form-action 'none'", 'upgrade-insecure-requests'].join('; ');
 await writeFile(new URL('_headers', output), `/*\n  Content-Security-Policy: ${policy}\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n  Referrer-Policy: strict-origin-when-cross-origin\n  Permissions-Policy: camera=(), microphone=(), geolocation=()\n  Strict-Transport-Security: max-age=2592000\n`);
+
+// Assets fetched through a Worker binding need headers on the returned response.
+const securityHeaders = Object.fromEntries((await readFile(new URL('_headers', output), 'utf8'))
+  .split('\n').filter(line => line.startsWith('  ')).map(line => {
+    const colon = line.indexOf(':');
+    return [line.slice(2, colon), line.slice(colon + 1).trim()];
+  }));
+await mkdir(new URL('.generated/', root), { recursive: true });
+await writeFile(new URL('.generated/security-headers.json', root), JSON.stringify(securityHeaders));
