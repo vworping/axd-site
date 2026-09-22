@@ -707,3 +707,24 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .photo-deck #deck-hint { flex-direction: row; align-items: center; gap: 8px; }
  .horizontal-layout .hero-bottom .work-jump { display: none; }
 }
+
+/* Short landscape project viewer: keep the photo and controls visible while
+   the story scrolls independently beside them. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .project-dialog { width: 100%; height: 100dvh; max-height: 100dvh; margin: 0; border: 0; overflow: hidden; }
+ .project-dialog[open] { display: flex; flex-direction: column; }
+ .project-dialog .dialog-topbar { position: static; flex: 0 0 48px; min-height: 48px; padding: 2px max(16px, env(safe-area-inset-left)); }
+ .project-dialog .dialog-layout { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 22px; padding: 12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left)); overflow: hidden; }
+ .project-dialog .dialog-gallery { position: static; align-self: stretch; display: flex; flex-direction: column; height: 100%; min-height: 0; justify-content: start; }
+ .project-dialog .gallery-expand { flex: 1 1 0; height: auto; min-height: 0; grid-template-rows: 6px minmax(0, 1fr); }
+ .project-dialog .gallery-expand::before { height: 6px; }
+ .project-dialog .gallery-expand > .gallery-image-stage { --photo-inset: 8px; }
+ .project-dialog .gallery-controls { flex: 0 0 auto; padding: 6px 0; }
+ .project-dialog .gallery-step { min-height: 34px; padding: 6px 10px; }
+ .project-dialog .gallery-thumbnails { flex: 0 0 auto; gap: 8px; padding: 0; }
+ .project-dialog .gallery-thumbnails button { width: 40px; height: 40px; }
+ .project-dialog .dialog-story { height: 100%; min-height: 0; padding: 4px 6px 20px 0; overflow-y: auto; overscroll-behavior: contain; }
+ .project-dialog .dialog-story h2 { font-size: clamp(1.7rem, 3.7vw, 2.5rem); margin: 10px 0 16px; line-height: 1.04; }
+ .project-dialog .dialog-summary { font-size: 1rem; margin-bottom: 18px; }
+ .project-dialog .dialog-story #dialog-body p { font-size: .875rem; line-height: 1.5; }
+}
