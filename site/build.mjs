@@ -4,7 +4,7 @@ const root = new URL('./', import.meta.url);
 const output = new URL('./dist/', root);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const file of ['index.html', 'styles.css', 'layout.css', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
+for (const file of ['index.html', 'favicon.ico', 'styles.css', 'layout.css', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
   await cp(new URL(file, root), new URL(file, output), { recursive: true, filter: path => !path.endsWith('/.DS_Store') });
 }
 // Source uses relative preview images so local phone sharing stays on the LAN.
@@ -12,6 +12,15 @@ for (const file of ['index.html', 'styles.css', 'layout.css', 'script.js', 'stor
 const siteURL = new URL(process.env.SITE_URL || 'https://mindofaxd.com/');
 const entry = new URL('./index.html', output);
 let html = await readFile(entry, 'utf8');
+// A new filename refreshes favicon caches when the logo changes.
+const faviconPath = 'assets/images/favicon-axd.png';
+const favicon = await readFile(new URL(faviconPath, root));
+const faviconHash = createHash('sha256').update(favicon).digest('hex').slice(0, 12);
+const publishedFavicon = `assets/images/favicon-axd-${faviconHash}.png`;
+await writeFile(new URL(publishedFavicon, output), favicon);
+html = html.replaceAll(faviconPath, publishedFavicon);
+// Keep the old PNG address working for clients with saved icon URLs.
+await writeFile(new URL('assets/images/favicon.png', output), favicon);
 // Content hashes refresh edited scripts/data/styles without manual version bumps.
 const references = [...html.matchAll(/(?:src|href)="([^"?]+\.(?:js|css))(?:\?[^"]*)?"/g)];
 for (const [attribute, file] of references) {

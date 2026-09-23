@@ -39,7 +39,7 @@ Use real width and height values so the site preserves image proportions. `previ
 - **Portrait:** search for `CHANGE PORTRAIT HERE` or `about-portrait` in `site/index.html`. Update `src`, `srcset`, `width`, `height`, and `alt` together. Current files are `andre.webp` and `andre-small.webp`.
 - **Biography, email, social links, background dates:** `site/index.html`.
 - **Logo share card:** `site/assets/images/share-logo.png`.
-- **Favicon:** `site/assets/images/favicon.png`.
+- **Favicon:** `site/assets/images/favicon-axd.png`. The build gives this a content-based filename to refresh icon caches and keeps the old PNG URL available. Also regenerate `site/favicon.ico` from the same image when changing the logo; it provides the standard fallback in 16, 32, 48, 64, 128, and 256 pixel sizes.
 
 The portrait frame follows the photograph's natural proportions. Its padding is in `.portrait-window` in `site/layout.css`.
 
