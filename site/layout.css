@@ -731,3 +731,30 @@ html[data-input="pointer"] :focus { outline: none !important; }
 
 /* Never paint an empty paper while its photograph is downloading/decoding. */
 .collab-paper:not(.is-image-ready) { opacity: 0; }
+
+/* Beyond a standard desktop, fit the entire composition to both screen axes.
+   Keep the established smaller layouts and the print animation transforms. */
+@media (min-width: 2000px) {
+ .horizontal-layout .hero-composition {
+  container-type: size;
+  width: 100%;
+  max-width: calc((100dvh - 235px) * 2.6);
+  margin-inline: auto;
+ }
+ .horizontal-layout .hero h1 { font-size: min(19vw, 18cqw, 44cqh); }
+ .horizontal-layout .hero-composition .photo-deck {
+  width: min(100%, calc(100cqh - 80px));
+  max-width: none;
+  margin: 0;
+  justify-self: center;
+  transform: none;
+ }
+ .horizontal-layout .photo-deck #deck-hint {
+  font-size: clamp(.875rem, 1.7cqh, 1.5rem);
+  top: -2.14em;
+ }
+ .horizontal-layout .photo-deck #deck-hint svg {
+  width: 3.57em;
+  height: 2.5em;
+ }
+}

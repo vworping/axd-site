@@ -29,7 +29,7 @@
     Object.assign(image, { alt: photo.alt, width: photo.width, height: photo.height, draggable: false, decoding: 'async' });
     image.fetchPriority = i === 0 ? 'high' : i === 1 ? 'auto' : 'low';
     const edge = Math.max(photo.width, photo.height);
-    image.sizes = '(max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px';
+    image.sizes = '(min-width: 2000px) min(40vw, 80vh), (max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px';
     image.srcset = `${photo.src.replace('.webp', '-small.webp')} ${Math.round(photo.width * 640 / edge)}w, ${photo.src.replace('.webp', '-medium.webp')} ${Math.round(photo.width * 960 / edge)}w, ${photo.src}?v=8 ${photo.width}w`;
     image.src = `${photo.src}?v=8`;
     const footer = document.createElement('span');
