@@ -12,6 +12,7 @@ A photography portfolio built around a stack of prints, measured color palettes,
 
 - Five hero photographs with palettes from **Perceptual Palette Drift**.
 - Project previews, complete stories, photo galleries, and expanded images.
+- [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
 - A palette-to-brackets intro and a spelling name animation, with reduced-motion and pause support.
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
 - Clean web images with watermarked copies available through **Take a copy**.
@@ -25,6 +26,7 @@ Plain HTML, CSS, and JavaScript. No framework or package installation is require
 | Project dates, descriptions, collaborators, photos, and links | [`site/assets/data/projects.js`](site/assets/data/projects.js) |
 | Hero photos and measured palettes | [`site/assets/data/photographs.js`](site/assets/data/photographs.js) |
 | About text, portrait, contact links, background | [`site/index.html`](site/index.html) |
+| [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
 | Layout, spacing, responsive overrides | [`site/layout.css`](site/layout.css) |
 | Fonts, base styles, core visual treatment | [`site/styles.css`](site/styles.css) |
 
@@ -57,6 +59,7 @@ site/                  Editable website source
   assets/data/         Project stories and hero photographs
   assets/fonts/        Local fonts and their licenses
   assets/images/       Optimized web photographs and logo assets
+  pet-preview/         Saved interactive OS preview for the [pet.] page
   dist/                Generated public output; ignored by Git
 docs/                  Editing, deployment, and palette provenance
 wrangler.jsonc         Existing Cloudflare Worker + build configuration

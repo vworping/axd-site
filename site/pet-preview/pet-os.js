@@ -17,12 +17,12 @@ const header=()=>{
 function page(){
  let h='';
  if(m.page==='home'){
-  h=title('ANDRE<br>WEISS.',54,141,650,104,'home-name')+txt('Photographer × researcher',54,374,650,28,'muted');
+  h=title('ANDRE<br>WEISS.',54,141,650,104,'home-name')+txt('Photographer x researcher',54,374,650,28,'muted');
   h+=`<button class="el greeting-link" style="${pos(562,183,420,214)}" data-action="hello" aria-label="Open Hello"><span class="greeting-brackets">[<span class="greeting-word">hello</span>]</span></button>`;
   h+=`<div class="el building-heading" style="${pos(32,453,960,24)}"><span>CURRENTLY BUILDING</span><i></i></div>`+btn('[pet.]',32,491,296,72,'pet')+btn('ATLA',344,491,296,72,'atla')+btn('Constellation',656,491,336,72,'palette');
  }else if(m.page==='pet'){
   h=title('[pet.]',32,144,586,192,'pet-wordmark')+txt('A wearable introduction.',40,394,578,36,'muted')+box(650,110,342,460)+title('Inside [pet.]',674,139,294,32)+box(674,193,294,1,'rule');
-  h+=txt('DISPLAY + BRAIN',674,210,294,18,'','var(--green)')+txt('5-inch Waveshare touch<br>ESP32-S3 / 1024 × 600',674,241,294,24,'hardware-lines')+box(674,316,294,1,'rule');
+  h+=txt('DISPLAY + BRAIN',674,210,294,18,'','var(--green)')+txt('5-inch Waveshare touch<br>ESP32-S3 / 1024 x 600',674,241,294,24,'hardware-lines')+box(674,316,294,1,'rule');
   h+=txt('NFC / RFID',674,326,294,18,'','var(--green)')+txt('NULLLAB RC522 / I2C<br>13.56 MHz card reader',674,357,294,24,'hardware-lines')+box(674,432,294,1,'rule');
   h+=txt('POWER',674,442,294,18,'','var(--green)')+txt('3.7V / 1000mAh LiPo<br>Rechargeable battery',674,473,294,24,'hardware-lines')+btn('Open Hello ›',40,494,286,72,'hello',true);
  }else if(m.page==='atla'){

@@ -4,9 +4,9 @@
 
 ## Interactive OS
 
-`site/pet-preview/` is a public snapshot of PET's `design/pet-badge-concept.html`, `pet-os.css`, `pet-os.js`, and required `design/assets`, updated October 7, 2026. The preview is the same browser OS used during development, including the animated greeting, settings, Hello simulation, and Constellation inspection. It does not create live introductions or write NFC cards. The QR is a labeled placeholder.
+`site/pet-preview/` is a public snapshot of PET's `design/pet-badge-concept.html`, `pet-os.css`, `pet-os.js`, and required `design/assets`, updated October 8, 2026. The preview is the same browser OS used during development, including the animated greeting, settings, Hello simulation, and Constellation inspection. It does not create live introductions or write NFC cards. The QR is a labeled placeholder.
 
-The portfolio adapter (`portfolio.css` and `portfolio.js`) removes redundant preview framing, reports the content height to the parent, shares the motion control, and adds photo exports. The OS script comes directly from PET, including its optional host motion event and support for nested photo-saving controls. Local source paths are removed from the public Constellation data. Font licenses accompany the preview fonts. The simulation subtitle sits under the portfolio's OS heading; the inline event buttons remain below the screen.
+The portfolio adapter (`portfolio.css` and `portfolio.js`) removes redundant preview framing, reports the content height to the parent, shares the single page-level motion control (the standalone preview retains its own button), and adds photo exports. The OS script comes directly from PET, including its optional host motion event and support for nested photo-saving controls. Local source paths are removed from the public Constellation data. Font licenses accompany the preview fonts. The simulation subtitle sits under the portfolio's OS heading; the inline event buttons remain below the screen.
 
 ### Updating the OS
 
@@ -17,6 +17,8 @@ The portfolio adapter (`portfolio.css` and `portfolio.js`) removes redundant pre
 The sync validates source and integration files before writing, removes local provenance paths, copies font licenses, and records source hashes in `pet-preview/source-manifest.json`. Normal portfolio builds continue to use the saved snapshot without needing the PET checkout. Do not edit generated `pet-preview/pet-os.js` or `pet-os.css` directly; the next sync replaces them.
 
 The build copies and hashes the preview's scripts/styles. The Worker and static headers allow same-origin framing only for the preview document; the rest of the site retains its existing framing protection.
+
+The October 8 sync was reviewed against `firmware/main/pet_ui.c` and `pet_constellation.c`: home, greeting timing, Hello states, settings, and Constellation layouts. Browser copy now uses the same `x` text as the device. The browser remains a simulation of the firmware UI, not compiled firmware; radio, phone, and card events are simulated.
 
 ## Enclosure deck and viewers
 
@@ -32,4 +34,6 @@ The Making it paragraph links the Waveshare display (`B0DD7N19FT`), NULLLAB RC52
 
 ## Validation
 
-Local build and JavaScript syntax checks; Worker framing-policy checks; browser checks of deck switching, viewer opening/closing, watermarked image export, Hello through guest arrival, Constellation photo save options, and mobile embed sizing. Nothing published or pushed. The separate Constellation experience update remains deferred.
+Local build and JavaScript syntax checks; Worker framing-policy checks; browser checks of deck switching, viewer opening/closing, watermarked image export, Hello through guest arrival, Constellation photo save options, and mobile embed sizing. The page is published through the portfolio’s main-branch deployment. The separate Constellation experience update remains deferred.
+
+October 8 update: verified one visible page-level motion toggle, pause/resume, and Hello through guest arrival in the browser; checked all preview manifest hashes and byte equality with the development CSS/JS. Native UI, protocol, socket, and certificate-name tests passed using the local LVGL 8.3.11 copy. The separate TLS test could not build because the temporary SDK Mbed TLS headers were missing. Removed six superseded OS screenshots, their greeting font, and unused gallery CSS. No device was flashed.

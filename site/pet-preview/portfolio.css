@@ -6,6 +6,7 @@ body { padding: 0; background: #bec9d7; --paper: #f8f7f3; }
 .preview-foot { color: #445161; margin: 14px 2px 0; }
 .preview-foot > span { display: none; }
 .controls { margin-top: 8px; }
+.portfolio-embedded .controls [data-action="motion"] { display: none; }
 .controls button { min-height: 44px; border-color: #8d9baa; }
 dialog { border: 0; color: #1b222b; }
 dialog::backdrop { background: #0b1118d9; }
