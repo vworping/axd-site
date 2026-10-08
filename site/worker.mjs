@@ -1,4 +1,5 @@
 import securityHeaders from './.generated/security-headers.json' with { type: 'json' };
+import previewHeaders from './.generated/preview-security-headers.json' with { type: 'json' };
 
 // Enforce encryption before serving any public asset. Local HTTP previews work.
 export default {
@@ -10,7 +11,8 @@ export default {
     }
     const asset = await env.ASSETS.fetch(request);
     const response = new Response(asset.body, asset);
-    for (const [name, value] of Object.entries(securityHeaders)) response.headers.set(name, value);
+    const headers = ['/pet-preview/', '/pet-preview/index.html'].includes(url.pathname) ? previewHeaders : securityHeaders;
+    for (const [name, value] of Object.entries(headers)) response.headers.set(name, value);
     return response;
   },
 };

@@ -76,3 +76,7 @@ git diff --check
 ```
 
 A build alone does not publish. Cloudflare deploys when a commit is pushed to `main`.
+
+## Standalone experience pages
+
+PET’s first-person build story is in `site/pet.html`, styled by `site/experience.css` and linked from the Work chapter. See [PET page notes](PET-EXPERIENCE.md) for image sources, current status, and the next photography update. Add new standalone pages to the copy list and `pages` array in `site/build.mjs` so they receive metadata processing, asset hashes, and sitemap entries.

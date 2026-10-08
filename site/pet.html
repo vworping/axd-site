@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#bec9d7">
+  <title>Building PET — Andre Weiss</title>
+  <meta name="description" content="PET, a wearable introduction. The device, its screens, and my first time building with ESP.">
+  <link rel="canonical" href="https://mindofaxd.com/pet.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Building PET — Andre Weiss">
+  <meta property="og:description" content="A wearable introduction. The device, the screens, and the build.">
+  <meta property="og:url" content="https://mindofaxd.com/pet.html">
+  <meta property="og:image" content="https://mindofaxd.com/assets/images/pet/enclosure-04c.webp">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="764">
+  <meta property="og:image:alt" content="Front and back CAD views of PET’s black enclosure.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="assets/images/favicon-axd.png">
+  <link rel="stylesheet" href="experience.css">
+  <script src="dialog-motion.js" defer></script>
+  <script src="image-downloads.js" defer></script>
+  <script src="pet-experience.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#story">Skip to the story</a>
+  <header class="experience-header wrap">
+    <a class="wordmark" href="./" aria-label="Mind of AXD — home">
+        <span class="mark-word">AXD<span class="brand-dot">.</span></span>
+        <svg class="mark-brackets" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><linearGradient id="brand-bracket-left" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#c24669"/><stop offset="12.5%" stop-color="#aa691e"/><stop offset="25.0%" stop-color="#387c62"/><stop offset="37.5%" stop-color="#4271c2"/><stop offset="50.0%" stop-color="#945ab8"/><stop offset="62.5%" stop-color="#4271c2"/><stop offset="75.0%" stop-color="#387c62"/><stop offset="87.5%" stop-color="#aa691e"/><stop offset="100.0%" stop-color="#c24669"/></linearGradient><linearGradient id="brand-bracket-right" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#c24669"/><stop offset="12.5%" stop-color="#aa691e"/><stop offset="25.0%" stop-color="#387c62"/><stop offset="37.5%" stop-color="#4271c2"/><stop offset="50.0%" stop-color="#945ab8"/><stop offset="62.5%" stop-color="#4271c2"/><stop offset="75.0%" stop-color="#387c62"/><stop offset="87.5%" stop-color="#aa691e"/><stop offset="100.0%" stop-color="#c24669"/></linearGradient></defs><g fill="none" stroke-width="8" stroke-linejoin="miter"><path d="M 20 6 L 7 6 L 7 54 L 20 54" stroke="url(#brand-bracket-left)"/><path d="M 140 6 L 153 6 L 153 54 L 140 54" stroke="url(#brand-bracket-right)"/></g></svg>
+      </a>
+    <a class="back-link" href="./#work">↖ Back to the work</a>
+  </header>
+  <main id="story" class="wrap">
+    <section class="device-hero" aria-labelledby="pet-title">
+      <div class="intro-copy">
+        <p class="eyebrow">2026 · IN PROGRESS</p>
+        <h1 id="pet-title">[pet.]</h1>
+        <p class="lead">personal engagement tool</p>
+        <p>I wanted a way to show people what I’m working on while we’re talking. PET puts my projects on a small touch display and lets someone say hello from their phone.</p>
+      </div>
+      <div class="device-gallery" aria-label="Enclosure studies">
+        <figure class="device-print print-early">
+          <div class="paper">
+            <button type="button" class="image-button" data-gallery="device" data-title="The first frame" data-description="An early CAD study: a light shell around the display, with a replaceable clip mount on the back. This is a render, before physical fit checks." aria-label="Enlarge the early enclosure render" disabled>
+              <img src="assets/images/pet/enclosure-01.webp" width="1600" height="853" alt="Early PET enclosure study, showing a light frame from the front and back." fetchpriority="high">
+            </button>
+            <figcaption><span>01 / FIRST FRAME</span><span aria-hidden="true">↗</span></figcaption>
+          </div>
+        </figure>
+        <figure class="device-print print-current">
+          <div class="paper">
+            <button type="button" class="image-button" data-gallery="device" data-title="The next enclosure" data-description="FIELD 04C, a later CAD study in black PLA with revised port openings, captive buttons, a cord loop, and rear clip mounts. The screen in this render is an earlier UI mockup; the current OS is below." aria-label="Enlarge the later enclosure render" disabled>
+              <img src="assets/images/pet/enclosure-04c.webp" width="1600" height="764" alt="Black PET enclosure CAD study, showing the front, rear, and side openings." fetchpriority="high">
+            </button>
+            <figcaption><span>02 / FIELD 04C</span><span aria-hidden="true">↗</span></figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="interaction" aria-labelledby="interaction-title">
+      <h2 id="interaction-title">The interaction</h2>
+      <ol class="hello-steps">
+        <li><span>01</span><h3>Start on PET.</h3><p>Tap hello. Scan the QR code with your phone.</p></li>
+        <li><span>02</span><h3>Say it back.</h3><p>Share your name and what we’re talking about. Your hello appears on the badge.</p></li>
+        <li><span>03</span><h3>Carry it forward.</h3><p>An NFC card opens my profile with the topic you agreed to share—a reminder of how we met.</p></li>
+      </ol>
+    </section>
+
+    <section class="os-section" aria-labelledby="os-title">
+      <div class="section-heading"><div><h2 id="os-title">The OS</h2><p class="os-note">Preview controls · simulated radio and phone events</p></div><button type="button" id="motion-toggle" aria-pressed="false" hidden>Pause motion</button></div>
+      <iframe id="os-preview" src="pet-preview/index.html" title="Interactive PET OS preview" loading="lazy"></iframe>
+    </section>
+
+    <section class="build" aria-labelledby="build-title">
+      <h2 id="build-title">Making it</h2>
+      <div><p>This is my first time working with ESP. I’m using AI coding help to figure out the firmware, HTML/CSS to try out the screens, and CAD for the enclosure. Along the way, I’ve been wiring the NFC reader, testing card links on my phone, and revising the case.</p>
+      <p class="parts">Built around a <a href="https://www.amazon.com/dp/B0DD7N19FT" target="_blank" rel="noopener noreferrer">Waveshare touch display ↗</a>, a <a href="https://www.amazon.com/dp/B0H8CGVYVV" target="_blank" rel="noopener noreferrer">NULLLAB NFC reader ↗</a>, and a <a href="https://www.amazon.com/dp/B0FT3C1WRP" target="_blank" rel="noopener noreferrer">3.7 V LiPo battery ↗</a>.</p></div>
+    </section>
+  </main>
+  <footer class="experience-footer wrap"><a class="back-link" href="./#work">← Back to the portfolio</a><p>[pet.]</p></footer>
+  <dialog id="image-viewer" tabindex="-1" aria-labelledby="viewer-title" aria-describedby="viewer-description">
+    <div class="viewer-toolbar"><h2 id="viewer-title"></h2><button type="button" id="close-viewer" autofocus>Close <span aria-hidden="true">×</span></button></div>
+    <div class="viewer-stage"><img id="viewer-image" alt=""></div>
+    <div class="viewer-bottom"><p id="viewer-description"></p><div class="viewer-nav"><button type="button" class="save-options" data-save-image="viewer-image">Save / copy</button><button type="button" id="previous-image" aria-label="Previous image">←</button><span id="viewer-count" aria-live="polite"></span><button type="button" id="next-image" aria-label="Next image">→</button></div></div>
+  </dialog>
+  <dialog class="image-save-dialog" id="image-save-dialog" aria-labelledby="image-save-title" tabindex="-1">
+    <div class="image-save-top"><h2 id="image-save-title">Take a copy.</h2><button id="image-save-dismiss" type="button" aria-label="Dismiss image options">×</button></div>
+    <p>Saved and copied images include an AXD watermark.</p>
+    <div class="image-save-actions"><button type="button" id="image-save">Save image ↧</button><button type="button" id="image-copy">Copy image</button></div>
+    <p id="image-save-status" role="status" aria-live="polite"></p>
+  </dialog>
+</body>
+</html>

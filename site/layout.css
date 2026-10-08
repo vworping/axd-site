@@ -758,3 +758,20 @@ html[data-input="pointer"] :focus { outline: none !important; }
   height: 2.5em;
  }
 }
+
+/* Linked field notes sit beside the existing Constellation invitation. */
+.project-notes { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; border-top: 1px solid var(--line); padding-top: 16px; }
+.work-section .project-notes .constellation-note { display: block; padding: 0; border: 0; }
+.work-section .project-notes .constellation-note h3 { font-size: clamp(1rem, 1.45vw, 1.5rem); line-height: 1.2; }
+.work-section .project-notes .constellation-note p { margin-top: 6px; font-size: .8125rem; line-height: 1.5; }
+.pet-note { display: flex; gap: 16px; align-items: flex-start; }
+.pet-note > span { display: grid; gap: 6px; }
+.pet-note strong { font-weight: 400; font-size: clamp(1rem, 1.45vw, 1.5rem); line-height: 1.2; letter-spacing: -.035em; }
+.pet-note > span > span { font-size: .8125rem; line-height: 1.5; color: #505157; }
+.pet-note:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 700px) {
+ .project-notes { grid-template-columns: 1fr; gap: 12px; padding-top: 12px; }
+ .pet-note { border-top: 1px solid var(--line); padding-top: 10px; gap: 12px; }
+ .pet-note > span { gap: 3px; }
+ .pet-note > span > span { font-size: .75rem; }
+}

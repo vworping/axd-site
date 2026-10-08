@@ -59,7 +59,7 @@
 
   function findImage(target) {
     if (!(target instanceof Element)) return null;
-    return target.closest('img') || target.closest('.deck-print,.collab-print,.gallery-expand')?.querySelector('img');
+    return target.closest('img') || target.closest('.deck-print,.collab-print,.gallery-expand,.image-button,.palette-card,.detail-print')?.querySelector('img');
   }
 
   function openOptions(image) {
@@ -106,9 +106,17 @@
       status.textContent = 'Copy is unavailable here. Use Save image instead.';
     } finally { busy(false); }
   });
-  document.getElementById('image-save-dismiss').addEventListener('click', () => dialog.close());
+  document.getElementById('image-save-dismiss').addEventListener('click', () => window.AXDDialogs.close(dialog));
+  dialog.addEventListener('cancel', event => { event.preventDefault(); window.AXDDialogs.close(dialog); });
   dialog.addEventListener('close', () => returnFocus?.focus({ preventScroll: true }));
-  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', event => {
+    const rect = dialog.getBoundingClientRect();
+    if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) window.AXDDialogs.close(dialog);
+  });
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-save-image]');
+    if (trigger) openOptions(document.getElementById(trigger.dataset.saveImage));
+  });
   document.addEventListener('contextmenu', event => {
     const image = findImage(event.target);
     if (!image) return;

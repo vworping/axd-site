@@ -38,15 +38,21 @@
     const hash = location.hash === '#contact' ? '#about' : location.hash;
     return Math.max(0, panels.findIndex((panel) => `#${panel.dataset.section}` === hash));
   };
-  goTo(fromHash(), true);
+  const initialPosition = fromHash();
+  goTo(initialPosition, true);
+  // Settle the requested chapter after initial fragment scrolling and scroll snap.
+  // This also lets standalone project pages return directly to the Work chapter.
+  window.addEventListener('load', () => requestAnimationFrame(() => goTo(initialPosition, true)), { once: true });
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href^="#"]');
     if (!link || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
     const position = panels.findIndex((panel) => link.hash === `#${panel.dataset.section}`);
     if (position < 0) return;
     event.preventDefault();
-    goTo(position, false, true);
-    if (link.classList.contains('skip-link')) {
+    const isSkipLink = link.classList.contains('skip-link');
+    // Finish a keyboard skip before transferring focus into the destination.
+    goTo(position, isSkipLink, true);
+    if (isSkipLink) {
       panels[position].inert = false;
       panels[position].tabIndex = -1;
       panels[position].focus({ preventScroll: true });
