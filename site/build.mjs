@@ -4,13 +4,13 @@ const root = new URL('./', import.meta.url);
 const output = new URL('./dist/', root);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const file of ['index.html', 'pet.html', 'pet-preview', 'experience.css', 'pet-experience.js', 'favicon.ico', 'styles.css', 'layout.css', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
+for (const file of ['index.html', 'constellation', 'pet.html', 'pet-preview', 'experience.css', 'pet-experience.js', 'favicon.ico', 'styles.css', 'layout.css', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
   await cp(new URL(file, root), new URL(file, output), { recursive: true, filter: path => !path.endsWith('/.DS_Store') });
 }
 // Source uses relative preview images so local phone sharing stays on the LAN.
 // Published cards use an absolute URL, without baking a local IP into the site.
 const siteURL = new URL(process.env.SITE_URL || 'https://mindofaxd.com/');
-const pages = ['index.html', 'pet.html', 'pet-preview/index.html'];
+const pages = ['index.html', 'constellation/index.html', 'pet.html', 'pet-preview/index.html'];
 // A new filename refreshes favicon caches when the logo changes.
 const faviconPath = 'assets/images/favicon-axd.png';
 const favicon = await readFile(new URL(faviconPath, root));
@@ -34,7 +34,7 @@ for (const page of pages) {
     `content="${new URL('assets/images/share-logo.png?v=13', siteURL).href}"`));
 }
 await writeFile(new URL('robots.txt', output), `User-agent: *\nAllow: /\nSitemap: ${new URL('sitemap.xml', siteURL).href}\n`);
-await writeFile(new URL('sitemap.xml', output), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page => `<url><loc>${new URL(page === 'index.html' ? './' : page, siteURL).href}</loc></url>`).join('')}</urlset>\n`);
+await writeFile(new URL('sitemap.xml', output), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(page => `<url><loc>${new URL(page === 'index.html' ? './' : page === 'constellation/index.html' ? 'constellation/' : page, siteURL).href}</loc></url>`).join('')}</urlset>\n`);
 console.log('Static portfolio built in site/dist.');
 
 // Hash the small inline intro bootstrap; do not allow arbitrary inline scripts.
