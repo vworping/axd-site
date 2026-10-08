@@ -394,6 +394,7 @@ document.addEventListener('error', event => {
   if (/\.jpg$/i.test(src)) img.src = src.endsWith('.JPG') ? src.slice(0, -4) + '.jpg' : src.slice(0, -4) + '.JPG';
 }, true);
 let previewRequest = 0;
+let requestedPreview = previewImage;
 let selectedImage = null;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let motionPaused = reducedMotion.matches;
@@ -416,6 +417,7 @@ function revealPhoto(image) {
 }
 async function updatePreview(image) {
   if (!byImage.has(image)) return;
+  requestedPreview = image;
   const request = ++previewRequest;
   const node = byImage.get(image);
   const preload = new Image();
@@ -531,7 +533,7 @@ function draw() {
   resetView();
 }
 function inspect(image) {
-  if (previewImage !== image) updatePreview(image);
+  if (requestedPreview !== image) updatePreview(image);
   highlight(image);
 }
 function highlight(image) {
