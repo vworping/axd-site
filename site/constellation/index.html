@@ -240,17 +240,24 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .constellation-hero { min-height: 400px; }
 .palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; height: clamp(350px, 34vw, 425px); justify-self: end; margin-left: -110px; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
-#palette-orbit path { stroke: none; cursor: pointer; outline: none; }
-#palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 2; stroke-dasharray: 3 3; }
+#palette-orbit path { stroke: none; cursor: pointer; outline: none; transition: opacity .2s, transform .24s ease, filter .24s; }
+#palette-orbit path[data-muted="true"] { opacity: .26; }
+#palette-orbit path[data-selected="true"] { opacity: 1; stroke: var(--paper); stroke-width: 1.8; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 4px 4px #19232725); }
+.palette-selection { position: absolute; left: 50%; top: calc(50% - 12.5px); transform: translate(-50%, -50%); display: grid; gap: 6px; width: 145px; text-align: center; pointer-events: none; }
+.palette-selection[hidden] { display: none; }
+.selected-color-index { font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
+#selected-color-hex { font-size: 1rem; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: .015em; }
+.selected-color-relation { font-size: .625rem; color: var(--muted); line-height: 1.35; }
+#palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 1.8; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .palette-peek { position: absolute; z-index: 2; left: 50%; bottom: -9px; transform: translateX(-50%); width: min(330px, 88%); }
 .palette-peek[hidden] { display: none; }
-.palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: start; }
-.palette-mini { min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; }
+.palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: end; justify-items: center; }
+.palette-mini { width: min(100%, calc(110px * var(--mini-ratio) + 10px)); min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
 .palette-mini:nth-child(3) { transform: rotate(-2deg); }
 .palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
-.palette-mini-image { display: block; height: 82px; overflow: hidden; }
-.palette-mini-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.palette-mini-image { display: block; overflow: hidden; }
+.palette-mini-image img { display: block; width: 100%; height: auto; object-fit: contain; object-position: center; }
 .palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
 .palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
 .intro-copy .lead { max-width: 360px; font-size: clamp(1.125rem, 1.8vw, 1.5rem); line-height: 1.45; }
@@ -323,7 +330,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
   .constellation-hero { min-height: 0; gap: 8px; }
   .palette-sculpture { width: 100%; max-width: 430px; margin-left: 0; height: clamp(310px, 86vw, 365px); justify-self: center; }
   .palette-peek { bottom: -3px; }
-  .palette-mini-image { height: 72px; }
+  .palette-mini { width: min(100%, calc(100px * var(--mini-ratio) + 10px)); }
+  .palette-selection { width: 118px; }
+  #selected-color-hex { font-size: .875rem; }
+  .selected-color-relation { font-size: .5625rem; }
   #focus-dialog { width: calc(100% - 24px); }
   #focus-dialog .dialog-bar { background: #b4c0cc; }
   .focus-content { grid-template-columns: 1fr; gap: 30px; padding-top: 26px; }
@@ -359,6 +369,11 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
         <div class="palette-sculpture">
           <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <div class="palette-selection" id="palette-selection" hidden>
+            <span class="selected-color-index" id="selected-color-index"></span>
+            <strong id="selected-color-hex"></strong>
+            <span class="selected-color-relation">Similar colors in<br>these photos ↓</span>
+          </div>
           <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
             <div class="palette-peek-photos" id="palette-photos"></div>
           </div>
@@ -851,12 +866,21 @@ new ResizeObserver(() => draw()).observe(stage);
       path.setAttribute('fill', hex);
       path.setAttribute('aria-label', `Color ${i + 1}, ${hex}. Show photographs with similar colors.`);
       path.setAttribute('aria-pressed', String(pinned && active === i));
-      if (active === i) {
+      const selected = active === i;
+      path.setAttribute('data-selected', String(selected));
+      path.setAttribute('data-muted', String(active >= 0 && !selected));
+      const middle = (angle + end) / 2;
+      const offset = selected ? 12 : 0;
+      path.setAttribute('style', `transform: translate(${(Math.cos(middle) * offset).toFixed(2)}px, ${(Math.sin(middle) * offset).toFixed(2)}px)`);
+      if (selected) {
+        $('selected-color-index').textContent = `COLOR ${String(i + 1).padStart(2, '0')}`;
+        $('selected-color-hex').textContent = hex.toUpperCase();
         showMatches(hex);
       }
       angle = end;
     });
     tag.hidden = active < 0;
+    $('palette-selection').hidden = active < 0;
   }
   function showMatches(hex) {
     if (shownColor === hex) return;
@@ -868,7 +892,7 @@ new ResizeObserver(() => draw()).observe(stage);
       return { node, ...closest };
     }).sort((a, b) => a.distance - b.distance).slice(0, 3);
     tag.setAttribute('aria-label', `Photographs with colors similar to ${hex}`);
-    $('palette-photos').innerHTML = matches.map(({ node, hex: match }) => `<button type="button" class="palette-mini" data-image="${escapeHTML(node.image)}" aria-label="Explore photograph ${escapeHTML(node.id)} with a similar color"><span class="palette-mini-image">${imageHTML(node)}</span><span class="palette-mini-swatch" style="background:${match}" aria-label="Matching color ${match}"></span><span class="palette-mini-caption">${escapeHTML(node.id)} / ${node.year}</span></button>`).join('');
+    $('palette-photos').innerHTML = matches.map(({ node, hex: match }) => `<button type="button" class="palette-mini" style="--mini-ratio:${node.width / node.height}" data-image="${escapeHTML(node.image)}" aria-label="Explore photograph ${escapeHTML(node.id)} with a similar color"><span class="palette-mini-image">${imageHTML(node)}</span><span class="palette-mini-swatch" style="background:${match}" aria-label="Matching color ${match}"></span><span class="palette-mini-caption">${escapeHTML(node.id)} / ${node.year}</span></button>`).join('');
   }
   $('palette-photos').addEventListener('click', event => {
     const card = event.target.closest('[data-image]');
