@@ -238,15 +238,12 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .drifting { animation: none; transform: rotate(-2deg); } }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
-.palette-sculpture { position: relative; width: calc(100% + 65px); max-width: 610px; height: clamp(330px, 32vw, 400px); justify-self: end; margin-left: -65px; }
-#palette-orbit { display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
+.palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; height: clamp(350px, 34vw, 425px); justify-self: end; margin-left: -110px; }
+#palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
 #palette-orbit path { stroke: none; cursor: pointer; outline: none; }
 #palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 2; stroke-dasharray: 3 3; }
 .palette-peek { position: absolute; z-index: 2; left: 50%; bottom: -9px; transform: translateX(-50%); width: min(330px, 88%); }
 .palette-peek[hidden] { display: none; }
-.palette-peek-heading { display: flex; align-items: center; justify-content: space-between; margin: 0 3px 10px; padding: 5px 8px; background: var(--ground); font-size: .6875rem; }
-.peek-color { display: inline-flex; align-items: center; gap: 6px; font-size: .5625rem; color: var(--muted); }
-.peek-color::before { content: ''; width: 10px; height: 10px; background: var(--peek-color); border-radius: 50%; }
 .palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: start; }
 .palette-mini { min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
@@ -266,6 +263,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .map-note-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d9baa transparent; padding-right: 10px; }
 .map-note-scroll > p:first-child { margin-top: 0; }
 .map-note-scroll:focus-visible { outline: 1px solid var(--muted); outline-offset: 3px; }
+.map-topic { border-top: 1px solid #8d9baa66; margin-top: 12px; }
+.map-topic summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; font-size: .75rem; list-style: none; }
+.map-topic summary::-webkit-details-marker { display: none; }
+.map-topic summary:focus-visible { outline: 1px solid var(--muted); outline-offset: -1px; }
+.topic-toggle::after { content: '+'; font-size: 1rem; }
+.map-topic[open] .topic-toggle::after { content: '−'; }
+.map-topic > p:first-of-type { margin-top: 0; }
+.map-topic[open] { padding-bottom: 8px; }
 .algorithm-comparison { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: .6875rem; font-variant-numeric: tabular-nums; }
 .algorithm-comparison caption { text-align: left; margin-bottom: 9px; }
 .algorithm-comparison th { font-weight: 400; text-align: left; }
@@ -301,6 +306,9 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .print-meta { display: grid; gap: 4px; padding-block: 7px; }
 .match-value { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .neighbor-card .rank { font-size: .5625rem; color: var(--muted); }
+@media (min-width: 601px) and (max-width: 800px) {
+  .palette-sculpture { width: calc(100% + 60px); margin-left: -60px; }
+}
 @media (max-width: 800px) {
   #focus-dialog { padding: 0 18px 22px; }
   .focus-content { gap: 25px; padding-inline: 5px; }
@@ -350,9 +358,8 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
           <a class="explore-link" href="#explorer">Explore the map ↓</a>
         </div>
         <div class="palette-sculpture">
-          <svg id="palette-orbit" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
-          <div class="palette-peek" id="palette-tag" hidden>
-            <div class="palette-peek-heading"><span>Similar colors</span><span class="peek-color" id="palette-color"></span></div>
+          <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
             <div class="palette-peek-photos" id="palette-photos"></div>
           </div>
         </div>
@@ -371,14 +378,23 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
               <h3 id="map-note-title">Reading the map</h3>
               <div class="map-note-scroll" id="map-explanation" tabindex="0" role="region" aria-label="About the selected map algorithm">
                 <p>Each dot is a photograph. Open one to see its three closest palettes.</p>
-                <p id="algorithm-description"></p>
-                <p><strong>Transport</strong> moves each color’s share to colors in the other palette, allowing split matches. It captures changes in both color and proportion.</p>
-                <p><strong>Matched weighted</strong> pairs colors one-to-one by their closest overall color fit, then weights their differences by each pair’s average share. It emphasizes dominant color matches, but identical colors in different proportions can still score zero.</p>
-                <p>Both use CIELAB color distance. Lower is closer.</p>
-                <p id="algorithm-result"></p>
-                <table class="algorithm-comparison"><caption>Closest neighbors kept in this map</caption><thead><tr><th scope="col">Layout</th><th scope="col">Top 3</th><th scope="col">Top 10</th></tr></thead><tbody id="algorithm-scores"></tbody></table>
-                <p>Measured on these 150 photographs with the selected color comparison. Matches always use the original color distances.</p>
-                <a class="method-link" id="algorithm-source">How the method works ↗</a>
+                <details class="map-topic">
+                  <summary><span>Layout · <span id="algorithm-name">t-SNE</span></span><span class="topic-toggle" aria-hidden="true"></span></summary>
+                  <p id="algorithm-description"></p>
+                  <a class="method-link" id="algorithm-source">How the method works ↗</a>
+                </details>
+                <details class="map-topic">
+                  <summary><span>Color comparison</span><span class="topic-toggle" aria-hidden="true"></span></summary>
+                  <p><strong>Transport</strong> moves each color’s share to colors in the other palette, allowing split matches. It captures changes in both color and proportion.</p>
+                  <p><strong>Matched weighted</strong> pairs colors one-to-one by their closest overall color fit, then weights their differences by each pair’s average share. It emphasizes dominant color matches, but identical colors in different proportions can still score zero.</p>
+                  <p>Both use CIELAB color distance. Lower is closer.</p>
+                </details>
+                <details class="map-topic">
+                  <summary><span>Layout accuracy</span><span class="topic-toggle" aria-hidden="true"></span></summary>
+                  <p id="algorithm-result"></p>
+                  <table class="algorithm-comparison"><caption>Closest neighbors kept in this map</caption><thead><tr><th scope="col">Layout</th><th scope="col">Top 3</th><th scope="col">Top 10</th></tr></thead><tbody id="algorithm-scores"></tbody></table>
+                  <p>Measured on these 150 photographs with the selected color comparison. Matches always use the original color distances.</p>
+                </details>
               </div>
             </section>
           </aside>
@@ -659,6 +675,7 @@ function updateMapExplanation() {
   };
   const scores = DATA.projection.metrics[metric()];
   const [name, description, url] = descriptions[layout()];
+  $('algorithm-name').textContent = name;
   $('algorithm-description').innerHTML = `<strong>${name}</strong> ${description}`;
   const ranking = Object.keys(scores).sort((a, b) => scores[b].neighbor_recall_3 - scores[a].neighbor_recall_3);
   const order = ranking.indexOf(layout());
@@ -800,6 +817,7 @@ new ResizeObserver(() => draw()).observe(stage);
   const mix = (a, b, t) => a + (b - a) * t;
   let elapsed = 0, last = 0, frame = 0, visible = true, paused = motionPaused;
   let active = -1, pinned = false, stretch = 0, shownColor = '';
+  let previewOpen = false, suppressHover = false;
   const colorIndex = nodes.map(node => ({ node, colors: node.palette.map(color => ({ hex: color.hex, rgb: rgb(color.hex) })) }));
 
   function radius(theta, form, time) {
@@ -849,19 +867,21 @@ new ResizeObserver(() => draw()).observe(stage);
       const closest = colors.map(color => ({ ...color, distance: color.rgb.reduce((sum, value, c) => sum + (value - target[c]) ** 2, 0) })).sort((a, b) => a.distance - b.distance)[0];
       return { node, ...closest };
     }).sort((a, b) => a.distance - b.distance).slice(0, 3);
-    $('palette-color').textContent = hex.toUpperCase();
-    tag.style.setProperty('--peek-color', hex);
+    tag.setAttribute('aria-label', `Photographs with colors similar to ${hex}`);
     $('palette-photos').innerHTML = matches.map(({ node, hex: match }) => `<button type="button" class="palette-mini" data-image="${escapeHTML(node.image)}" aria-label="Explore photograph ${escapeHTML(node.id)} with a similar color"><span class="palette-mini-image">${imageHTML(node)}</span><span class="palette-mini-swatch" style="background:${match}" aria-label="Matching color ${match}"></span><span class="palette-mini-caption">${escapeHTML(node.id)} / ${node.year}</span></button>`).join('');
   }
   $('palette-photos').addEventListener('click', event => {
     const card = event.target.closest('[data-image]');
     if (!card) return;
-    // Return to the visible color control when the photograph dialog closes.
     const image = card.dataset.image;
-    paths[Math.max(0, active)].focus();
+    // Hold the exact palette through the dialog, and return focus to the wheel
+    // without selecting a color again when the dialog restores focus.
+    previewOpen = true;
+    sync();
+    art.focus({ preventScroll: true });
     openFocus(image);
   });
-  const running = () => !paused && active < 0 && visible && !document.hidden;
+  const running = () => !paused && !previewOpen && active < 0 && visible && !document.hidden;
   function tick(now) {
     frame = 0;
     if (last) elapsed += Math.min(now - last, 100);
@@ -872,10 +892,10 @@ new ResizeObserver(() => draw()).observe(stage);
     cancelAnimationFrame(frame); frame = 0; last = 0; paint();
     if (running()) frame = requestAnimationFrame(tick);
   }
-  function clear() { active = -1; pinned = false; sync(); }
-  function select(index, pin = false) { active = index; pinned = pin; sync(); }
+  function clear() { if (previewOpen) return; active = -1; pinned = false; sync(); }
+  function select(index, pin = false) { if (previewOpen) return; suppressHover = false; active = index; pinned = pin; sync(); }
   paths.forEach((path, index) => {
-    path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned) select(index); });
+    path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned && !suppressHover) select(index); });
     path.addEventListener('focus', () => select(index));
     path.addEventListener('click', () => pinned && active === index ? clear() : select(index, true));
     path.addEventListener('keydown', event => {
@@ -886,6 +906,20 @@ new ResizeObserver(() => draw()).observe(stage);
         paths[(index + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : 4)) % 5].focus();
       }
     });
+  });
+  $('focus-dialog').addEventListener('close', () => {
+    if (!previewOpen) return;
+    previewOpen = false;
+    suppressHover = true;
+    clear();
+  });
+  // Closing an overlay can emit pointerenter without a deliberate new hover.
+  // Resume inspection only after the pointer moves, or a color is clicked/focused.
+  sculpture.addEventListener('pointermove', event => {
+    if (!suppressHover || previewOpen || event.pointerType === 'touch' || !(event.movementX || event.movementY)) return;
+    suppressHover = false;
+    const index = paths.indexOf(event.target);
+    if (index >= 0) select(index);
   });
   sculpture.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !sculpture.contains(document.activeElement)) clear(); });
   sculpture.addEventListener('focusout', event => { if (!pinned && !sculpture.contains(event.relatedTarget)) clear(); });
