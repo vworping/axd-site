@@ -238,18 +238,29 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .drifting { animation: none; transform: rotate(-2deg); } }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
-.palette-sculpture { position: relative; width: min(100%, 500px); height: clamp(260px, 30vw, 370px); justify-self: center; }
-#palette-orbit { display: block; width: 100%; height: 100%; overflow: visible; }
+.palette-sculpture { position: relative; width: calc(100% + 65px); max-width: 610px; height: clamp(330px, 32vw, 400px); justify-self: end; margin-left: -65px; }
+#palette-orbit { display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
 #palette-orbit path { stroke: none; cursor: pointer; outline: none; }
 #palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 2; stroke-dasharray: 3 3; }
-.palette-tag { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-5deg); display: grid; gap: 5px; padding: 10px 11px; background: var(--paper); border-top: 3px solid var(--tag-color); box-shadow: 0 6px 14px #1923271a; white-space: nowrap; pointer-events: none; text-align: center; font-size: .6875rem; }
-.palette-tag[hidden] { display: none; }
-#palette-color { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.palette-peek { position: absolute; z-index: 2; left: 50%; bottom: -9px; transform: translateX(-50%); width: min(330px, 88%); }
+.palette-peek[hidden] { display: none; }
+.palette-peek-heading { display: flex; align-items: center; justify-content: space-between; margin: 0 3px 10px; padding: 5px 8px; background: var(--ground); font-size: .6875rem; }
+.peek-color { display: inline-flex; align-items: center; gap: 6px; font-size: .5625rem; color: var(--muted); }
+.peek-color::before { content: ''; width: 10px; height: 10px; background: var(--peek-color); border-radius: 50%; }
+.palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: start; }
+.palette-mini { min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; }
+.palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
+.palette-mini:nth-child(3) { transform: rotate(-2deg); }
+.palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
+.palette-mini-image { display: block; height: 82px; overflow: hidden; }
+.palette-mini-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
+.palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
 .intro-copy .lead { max-width: 360px; font-size: clamp(1.125rem, 1.8vw, 1.5rem); line-height: 1.45; }
 .explorer-section { border-top: 1px solid var(--line); }
-.frame-space { height: 390px; }
-.preview-shelf { justify-content: flex-start; }
-.map-note { height: 308px; display: flex; flex-direction: column; position: relative; margin: 24px 8px 0; padding: 21px 20px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
+.frame-space { height: 390px; flex: 0 0 390px; }
+.preview-shelf { justify-content: flex-start; min-height: 0; }
+.map-note { height: 0; min-height: 308px; flex: 1 1 0; display: flex; flex-direction: column; position: relative; margin: 24px 8px 0; padding: 21px 20px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
 .map-note h3 { flex-shrink: 0; font: 400 .9375rem var(--body); margin-bottom: 12px; letter-spacing: -.02em; }
 .map-note p { font-size: .75rem; line-height: 1.65; margin: 10px 0 0; color: var(--muted); }
 .map-note-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d9baa transparent; padding-right: 10px; }
@@ -297,12 +308,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
   .print-caption { font-size: .5625rem; gap: 3px; }
 }
 @media (max-width: 700px) {
-  .map-note { margin: 6px 0 8px; }
-  .frame-space { height: 320px; }
+  .map-note { margin: 6px 0 8px; height: 340px; min-height: 0; flex: none; }
+  .frame-space { height: 320px; flex-basis: 320px; }
 }
 @media (max-width: 600px) {
   .constellation-hero { min-height: 0; gap: 8px; }
-  .palette-sculpture { width: min(100%, 360px); height: clamp(240px, 78vw, 320px); }
+  .palette-sculpture { width: 100%; max-width: 430px; margin-left: 0; height: clamp(310px, 86vw, 365px); justify-self: center; }
+  .palette-peek { bottom: -3px; }
+  .palette-mini-image { height: 72px; }
   #focus-dialog { width: calc(100% - 24px); }
   #focus-dialog .dialog-bar { background: #b4c0cc; }
   .focus-content { grid-template-columns: 1fr; gap: 30px; padding-top: 26px; }
@@ -338,7 +351,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
         <div class="palette-sculpture">
           <svg id="palette-orbit" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
-          <div class="palette-tag" id="palette-tag" hidden><span id="palette-source"></span><span id="palette-color"></span></div>
+          <div class="palette-peek" id="palette-tag" hidden>
+            <div class="palette-peek-heading"><span>Similar colors</span><span class="peek-color" id="palette-color"></span></div>
+            <div class="palette-peek-photos" id="palette-photos"></div>
+          </div>
         </div>
       </section>
       <section class="explorer-section" id="explorer" aria-labelledby="explorer-title">
@@ -783,18 +799,15 @@ new ResizeObserver(() => draw()).observe(stage);
   const smooth = t => t * t * (3 - 2 * t);
   const mix = (a, b, t) => a + (b - a) * t;
   let elapsed = 0, last = 0, frame = 0, visible = true, paused = motionPaused;
-  let active = -1, pinned = false, stretch = 0;
+  let active = -1, pinned = false, stretch = 0, shownColor = '';
+  const colorIndex = nodes.map(node => ({ node, colors: node.palette.map(color => ({ hex: color.hex, rgb: rgb(color.hex) })) }));
 
   function radius(theta, form, time) {
     if (form === 0) return 146 + 17 * Math.sin(theta * 3 + time * .19) + 8 * Math.cos(theta * 5 - time * .13);
-    if (form === 1) return 126 / Math.pow(Math.pow(Math.abs(Math.cos(theta)), 5) + Math.pow(Math.abs(Math.sin(theta)), 5), 1 / 5);
+    if (form === 1) return 143 - 11 * Math.cos(theta * 4); // Rounded cushion, with no straight corners.
     if (form === 2) return 143; // Circle, stretched by the viewport.
-    if (form === 3) {
-      const sector = Math.PI * 2 / 3;
-      const local = ((theta + Math.PI / 2) % sector + sector) % sector - sector / 2;
-      return mix(144, 91 / Math.cos(local), .82); // Soft triangle.
-    }
-    if (form === 4) return 146 + 24 * Math.cos(theta * 4 + time * .12); // Curved, inward-folding sides.
+    if (form === 3) return 142 + 18 * Math.cos(theta * 3 - time * .06); // A smooth three-lobed loop.
+    if (form === 4) return 146 + 16 * Math.cos(theta * 4 + time * .12); // Curved, inward-folding sides.
     return 142 + 25 * Math.sin(theta * 2 - time * .17) + 10 * Math.cos(theta * 3); // An asymmetric loop.
   }
   function paint() {
@@ -802,7 +815,6 @@ new ResizeObserver(() => draw()).observe(stage);
     const blend = smooth(phase % 1), first = sequence[index], next = sequence[(index + 1) % sequence.length];
     const a = first.palette, b = next.palette, time = elapsed / 1000;
     const formPhase = elapsed / 8500, form = Math.floor(formPhase) % 6, morph = smooth(formPhase % 1);
-    const source = blend < .015 ? first.id : blend > .985 ? next.id : `${first.id} → ${next.id}`;
     let angle = -.9 + time * .09;
     paths.forEach((path, i) => {
       const end = angle + mix(a[i].weight, b[i].weight, blend) * Math.PI * 2;
@@ -819,17 +831,36 @@ new ResizeObserver(() => draw()).observe(stage);
       const hex = '#' + from.map((v, c) => Math.round(mix(v, to[c], blend)).toString(16).padStart(2, '0')).join('');
       path.setAttribute('d', `M${outline.join(' L')} Z`);
       path.setAttribute('fill', hex);
-      path.setAttribute('aria-label', `Color ${i + 1}, palette ${source}, ${hex}. Press to hold.`);
+      path.setAttribute('aria-label', `Color ${i + 1}, ${hex}. Show photographs with similar colors.`);
       path.setAttribute('aria-pressed', String(pinned && active === i));
       if (active === i) {
-        $('palette-source').textContent = source;
-        $('palette-color').textContent = `${String(i + 1).padStart(2, '0')} · ${hex.toUpperCase()}`;
-        tag.style.setProperty('--tag-color', hex);
+        showMatches(hex);
       }
       angle = end;
     });
     tag.hidden = active < 0;
   }
+  function showMatches(hex) {
+    if (shownColor === hex) return;
+    shownColor = hex;
+    const target = rgb(hex);
+    // Find one closest swatch per photograph, so every preview is a different image.
+    const matches = colorIndex.map(({ node, colors }) => {
+      const closest = colors.map(color => ({ ...color, distance: color.rgb.reduce((sum, value, c) => sum + (value - target[c]) ** 2, 0) })).sort((a, b) => a.distance - b.distance)[0];
+      return { node, ...closest };
+    }).sort((a, b) => a.distance - b.distance).slice(0, 3);
+    $('palette-color').textContent = hex.toUpperCase();
+    tag.style.setProperty('--peek-color', hex);
+    $('palette-photos').innerHTML = matches.map(({ node, hex: match }) => `<button type="button" class="palette-mini" data-image="${escapeHTML(node.image)}" aria-label="Explore photograph ${escapeHTML(node.id)} with a similar color"><span class="palette-mini-image">${imageHTML(node)}</span><span class="palette-mini-swatch" style="background:${match}" aria-label="Matching color ${match}"></span><span class="palette-mini-caption">${escapeHTML(node.id)} / ${node.year}</span></button>`).join('');
+  }
+  $('palette-photos').addEventListener('click', event => {
+    const card = event.target.closest('[data-image]');
+    if (!card) return;
+    // Return to the visible color control when the photograph dialog closes.
+    const image = card.dataset.image;
+    paths[Math.max(0, active)].focus();
+    openFocus(image);
+  });
   const running = () => !paused && active < 0 && visible && !document.hidden;
   function tick(now) {
     frame = 0;
@@ -845,9 +876,7 @@ new ResizeObserver(() => draw()).observe(stage);
   function select(index, pin = false) { active = index; pinned = pin; sync(); }
   paths.forEach((path, index) => {
     path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned) select(index); });
-    path.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && document.activeElement !== path) clear(); });
     path.addEventListener('focus', () => select(index));
-    path.addEventListener('blur', () => { if (!pinned) clear(); });
     path.addEventListener('click', () => pinned && active === index ? clear() : select(index, true));
     path.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); pinned && active === index ? clear() : select(index, true); }
@@ -858,6 +887,9 @@ new ResizeObserver(() => draw()).observe(stage);
       }
     });
   });
+  sculpture.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !sculpture.contains(document.activeElement)) clear(); });
+  sculpture.addEventListener('focusout', event => { if (!pinned && !sculpture.contains(event.relatedTarget)) clear(); });
+  sculpture.addEventListener('keydown', event => { if (event.key === 'Escape') clear(); });
   document.addEventListener('pointerdown', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
   document.addEventListener('focusin', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; sync(); });
