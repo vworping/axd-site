@@ -119,6 +119,8 @@ body:has(dialog[open]) { overflow: hidden; }
 .neighbor-card { display: grid; grid-template-columns: minmax(0, 145px) minmax(0, 1fr); align-items: center; width: 100%; gap: 17px; padding: 8px; background: #eeede9; border: 1px solid var(--line); text-align: left; transition: transform .15s, border-color .15s; }
 .neighbor-card:hover { transform: translateX(-4px); border-color: var(--ink); }
 .neighbor-card img { display: block; width: auto; height: auto; max-width: 100%; max-height: 150px; justify-self: center; }
+.print-meta { display: grid; gap: 4px; padding-block: 7px; }
+.match-value { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .neighbor-card .rank { font-size: 9px; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; }
 .neighbor-card h3 { font: 900 19px var(--display); letter-spacing: -.04em; margin: 9px 0 4px; }
 .neighbor-card p { font-size: 10px; color: var(--muted); margin-bottom: 12px; }
@@ -133,6 +135,8 @@ body:has(dialog[open]) { overflow: hidden; }
 .palette-details { max-width: 420px; margin: 15px auto 0; font-size: 11px; color: var(--muted); }
 .palette-details summary { width: fit-content; }
 .neighbor-card h3 { display: flex; justify-content: space-between; }
+.print-meta { display: grid; gap: 4px; padding-block: 7px; }
+.match-value { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .neighbor-card .rank { font-variant-numeric: tabular-nums; }
 .image-save-dialog { width: min(360px, calc(100% - 32px)); padding: 22px; }
 .image-save-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
@@ -239,29 +243,37 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .drifting { animation: none; transform: rotate(-2deg); } }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
-.palette-sculpture { width: min(100%, 420px); justify-self: center; }
-#palette-orbit { display: block; width: 100%; height: auto; overflow: visible; }
-#palette-orbit path { stroke: none; }
+.palette-sculpture { position: relative; width: min(100%, 500px); height: clamp(260px, 30vw, 370px); justify-self: center; }
+#palette-orbit { display: block; width: 100%; height: 100%; overflow: visible; }
+#palette-orbit path { stroke: none; cursor: pointer; outline: none; }
+#palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 2; stroke-dasharray: 3 3; }
+.palette-tag { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-5deg); display: grid; gap: 5px; padding: 10px 11px; background: var(--paper); border-top: 3px solid var(--tag-color); box-shadow: 0 6px 14px #1923271a; white-space: nowrap; pointer-events: none; text-align: center; font-size: .6875rem; }
+.palette-tag[hidden] { display: none; }
+#palette-color { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .intro-copy .lead { max-width: 360px; font-size: clamp(1.125rem, 1.8vw, 1.5rem); line-height: 1.45; }
 .explorer-section { border-top: 1px solid var(--line); }
 .frame-space { height: 390px; }
 .preview-shelf { justify-content: flex-start; }
-.map-note { position: relative; margin: 24px 8px 0; padding: 21px 20px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
-.map-note h3 { font: 400 .9375rem var(--body); margin-bottom: 12px; letter-spacing: -.02em; }
+.map-note { height: 308px; display: flex; flex-direction: column; position: relative; margin: 24px 8px 0; padding: 21px 20px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
+.map-note h3 { flex-shrink: 0; font: 400 .9375rem var(--body); margin-bottom: 12px; letter-spacing: -.02em; }
 .map-note p { font-size: .75rem; line-height: 1.65; margin: 10px 0 0; color: var(--muted); }
-.projection-details { border-top: 1px solid #8d9baa66; margin-top: 16px; padding-top: 8px; }
-.projection-details summary { display: flex; align-items: center; justify-content: space-between; min-height: 36px; font-size: .6875rem; list-style: none; }
-.projection-details summary::-webkit-details-marker { display: none; }
-.projection-details[open] summary span { transform: rotate(45deg); }
-.projection-details p { font-size: .6875rem; }
+.map-note-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d9baa transparent; padding-right: 10px; }
+.map-note-scroll > p:first-child { margin-top: 0; }
+.map-note-scroll:focus-visible { outline: 1px solid var(--muted); outline-offset: 3px; }
+.algorithm-comparison { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: .6875rem; font-variant-numeric: tabular-nums; }
+.algorithm-comparison caption { text-align: left; margin-bottom: 9px; }
+.algorithm-comparison th { font-weight: 400; text-align: left; }
+.algorithm-comparison td, .algorithm-comparison thead th:not(:first-child) { text-align: right; }
+.algorithm-comparison td, .algorithm-comparison th { padding: 6px 0; border-bottom: 1px solid #8d9baa55; }
+.algorithm-comparison .current-layout { color: var(--accent); }
+.method-link { display: inline-block; margin-top: 14px; font-size: .6875rem; border-bottom: 1px solid var(--line); }
 #point-labels { pointer-events: none; }
 .point-label { font: 12px var(--body); text-anchor: middle; dominant-baseline: central; stroke: none; }
-.label-plate { fill: var(--ground); fill-opacity: .96; }
 .label-leader { stroke: var(--ink); stroke-opacity: .45; stroke-width: 1; }
 /* A pinboard of independent prints, with details tucked away. */
 #focus-dialog { background: #b4c0cc; width: min(1200px, calc(100% - 48px)); padding: 0 30px 28px; }
 #focus-dialog .dialog-bar { border-color: #71818f70; }
-.focus-content { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 42px; padding: 34px 12px 10px; }
+.focus-content { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: center; gap: 28px; padding: 34px 12px 10px; }
 #selected-card { min-width: 0; padding-block: 10px; }
 .image-frame { position: relative; transform: rotate(-2deg); box-shadow: 0 14px 23px -15px #19232799; }
 .image-frame::before, .neighbor-card::before { content: ''; position: absolute; z-index: 2; top: -12px; left: 35%; width: 28%; height: 25px; background: #e4dbbaad; border-inline: 1px dashed #a9a28b55; transform: rotate(3deg); pointer-events: none; }
@@ -270,27 +282,23 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-details { margin-top: 24px; font-size: .6875rem; }
 .neighbor-heading { margin: 0 0 26px; }
 .neighbor-heading h2 { font-size: 1.25rem; margin: 0; }
-#neighbors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; justify-items: center; gap: 30px 18px; padding: 4px 8px; }
-.neighbor-card { position: relative; display: block; width: min(100%, calc(180px * var(--print-ratio) + 16px)); padding: 8px 8px 0; background: var(--paper); border: 0; transform: rotate(4deg); box-shadow: 0 12px 22px -14px #19232799; transition: transform .2s, box-shadow .2s; }
-.neighbor-card:nth-child(2) { transform: rotate(-4deg); margin-top: 30px; }
-.neighbor-card:nth-child(3) { grid-column: 1 / -1; width: min(60%, calc(180px * var(--print-ratio) + 16px)); transform: rotate(2deg); }
+#neighbors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; justify-items: center; gap: 14px 10px; padding: 4px 8px; max-width: 490px; margin-inline: auto; }
+.neighbor-card { position: relative; display: block; width: min(100%, calc(230px * var(--print-ratio) + 16px)); padding: 8px 8px 0; background: var(--paper); border: 0; transform: rotate(4deg); box-shadow: 0 12px 22px -14px #19232799; transition: transform .2s, box-shadow .2s; }
+.neighbor-card:nth-child(2) { transform: rotate(-4deg); margin-top: 16px; }
+.neighbor-card:nth-child(3) { grid-column: 1 / -1; width: min(70%, calc(230px * var(--print-ratio) + 16px)); transform: rotate(2deg); }
 .neighbor-card:nth-child(2)::before { transform: rotate(-5deg); left: 16%; }
 .neighbor-card:hover, .neighbor-card:focus-visible { transform: translateY(-6px) rotate(0); box-shadow: 0 20px 25px -16px #192327aa; z-index: 3; }
 .neighbor-photo { display: block; }
 .neighbor-photo img { width: 100%; height: auto; max-height: none; margin: 0; }
 .neighbor-card .palette { max-width: none; height: 5px; margin-top: 8px; }
-.print-caption { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 34px; font-size: .625rem; white-space: nowrap; }
+.print-caption { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 46px; font-size: .625rem; white-space: nowrap; }
+.print-meta { display: grid; gap: 4px; padding-block: 7px; }
+.match-value { font-size: .5625rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .neighbor-card .rank { font-size: .5625rem; color: var(--muted); }
-.match-details { margin-top: 25px; font-size: .6875rem; color: var(--muted); }
-.match-details summary { width: fit-content; }
-.match-details p { margin-top: 10px; line-height: 1.6; }
-#match-distances { max-width: 220px; margin: 12px 0 0; padding-left: 22px; }
-#match-distances li { padding: 5px 0; }
-#match-distances li span { float: right; font-variant-numeric: tabular-nums; }
 @media (max-width: 800px) {
   #focus-dialog { padding: 0 18px 22px; }
   .focus-content { gap: 25px; padding-inline: 5px; }
-  #neighbors { gap: 25px 12px; padding-inline: 0; }
+  #neighbors { gap: 14px 10px; padding-inline: 0; }
   .print-caption { font-size: .5625rem; gap: 3px; }
 }
 @media (max-width: 700px) {
@@ -299,13 +307,13 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 }
 @media (max-width: 600px) {
   .constellation-hero { min-height: 0; gap: 8px; }
-  .palette-sculpture { width: min(75%, 280px); }
+  .palette-sculpture { width: min(100%, 360px); height: clamp(240px, 78vw, 320px); }
   #focus-dialog { width: calc(100% - 24px); }
   #focus-dialog .dialog-bar { background: #b4c0cc; }
   .focus-content { grid-template-columns: 1fr; gap: 30px; padding-top: 26px; }
   .neighbor-heading h2 { font-size: 1.25rem; }
-  .neighbor-card { width: min(100%, calc(160px * var(--print-ratio) + 16px)); }
-  .neighbor-card:nth-child(3) { width: min(60%, calc(160px * var(--print-ratio) + 16px)); }
+  .neighbor-card { width: min(100%, calc(190px * var(--print-ratio) + 16px)); }
+  .neighbor-card:nth-child(3) { width: min(76%, calc(190px * var(--print-ratio) + 16px)); }
   .neighbor-photo img { max-height: none; }
 }
 </style>
@@ -328,7 +336,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
           <p class="lead">Explore the colors that connect six years of photographs.</p>
           <a class="explore-link" href="#explorer">Explore the map ↓</a>
         </div>
-        <div class="palette-sculpture"><svg id="palette-orbit" viewBox="0 0 400 400" role="img" aria-label="A morphing ribbon of colors from the photographs"></svg></div>
+        <div class="palette-sculpture">
+          <svg id="palette-orbit" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <div class="palette-tag" id="palette-tag" hidden><span id="palette-source"></span><span id="palette-color"></span></div>
+        </div>
       </section>
       <section class="explorer-section" id="explorer" aria-labelledby="explorer-title">
         <div class="section-heading"><h2 id="explorer-title">The constellation</h2><button type="button" id="motion-toggle" aria-pressed="false">Pause motion</button></div>
@@ -342,9 +353,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
             </div>
             <section class="map-note" aria-labelledby="map-note-title">
               <h3 id="map-note-title">Reading the map</h3>
-              <p>Each dot is a photograph. Open one to see its three closest color palettes.</p>
-              <p>Nearness on the map is approximate; matches use the original color measurements.</p>
-              <details class="projection-details"><summary>Projection details <span aria-hidden="true">+</span></summary><p id="projection-settings"></p><p id="projection-quality"></p></details>
+              <div class="map-note-scroll" id="map-explanation" tabindex="0" role="region" aria-label="About the selected map algorithm">
+                <p>Each dot is a photograph. Open one to see its three closest palettes.</p>
+                <p id="algorithm-description"></p>
+                <p id="algorithm-result"></p>
+                <table class="algorithm-comparison"><caption>Closest neighbors kept in this map</caption><thead><tr><th scope="col">Layout</th><th scope="col">Top 3</th><th scope="col">Top 10</th></tr></thead><tbody id="algorithm-scores"></tbody></table>
+                <p>Measured on these 150 photographs with the selected color comparison. Matches always use the original color distances.</p>
+                <a class="method-link" id="algorithm-source">How the method works ↗</a>
+              </div>
             </section>
           </aside>
         <section class="map-panel" aria-label="Palette constellation explorer">
@@ -372,7 +388,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
     <div class="focus-content"><section id="selected-card" aria-label="Selected photograph">
       <figure class="image-frame" id="selected-frame"><div id="selected-palette"></div><div class="photo-window" id="selected-window"></div><figcaption class="card-title"><span id="selected-caption"></span><button class="save-image-trigger" type="button">Save ↧</button></figcaption></figure>
       <details class="palette-details"><summary>Palette details</summary><table class="lab-table"><caption>CIELAB · proportion</caption><tbody id="selected-colors"></tbody></table></details>
-    </section><section class="neighbor-section"><div class="neighbor-heading"><h2>Closest palettes</h2></div><div id="neighbors"></div><details class="match-details"><summary>Match details</summary><p id="neighbor-note"></p><ol id="match-distances"></ol></details></section></div>
+    </section><section class="neighbor-section"><div class="neighbor-heading"><h2>Closest palettes</h2></div><div id="neighbors"></div></section></div>
   </dialog>
   <dialog class="image-save-dialog" id="image-save-dialog" aria-labelledby="image-save-title" tabindex="-1">
     <div class="image-save-top"><h2 id="image-save-title">Save image</h2><button id="image-save-dismiss" type="button" aria-label="Close image options">×</button></div>
@@ -613,16 +629,24 @@ function draw() {
     });
     $('points').append(group); pointElements.set(node.image, group);
   });
-  const names = {tsne: 't-SNE', umap: 'UMAP', mds: 'MDS'};
-  const settings = DATA.projection;
-  $('projection-settings').textContent = layout() === 'tsne'
-    ? `t-SNE: perplexity ${settings.tsne.perplexity}, ${settings.tsne.max_iter} iterations, seed ${settings.seed}.`
-    : layout() === 'umap'
-      ? `UMAP: ${settings.n_neighbors} neighbors, min_dist ${settings.min_dist}, seed ${settings.seed}.`
-      : 'Classical MDS: the original distance-based layout.';
-  const quality = settings.metrics[metric()][layout()];
-  $('projection-quality').textContent = `${names[layout()]} retains ${(quality.neighbor_recall_3 * 100).toFixed(1)}% of top-3 and ${(quality.neighbor_recall * 100).toFixed(1)}% of top-${settings.recall_k} neighbors in the map. Cards use original rankings.`;
+  updateMapExplanation();
   resetView();
+}
+function updateMapExplanation() {
+  const descriptions = {
+    tsne: ['t-SNE', 'turns color similarities into probabilities, then arranges the dots to preserve nearby relationships. Useful for finding palette families; gaps between groups are less reliable.', 'https://scikit-learn.org/stable/modules/manifold.html#t-sne'],
+    umap: ['UMAP', 'builds a weighted network of nearby palettes and fits that network into two dimensions. It reveals local groups while retaining some broader organization; map spacing is still approximate.', 'https://umap-learn.readthedocs.io/en/latest/how_umap_works.html'],
+    mds: ['MDS', 'starts with every pair of palette distances. This classical version uses the two strongest dimensions to draw an overall view. It favors the broad distance structure, so close matches can end up apart.', 'https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cmdscale.html']
+  };
+  const scores = DATA.projection.metrics[metric()];
+  const [name, description, url] = descriptions[layout()];
+  $('algorithm-description').innerHTML = `<strong>${name}</strong> ${description}`;
+  const ranking = Object.keys(scores).sort((a, b) => scores[b].neighbor_recall_3 - scores[a].neighbor_recall_3);
+  const order = ranking.indexOf(layout());
+  $('algorithm-result').textContent = `${name} keeps ${(scores[layout()].neighbor_recall_3 * 100).toFixed(1)}% of the three closest matches nearby — ${['the most', 'second highest', 'third highest'][order]} of these layouts for ${metricLabel().toLowerCase()}.`;
+  $('algorithm-scores').innerHTML = Object.keys(descriptions).map(key => `<tr${key === layout() ? ' class="current-layout"' : ''}><th scope="row">${descriptions[key][0]}${key === layout() ? ' ←' : ''}</th><td>${(scores[key].neighbor_recall_3 * 100).toFixed(1)}%</td><td>${(scores[key].neighbor_recall * 100).toFixed(1)}%</td></tr>`).join('');
+  $('algorithm-source').href = url;
+  $('map-explanation').scrollTop = 0;
 }
 function inspect(image) {
   if (requestedPreview !== image) updatePreview(image);
@@ -652,10 +676,9 @@ function highlight(image) {
     const x = Math.max(box.x, Math.min(box.x + box.width, box.pointX));
     const y = Math.max(box.y, Math.min(box.y + box.height, box.pointY));
     const leader = svgEl('line', { class: 'label-leader', x1: box.pointX, y1: box.pointY, x2: x, y2: y });
-    const plate = svgEl('rect', { class: 'label-plate', x: box.x, y: box.y, width: box.width, height: box.height, rx: 3 });
     const label = svgEl('text', { class: 'point-label', x: box.x + box.width / 2, y: box.y + box.height / 2, 'data-image': box.id });
     label.textContent = box.text;
-    $('point-labels').append(leader, plate, label);
+    $('point-labels').append(leader, label);
   });
 }
 function openFocus(image) {
@@ -669,12 +692,10 @@ function openFocus(image) {
   $('selected-caption').textContent = `${node.id} / ${node.year}`;
   $('selected-frame').querySelector('.save-image-trigger').setAttribute('aria-label', `Save or copy photograph ${node.id}`);
   $('selected-colors').innerHTML = node.palette.map(color => `<tr><td><span class="lab-chip" style="background:${color.hex}"></span>${color.hex}</td><td>${color.lab.map(v => v.toFixed(1)).join(' / ')}</td><td>${(color.weight * 100).toFixed(1)}%</td></tr>`).join('');
-  $('neighbor-note').textContent = `${metricLabel()} · lower is closer`;
   $('neighbors').innerHTML = neighbors(image).map(edge => {
     const other = byImage.get(edge.target);
-    return `<button class="neighbor-card" type="button" data-image="${escapeHTML(other.image)}" style="--print-ratio:${other.width / other.height}" aria-label="Open photograph ${escapeHTML(other.id)}, closest palette ${edge.rank}"><span class="neighbor-photo">${imageHTML(other)}</span>${paletteHTML(other.palette)}<span class="print-caption"><span>${escapeHTML(other.id)} / ${other.year}</span><span class="rank">0${edge.rank} ↗</span></span></button>`;
+    return `<button class="neighbor-card" type="button" data-image="${escapeHTML(other.image)}" style="--print-ratio:${other.width / other.height}" aria-label="Open photograph ${escapeHTML(other.id)}, closest palette ${edge.rank}"><span class="neighbor-photo">${imageHTML(other)}</span>${paletteHTML(other.palette)}<span class="print-caption"><span class="print-meta"><span>${escapeHTML(other.id)} / ${other.year}</span><span class="match-value">${metric() === 'transport_delta_e' ? 'Transport' : 'Matched'} ${edge.distance.toFixed(2)}</span></span><span class="rank">0${edge.rank} ↗</span></span></button>`;
   }).join('');
-  $('match-distances').innerHTML = neighbors(image).map(edge => `<li>${byImage.get(edge.target).id} <span>${edge.distance.toFixed(2)}</span></li>`).join('');
   updatePreview(image); highlight(image);
   if (firstOpen) window.AXDDialogs.open(dialog);
   else $('close-focus').focus({ preventScroll: true });
@@ -747,51 +768,103 @@ $('collection-count').textContent = `${nodes.length} photographs · ${years[0]}�
 updatePreview(previewImage);
 new ResizeObserver(() => draw()).observe(stage);
 
-// A slowly breathing, five-color ribbon drawn from the collection's palettes.
+// One continuous ribbon, moving between geometric and organic silhouettes.
 (() => {
-  const art = $('palette-orbit');
-  const paths = Array.from({ length: 5 }, () => {
-    const path = svgEl('path', {}); art.append(path); return path;
-  });
+  const art = $('palette-orbit'), sculpture = art.parentElement, tag = $('palette-tag');
   const sequence = ['0322', '6026', '8371', '0675', '7419', '2732'].map(id => nodes.find(node => node.id === id) || nodes[0]);
+  const paths = Array.from({ length: 5 }, () => {
+    const path = svgEl('path', { role: 'button', tabindex: 0, 'aria-pressed': 'false' });
+    art.append(path); return path;
+  });
   const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const smooth = t => t * t * (3 - 2 * t);
+  const mix = (a, b, t) => a + (b - a) * t;
   let elapsed = 0, last = 0, frame = 0, visible = true, paused = motionPaused;
+  let active = -1, pinned = false, stretch = 0;
+
+  function radius(theta, form, time) {
+    if (form === 0) return 146 + 17 * Math.sin(theta * 3 + time * .19) + 8 * Math.cos(theta * 5 - time * .13);
+    if (form === 1) return 126 / Math.pow(Math.pow(Math.abs(Math.cos(theta)), 5) + Math.pow(Math.abs(Math.sin(theta)), 5), 1 / 5);
+    if (form === 2) return 143; // Circle, stretched by the viewport.
+    if (form === 3) {
+      const sector = Math.PI * 2 / 3;
+      const local = ((theta + Math.PI / 2) % sector + sector) % sector - sector / 2;
+      return mix(144, 91 / Math.cos(local), .82); // Soft triangle.
+    }
+    if (form === 4) return 146 + 24 * Math.cos(theta * 4 + time * .12); // Curved, inward-folding sides.
+    return 142 + 25 * Math.sin(theta * 2 - time * .17) + 10 * Math.cos(theta * 3); // An asymmetric loop.
+  }
   function paint() {
     const phase = elapsed / 6500, index = Math.floor(phase) % sequence.length;
-    const fraction = phase % 1, blend = fraction * fraction * (3 - 2 * fraction);
-    const a = sequence[index].palette, b = sequence[(index + 1) % sequence.length].palette;
-    const time = elapsed / 1000;
+    const blend = smooth(phase % 1), first = sequence[index], next = sequence[(index + 1) % sequence.length];
+    const a = first.palette, b = next.palette, time = elapsed / 1000;
+    const formPhase = elapsed / 8500, form = Math.floor(formPhase) % 6, morph = smooth(formPhase % 1);
+    const source = blend < .015 ? first.id : blend > .985 ? next.id : `${first.id} → ${next.id}`;
     let angle = -.9 + time * .09;
     paths.forEach((path, i) => {
-      const weight = a[i].weight * (1 - blend) + b[i].weight * blend;
-      const end = angle + weight * Math.PI * 2;
+      const end = angle + mix(a[i].weight, b[i].weight, blend) * Math.PI * 2;
       const outline = [];
       const point = (theta, inner) => {
-        const wave = 15 * Math.sin(theta * 3 + time * .27) + 9 * Math.cos(theta * 5 - time * .19);
-        const radius = (inner ? 74 : 147) + wave * (inner ? .6 : 1);
-        return `${(200 + radius * Math.cos(theta)).toFixed(2)},${(200 + radius * Math.sin(theta)).toFixed(2)}`;
+        const outer = mix(radius(theta, form, time), radius(theta, (form + 1) % 6, time), morph);
+        const r = inner ? 73 + (outer - 143) * .17 : outer;
+        const twist = inner ? .12 * Math.sin(time * .23) : 0;
+        return `${(200 + r * Math.cos(theta + twist) * (1 + stretch * .08)).toFixed(2)},${(200 + r * Math.sin(theta + twist) * (1 - stretch * .06)).toFixed(2)}`;
       };
-      for (let j = 0; j <= 48; j++) outline.push(point(angle + (end - angle) * j / 48, false));
-      for (let j = 48; j >= 0; j--) outline.push(point(angle + (end - angle) * j / 48, true));
+      for (let j = 0; j <= 64; j++) outline.push(point(angle + (end - angle) * j / 64, false));
+      for (let j = 64; j >= 0; j--) outline.push(point(angle + (end - angle) * j / 64, true));
       const from = rgb(a[i].hex), to = rgb(b[i].hex);
+      const hex = '#' + from.map((v, c) => Math.round(mix(v, to[c], blend)).toString(16).padStart(2, '0')).join('');
       path.setAttribute('d', `M${outline.join(' L')} Z`);
-      path.setAttribute('fill', `rgb(${from.map((v, c) => Math.round(v + (to[c] - v) * blend)).join(',')})`);
+      path.setAttribute('fill', hex);
+      path.setAttribute('aria-label', `Color ${i + 1}, palette ${source}, ${hex}. Press to hold.`);
+      path.setAttribute('aria-pressed', String(pinned && active === i));
+      if (active === i) {
+        $('palette-source').textContent = source;
+        $('palette-color').textContent = `${String(i + 1).padStart(2, '0')} · ${hex.toUpperCase()}`;
+        tag.style.setProperty('--tag-color', hex);
+      }
       angle = end;
     });
+    tag.hidden = active < 0;
   }
+  const running = () => !paused && active < 0 && visible && !document.hidden;
   function tick(now) {
     frame = 0;
     if (last) elapsed += Math.min(now - last, 100);
     last = now; paint();
-    if (!paused && visible && !document.hidden) frame = requestAnimationFrame(tick);
+    if (running()) frame = requestAnimationFrame(tick);
   }
   function sync() {
     cancelAnimationFrame(frame); frame = 0; last = 0; paint();
-    if (!paused && visible && !document.hidden) frame = requestAnimationFrame(tick);
+    if (running()) frame = requestAnimationFrame(tick);
   }
+  function clear() { active = -1; pinned = false; sync(); }
+  function select(index, pin = false) { active = index; pinned = pin; sync(); }
+  paths.forEach((path, index) => {
+    path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned) select(index); });
+    path.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && document.activeElement !== path) clear(); });
+    path.addEventListener('focus', () => select(index));
+    path.addEventListener('blur', () => { if (!pinned) clear(); });
+    path.addEventListener('click', () => pinned && active === index ? clear() : select(index, true));
+    path.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); pinned && active === index ? clear() : select(index, true); }
+      else if (event.key === 'Escape') { event.preventDefault(); clear(); }
+      else if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) {
+        event.preventDefault(); pinned = false;
+        paths[(index + (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : 4)) % 5].focus();
+      }
+    });
+  });
+  document.addEventListener('pointerdown', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
+  document.addEventListener('focusin', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; sync(); });
   document.addEventListener('visibilitychange', sync);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(art);
+  new ResizeObserver(entries => {
+    const { width, height } = entries[0].contentRect;
+    stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
+    paint();
+  }).observe(sculpture);
   sync();
 })();
 
