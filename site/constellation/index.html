@@ -99,8 +99,6 @@ dialog::backdrop { background: #27313fb3; backdrop-filter: blur(9px); }
 body:has(dialog[open]) { overflow: hidden; }
 .dialog-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 66px; border-bottom: 1px solid var(--line); font-size: 11px; }
 .dialog-bar > span { text-transform: uppercase; letter-spacing: .06em; }
-.dialog-bar button { background: transparent; min-height: 44px; font-size: 12px; }
-.dialog-bar button span { font-size: 24px; margin-left: 18px; vertical-align: middle; }
 .focus-content { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; gap: 40px; padding-top: 26px; }
 .image-frame { width: min(100%, calc(min(57vh, 560px) * var(--image-ratio) + 22px)); margin-inline: auto; padding: 10px; background: #eeede9; border: 1px solid var(--line); box-shadow: 0 12px 30px -24px var(--ink); }
 .image-frame > img { display: block; width: 100%; height: auto; }
@@ -141,7 +139,6 @@ body:has(dialog[open]) { overflow: hidden; }
 .image-save-dialog { width: min(360px, calc(100% - 32px)); padding: 22px; }
 .image-save-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .image-save-top h2 { font: 900 24px var(--display); letter-spacing: -.05em; }
-.image-save-top button { width: 36px; height: 36px; background: transparent; font-size: 24px; }
 .image-save-dialog p { font-size: 12px; margin-top: 12px; }
 .image-save-actions { display: flex; gap: 8px; margin-top: 20px; }
 .image-save-actions button { background: var(--ink); color: var(--paper); min-height: 44px; padding: 10px 14px; font-size: 12px; }
@@ -186,8 +183,6 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
   dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); padding: 0 16px 20px; }
   .dialog-bar { position: sticky; top: 0; background: var(--paper); z-index: 2; min-height: 58px; gap: 10px; }
   .dialog-bar > span { font-size: 9px; }
-  .dialog-bar button { font-size: 11px; }
-  .dialog-bar button span { margin-left: 8px; }
   .focus-content { grid-template-columns: 1fr; gap: 25px; padding-top: 16px; }
   .image-frame { width: min(100%, calc(55svh * var(--image-ratio) + 22px)); }
   .neighbor-heading h2 { font-size: 26px; }
@@ -279,7 +274,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .image-frame::before, .neighbor-card::before { content: ''; position: absolute; z-index: 2; top: -12px; left: 35%; width: 28%; height: 25px; background: #e4dbbaad; border-inline: 1px dashed #a9a28b55; transform: rotate(3deg); pointer-events: none; }
 .card-title { min-height: 30px; align-items: center; margin-top: 8px; }
 .card-title span, .save-image-trigger { font-size: .6875rem; }
-.palette-details { margin-top: 24px; font-size: .6875rem; }
+.palette-details { margin-top: 44px; font-size: .6875rem; }
 .neighbor-heading { margin: 0 0 26px; }
 .neighbor-heading h2 { font-size: 1.25rem; margin: 0; }
 #neighbors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; justify-items: center; gap: 14px 10px; padding: 4px 8px; max-width: 490px; margin-inline: auto; }
@@ -316,6 +311,11 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
   .neighbor-card:nth-child(3) { width: min(76%, calc(190px * var(--print-ratio) + 16px)); }
   .neighbor-photo img { max-height: none; }
 }
+
+/* Match the Projects dialog: one centered symbol and the same focus treatment. */
+.dismiss-button { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; }
+.dismiss-button:hover { background: #0000000d; }
+.dismiss-button:focus-visible { outline: 3px solid currentColor; outline-offset: 6px; }
 </style>
 </head>
 <body>
@@ -356,6 +356,9 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
               <div class="map-note-scroll" id="map-explanation" tabindex="0" role="region" aria-label="About the selected map algorithm">
                 <p>Each dot is a photograph. Open one to see its three closest palettes.</p>
                 <p id="algorithm-description"></p>
+                <p><strong>Transport</strong> moves each color’s share to colors in the other palette, allowing split matches. It captures changes in both color and proportion.</p>
+                <p><strong>Matched weighted</strong> pairs colors one-to-one by their closest overall color fit, then weights their differences by each pair’s average share. It emphasizes dominant color matches, but identical colors in different proportions can still score zero.</p>
+                <p>Both use CIELAB color distance. Lower is closer.</p>
                 <p id="algorithm-result"></p>
                 <table class="algorithm-comparison"><caption>Closest neighbors kept in this map</caption><thead><tr><th scope="col">Layout</th><th scope="col">Top 3</th><th scope="col">Top 10</th></tr></thead><tbody id="algorithm-scores"></tbody></table>
                 <p>Measured on these 150 photographs with the selected color comparison. Matches always use the original color distances.</p>
@@ -384,14 +387,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
     <footer class="site-footer"><a class="back-link" href="/#work">← Back to the portfolio</a><span>PERCEPTUAL PALETTE DRIFT</span></footer>
   </div>
   <dialog id="focus-dialog" aria-labelledby="focus-title" tabindex="-1">
-    <div class="dialog-bar"><span id="focus-title">A closer look</span><button id="close-focus" type="button" autofocus>Close <span aria-hidden="true">×</span></button></div>
+    <div class="dialog-bar"><span id="focus-title">A closer look</span><button id="close-focus" class="dismiss-button" type="button" aria-label="Close photograph preview" autofocus><span aria-hidden="true">×</span></button></div>
     <div class="focus-content"><section id="selected-card" aria-label="Selected photograph">
       <figure class="image-frame" id="selected-frame"><div id="selected-palette"></div><div class="photo-window" id="selected-window"></div><figcaption class="card-title"><span id="selected-caption"></span><button class="save-image-trigger" type="button">Save ↧</button></figcaption></figure>
       <details class="palette-details"><summary>Palette details</summary><table class="lab-table"><caption>CIELAB · proportion</caption><tbody id="selected-colors"></tbody></table></details>
     </section><section class="neighbor-section"><div class="neighbor-heading"><h2>Closest palettes</h2></div><div id="neighbors"></div></section></div>
   </dialog>
   <dialog class="image-save-dialog" id="image-save-dialog" aria-labelledby="image-save-title" tabindex="-1">
-    <div class="image-save-top"><h2 id="image-save-title">Save image</h2><button id="image-save-dismiss" type="button" aria-label="Close image options">×</button></div>
+    <div class="image-save-top"><h2 id="image-save-title">Save image</h2><button id="image-save-dismiss" class="dismiss-button" type="button" aria-label="Close image options"><span aria-hidden="true">×</span></button></div>
     <p>Includes an AXD watermark.</p>
     <div class="image-save-actions"><button type="button" id="image-save">Save PNG ↓</button><button type="button" id="image-copy">Copy image</button></div>
     <p id="image-save-status" role="status"></p>

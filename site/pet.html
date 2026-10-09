@@ -82,12 +82,12 @@
   </main>
   <footer class="experience-footer wrap"><a class="back-link" href="./#work">← Back to the portfolio</a><p>[pet.]</p></footer>
   <dialog id="image-viewer" tabindex="-1" aria-labelledby="viewer-title" aria-describedby="viewer-description">
-    <div class="viewer-toolbar"><h2 id="viewer-title"></h2><button type="button" id="close-viewer" autofocus>Close <span aria-hidden="true">×</span></button></div>
+    <div class="viewer-toolbar"><h2 id="viewer-title"></h2><button type="button" id="close-viewer" class="dismiss-button" aria-label="Close photograph preview" autofocus><span aria-hidden="true">×</span></button></div>
     <div class="viewer-stage"><img id="viewer-image" alt=""></div>
     <div class="viewer-bottom"><p id="viewer-description"></p><div class="viewer-nav"><button type="button" class="save-options" data-save-image="viewer-image">Save / copy</button><button type="button" id="previous-image" aria-label="Previous image">←</button><span id="viewer-count" aria-live="polite"></span><button type="button" id="next-image" aria-label="Next image">→</button></div></div>
   </dialog>
   <dialog class="image-save-dialog" id="image-save-dialog" aria-labelledby="image-save-title" tabindex="-1">
-    <div class="image-save-top"><h2 id="image-save-title">Take a copy.</h2><button id="image-save-dismiss" type="button" aria-label="Dismiss image options">×</button></div>
+    <div class="image-save-top"><h2 id="image-save-title">Take a copy.</h2><button id="image-save-dismiss" class="dismiss-button" type="button" aria-label="Close image options"><span aria-hidden="true">×</span></button></div>
     <p>Saved and copied images include an AXD watermark.</p>
     <div class="image-save-actions"><button type="button" id="image-save">Save image ↧</button><button type="button" id="image-copy">Copy image</button></div>
     <p id="image-save-status" role="status" aria-live="polite"></p>
