@@ -885,14 +885,3 @@ html[data-input="pointer"] :focus { outline: none !important; }
  background-size: 100% 100%;
  background-position: 0 0;
 }
-/* A brief paper-white exposure accompanies the hard shutter cut. */
-.section-navigation button { position: relative; isolation: isolate; }
-.section-navigation button::after { content: ''; position: absolute; inset: -4px; background: #f8f7f3; opacity: 0; pointer-events: none; }
-.section-navigation button.is-snapping::after { animation: nav-exposure 340ms steps(1, end); }
-@keyframes nav-exposure {
- 0%, 20% { opacity: .9; }
- 40%, 100% { opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
- .section-navigation button.is-snapping::after { animation: none; }
-}

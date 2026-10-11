@@ -4,6 +4,20 @@
   let paused = false;
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; });
 
+  // Shared by project dialogs and chapter navigation controls.
+  window.AXDSnapshot = (element, opening) => element.animate((opening ? [
+    { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: .7 },
+    { clipPath: 'inset(46% 0 46% 0)', transform: 'scale(.99)', opacity: 1, offset: .18 },
+    { clipPath: 'inset(0% 0 0% 0)', transform: 'scale(1)', opacity: 1 }
+  ] : [
+    { clipPath: 'inset(0% 0 0% 0)', transform: 'scale(1)', opacity: 1 },
+    { clipPath: 'inset(46% 0 46% 0)', transform: 'scale(.99)', opacity: 1, offset: .82 },
+    { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: 0 }
+  ]).map(frame => ({ ...frame, visibility: 'visible' })), {
+    duration: opening ? 220 : 180,
+    easing: opening ? 'cubic-bezier(.16,1,.3,1)' : 'cubic-bezier(.7,0,.84,0)'
+  });
+
   window.AXDDialogs = {
     open(dialog) {
       if (dialog.open) return;
@@ -11,11 +25,7 @@
       dialog.showModal();
       dialog.focus({ preventScroll: true });
       if (!play || typeof dialog.animate !== 'function') return;
-      const snap = dialog.animate([
-        { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: .7 },
-        { clipPath: 'inset(46% 0 46% 0)', transform: 'scale(.99)', opacity: 1, offset: .18 },
-        { clipPath: 'inset(0% 0 0% 0)', transform: 'scale(1)', opacity: 1 }
-      ], { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+      const snap = window.AXDSnapshot(dialog, true);
       const cancel = () => snap.cancel();
       dialog.addEventListener('close', cancel, { once: true });
       snap.finished.catch(() => {}).finally(() => dialog.removeEventListener('close', cancel));
@@ -24,11 +34,7 @@
       if (!dialog.open || dialog.dataset.closing) return;
       dialog.dataset.closing = 'true';
       if (!reduced.matches && !paused && typeof dialog.animate === 'function') {
-        await dialog.animate([
-          { clipPath: 'inset(0% 0 0% 0)', transform: 'scale(1)', opacity: 1 },
-          { clipPath: 'inset(46% 0 46% 0)', transform: 'scale(.99)', opacity: 1, offset: .82 },
-          { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: 0 }
-        ], { duration: 180, easing: 'cubic-bezier(.7,0,.84,0)' }).finished.catch(() => {});
+        await window.AXDSnapshot(dialog, false).finished.catch(() => {});
       }
       dialog.close();
       delete dialog.dataset.closing;

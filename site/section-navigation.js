@@ -29,21 +29,11 @@
       (button === previous ? next : previous).focus({ preventScroll: true });
     }
     if (!navigationReady || paused || reduced.matches) return;
-    const open = { clipPath: 'inset(-6px)', transform: 'scale(1)', opacity: 1, visibility: 'visible' };
-    const slit = { clipPath: 'inset(47% 0)', transform: 'scale(.985)', opacity: 1, visibility: 'visible' };
-    const closed = { clipPath: 'inset(50% 0)', transform: 'scale(.985)', opacity: 0, visibility: 'visible' };
-    button.classList.add('is-snapping');
-    const frames = available
-      ? [closed, { ...slit, offset: .12 }, { ...open, offset: .28 }, { ...slit, offset: .4 }, { ...open, offset: .5 }, open]
-      : [open, { ...slit, offset: .45 }, { ...open, offset: .6 }, { ...slit, offset: .75 }, closed];
-    const animation = button.animate(frames.map(frame => ({ ...frame, easing: 'steps(1, end)' })), {
-      duration: 340, easing: 'linear'
-    });
+    const animation = window.AXDSnapshot(button, available);
     buttonAnimations.set(button, animation);
     animation.finished.catch(() => {}).finally(() => {
       if (buttonAnimations.get(button) === animation) {
         buttonAnimations.delete(button);
-        button.classList.remove('is-snapping');
       }
     });
   }
