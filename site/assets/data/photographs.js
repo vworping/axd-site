@@ -1,6 +1,59 @@
 window.PHOTOGRAPHS = [
   {
-    "src": "assets/images/selected-01.webp",
+    "src": "assets/images/hero/_DSC6532.webp",
+    "alt": "An upside-down close-up portrait with a strand of light across the face.",
+    "width": 800,
+    "height": 1200,
+    "palette": [
+      {
+        "hex": "#eccebd",
+        "weight": 0.3513117730617523,
+        "lab": [
+          84.79,
+          8.08,
+          12.2
+        ]
+      },
+      {
+        "hex": "#453c3c",
+        "weight": 0.2305117398500442,
+        "lab": [
+          26.31,
+          3.93,
+          1.37
+        ]
+      },
+      {
+        "hex": "#1f2c3b",
+        "weight": 0.2051131874322891,
+        "lab": [
+          17.59,
+          -1.11,
+          -10.94
+        ]
+      },
+      {
+        "hex": "#ae837a",
+        "weight": 0.1551529318094253,
+        "lab": [
+          58.54,
+          15.41,
+          11.0
+        ]
+      },
+      {
+        "hex": "#51101e",
+        "weight": 0.0579103715717792,
+        "lab": [
+          16.7,
+          30.67,
+          8.94
+        ]
+      }
+    ]
+  },
+  {
+    "src": "assets/images/hero/_DSC8824.webp",
     "alt": "A person beside a Speedway gas pump at night, lit by pink light.",
     "width": 1200,
     "height": 1200,
@@ -53,7 +106,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/selected-02.webp",
+    "src": "assets/images/hero/_DSC9422-Edit.webp",
     "alt": "A person in a cap sits in the grass at dusk, with a dark building behind them.",
     "width": 1200,
     "height": 1200,
@@ -106,7 +159,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/selected-03.webp",
+    "src": "assets/images/hero/_DSC6724.webp",
     "alt": "A portrait in darkness, with a pattern of small lights projected across the face and shoulders.",
     "width": 1200,
     "height": 1200,
@@ -159,107 +212,54 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/selected-04.webp",
-    "alt": "Two people pose with an armchair against a white studio backdrop.",
+    "src": "assets/images/hero/_DSC9386.webp",
+    "alt": "A person in silver clothing reclines in alternating bands of sunlight and shadow.",
     "width": 800,
     "height": 1200,
     "palette": [
       {
-        "hex": "#3f332f",
-        "weight": 0.3137056827545166,
+        "hex": "#262b37",
+        "weight": 0.3181282579898834,
         "lab": [
-          22.31,
-          5.03,
-          4.2
+          17.45,
+          1.54,
+          -8.79
         ]
       },
       {
-        "hex": "#e2e0e8",
-        "weight": 0.2913857102394104,
+        "hex": "#d6d3d2",
+        "weight": 0.2680628299713135,
         "lab": [
-          89.54,
-          1.81,
-          -3.49
+          84.73,
+          0.97,
+          1.03
         ]
       },
       {
-        "hex": "#855f4a",
-        "weight": 0.142537772655487,
+        "hex": "#60423e",
+        "weight": 0.1732984334230423,
         "lab": [
-          43.74,
-          12.74,
-          18.3
+          31.1,
+          12.5,
+          7.35
         ]
       },
       {
-        "hex": "#8f898a",
-        "weight": 0.1332347691059112,
+        "hex": "#777582",
+        "weight": 0.139267012476921,
         "lab": [
-          57.72,
-          2.31,
-          0.15
+          49.88,
+          3.23,
+          -6.42
         ]
       },
       {
-        "hex": "#d6ad9a",
-        "weight": 0.1191360503435134,
+        "hex": "#b9876d",
+        "weight": 0.1012434586882591,
         "lab": [
-          73.95,
-          12.27,
-          15.38
-        ]
-      }
-    ]
-  },
-  {
-    "src": "assets/images/selected-05.webp",
-    "alt": "An upside-down close-up portrait with a strand of light across the face.",
-    "width": 800,
-    "height": 1200,
-    "palette": [
-      {
-        "hex": "#eccebd",
-        "weight": 0.3513117730617523,
-        "lab": [
-          84.79,
-          8.08,
-          12.2
-        ]
-      },
-      {
-        "hex": "#453c3c",
-        "weight": 0.2305117398500442,
-        "lab": [
-          26.31,
-          3.93,
-          1.37
-        ]
-      },
-      {
-        "hex": "#1f2c3b",
-        "weight": 0.2051131874322891,
-        "lab": [
-          17.59,
-          -1.11,
-          -10.94
-        ]
-      },
-      {
-        "hex": "#ae837a",
-        "weight": 0.1551529318094253,
-        "lab": [
-          58.54,
-          15.41,
-          11.0
-        ]
-      },
-      {
-        "hex": "#51101e",
-        "weight": 0.0579103715717792,
-        "lab": [
-          16.7,
-          30.67,
-          8.94
+          60.57,
+          15.68,
+          21.41
         ]
       }
     ]

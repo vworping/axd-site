@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "assets/images/hero/_DSC6532.webp": {
+      "number": "001",
+      "source": "site/constellation/index.html",
+      "image": "raw/2022/_DSC6532.jpg",
+      "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+    },
+    "assets/images/hero/_DSC8824.webp": {
+      "number": "002",
+      "source": "site/constellation/index.html",
+      "image": "raw/2025/_DSC8824.jpg",
+      "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+    },
+    "assets/images/hero/_DSC9422-Edit.webp": {
+      "number": "003",
+      "source": "site/constellation/index.html",
+      "image": "raw/2025/_DSC9422-Edit.jpg",
+      "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+    },
+    "assets/images/hero/_DSC6724.webp": {
+      "number": "004",
+      "source": "site/constellation/index.html",
+      "image": "raw/2024/_DSC6724.jpg",
+      "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+    },
+    "assets/images/hero/_DSC9386.webp": {
+      "number": "005",
+      "source": "site/constellation/index.html",
+      "image": "raw/2023/_DSC9386.jpg",
+      "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+    }
+  },
+  "about": {
+    "src": "assets/images/about/_DSF3157.webp",
+    "source": "/Users/axdreweiss/Desktop/_DSF3157.JPG",
+    "width": 800,
+    "height": 1200,
+    "processing": "EXIF orientation applied; uncropped WebP at 1200 and 640 pixels on the long edge."
+  }
+}

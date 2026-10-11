@@ -5,18 +5,67 @@
   const panels = [...track.children];
   const rail = document.querySelector('.section-navigation');
   const label = document.getElementById('section-current');
+  const previous = document.getElementById('section-prev');
+  const next = document.getElementById('section-next');
+  const previousLabel = document.getElementById('section-prev-label');
+  const nextLabel = document.getElementById('section-next-label');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let paused = reduced.matches;
   let index = 0;
   let scrollFrame;
   let wheelTotal = 0;
   let wheelHandled = false;
   let wheelTimer;
+  let navigationReady = false;
+  const buttonAnimations = new Map();
+
+  function setAvailable(button, available) {
+    if (navigationReady && button.disabled === !available) return;
+    const focused = document.activeElement === button;
+    buttonAnimations.get(button)?.cancel();
+    button.disabled = !available;
+    button.setAttribute('aria-hidden', String(!available));
+    if (focused && !available) {
+      (button === previous ? next : previous).focus({ preventScroll: true });
+    }
+    if (!navigationReady || paused || reduced.matches) return;
+    const open = { clipPath: 'inset(-6px)', transform: 'scale(1)', opacity: 1, visibility: 'visible' };
+    const slit = { clipPath: 'inset(47% 0)', transform: 'scale(.985)', opacity: 1, visibility: 'visible' };
+    const closed = { clipPath: 'inset(50% 0)', transform: 'scale(.985)', opacity: 0, visibility: 'visible' };
+    button.classList.add('is-snapping');
+    const frames = available
+      ? [closed, { ...slit, offset: .12 }, { ...open, offset: .28 }, { ...slit, offset: .4 }, { ...open, offset: .5 }, open]
+      : [open, { ...slit, offset: .45 }, { ...open, offset: .6 }, { ...slit, offset: .75 }, closed];
+    const animation = button.animate(frames.map(frame => ({ ...frame, easing: 'steps(1, end)' })), {
+      duration: 340, easing: 'linear'
+    });
+    buttonAnimations.set(button, animation);
+    animation.finished.catch(() => {}).finally(() => {
+      if (buttonAnimations.get(button) === animation) {
+        buttonAnimations.delete(button);
+        button.classList.remove('is-snapping');
+      }
+    });
+  }
 
   function sync() {
     scrollFrame = 0;
     index = Math.max(0, Math.min(panels.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
     panels.forEach((panel, i) => { panel.inert = i !== index; });
-    label.textContent = panels[index].dataset.sectionLabel;
+    // Let the page arrive before its navigation controls snap into place.
+    if (Math.abs(track.scrollLeft - index * track.clientWidth) < 2) {
+      label.textContent = panels[index].dataset.sectionLabel;
+      setAvailable(previous, index > 0);
+      setAvailable(next, index < panels.length - 1);
+      // Keep the outgoing label's width stable throughout its closing shutter.
+      if (index > 0) previousLabel.textContent = ['Back', 'Back to photographs', 'Back to work'][index];
+      if (index < panels.length - 1) nextLabel.textContent = ['Explore the work', 'About & Say Hello'][index];
+      previous.setAttribute('aria-label', index === 0 ? 'Previous section' : `Previous section: ${panels[index - 1].dataset.sectionLabel}`);
+      next.setAttribute('aria-label', next.disabled ? 'Next section' : `Next section: ${panels[index + 1].dataset.sectionLabel}`);
+    }
+    // Move the shared background with the rail, including native touch gestures.
+    const progress = Math.max(0, Math.min(2, track.scrollLeft / track.clientWidth));
+    root.style.setProperty('--chapter-progress', paused || reduced.matches ? 0 : progress);
     document.querySelectorAll('.site-header nav a').forEach((link) => {
       if (link.hash === `#${panels[index].dataset.section}`) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
@@ -34,12 +83,21 @@
 
   root.classList.add('horizontal-layout');
   rail.hidden = false;
+  previous.addEventListener('click', () => goTo(index - 1, false, true));
+  next.addEventListener('click', () => goTo(index + 1, false, true));
+  const syncMotion = () => {
+    if (paused || reduced.matches) buttonAnimations.forEach(animation => animation.cancel());
+    sync();
+  };
+  document.addEventListener('axd:motion', event => { paused = event.detail.paused; syncMotion(); });
+  reduced.addEventListener('change', syncMotion);
   const fromHash = () => {
     const hash = location.hash === '#contact' ? '#about' : location.hash;
     return Math.max(0, panels.findIndex((panel) => `#${panel.dataset.section}` === hash));
   };
   const initialPosition = fromHash();
   goTo(initialPosition, true);
+  navigationReady = true;
   // Settle the requested chapter after initial fragment scrolling and scroll snap.
   // This also lets standalone project pages return directly to the Work chapter.
   window.addEventListener('load', () => requestAnimationFrame(() => goTo(initialPosition, true)), { once: true });

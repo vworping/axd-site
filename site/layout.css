@@ -775,3 +775,124 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .pet-note > span { gap: 3px; }
  .pet-note > span > span { font-size: .75rem; }
 }
+
+/* A single continuous ground connects all three chapters. */
+.hero-shell {
+ background: radial-gradient(ellipse at 90% 18%, #aebfd3 0%, transparent 55%), linear-gradient(115deg, #d2cfce 0%, #bec9d7 75%);
+ background-size: 140% 130%;
+ background-position: calc(var(--chapter-progress, 0) * 32%) calc(var(--chapter-progress, 0) * 24%);
+}
+.horizontal-layout .work-section,
+.horizontal-layout .connect-section { background: transparent; color: var(--ink); }
+.connect-copy > p, .connect-socials { color: #424b58; }
+.connect-socials a { color: var(--ink); }
+.connect-socials a:hover { background: #27313f0d; }
+.connect-footer, .background-button { border-color: #27313f40; }
+.portrait-window { background: #ffffff24; border-color: #27313f40; }
+.portrait-window::before, .portrait-window::after { border-color: #59687b; }
+.story-select { border-top: 0; }
+
+/* Enlarge the period to finish at the same right edge as ANDRE. */
+.hero h1 .name-period { font-size: 1.392em; line-height: 0; letter-spacing: -.066092em; }
+
+/* One stable navigation row, with visible boundaries at the first/last chapter. */
+.section-navigation {
+ display: grid;
+ grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+ gap: 20px;
+ min-height: 76px;
+ padding-block: 10px;
+ background: transparent;
+}
+.section-navigation button {
+ display: flex;
+ align-items: center;
+ gap: 14px;
+ width: auto;
+ height: auto;
+ min-height: 44px;
+ padding: 0;
+ font-size: .875rem;
+ text-align: left;
+}
+.section-navigation #section-prev { justify-self: start; }
+.section-navigation #section-next { justify-self: end; text-align: right; }
+.section-navigation .round-arrow { flex: 0 0 44px; width: 44px; height: 44px; }
+.section-navigation button:not(:disabled):hover { transform: none; }
+.section-navigation button:not(:disabled):hover .round-arrow { background: var(--ink); color: #d2d8df; }
+.section-navigation button:disabled { opacity: .3; cursor: default; }
+.section-navigation #section-current { min-width: 0; }
+@media (max-width: 700px) {
+ .section-navigation { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 64px; gap: 14px; }
+ .section-navigation #section-current { display: none; }
+ .section-navigation button { gap: 8px; font-size: .75rem; }
+ .section-navigation .round-arrow { flex-basis: 38px; width: 38px; height: 38px; font-size: 1.35rem; }
+}
+@media (orientation: landscape) and (max-height: 600px) {
+ .section-navigation { min-height: 52px; padding-block: 4px; }
+ .section-navigation .round-arrow { flex-basis: 36px; width: 36px; height: 36px; }
+}
+/* Leave room above the desktop prints for their cue and beside them for the period. */
+@media (min-width: 1101px) and (max-width: 1999px) {
+ .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 65fr) minmax(0, 35fr); }
+ .horizontal-layout .hero-composition .photo-deck {
+  width: min(100%, calc((100dvh - 330px) * .91));
+  margin: 0;
+  justify-self: end;
+  transform: translateX(10px);
+ }
+}
+
+@media (min-width: 701px) and (min-height: 601px) {
+ .horizontal-layout .portrait-window img { max-height: min(calc(100dvh - 320px), 600px); }
+}
+
+/* Preserve the expanding photo fans; fit complete titles to their own columns. */
+.story-select { container-type: inline-size; }
+.story-title { white-space: nowrap; font-size: min(clamp(1.05rem, 1.65vw, 1.75rem), 9.6cqw); }
+.is-active .story-title { font-size: min(clamp(1.3rem, 2.1vw, 2.1rem), 9.6cqw); }
+@media (max-width: 700px) {
+ .story-title, .is-active .story-title { font-size: min(.9375rem, 9.6cqw); }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .story-title, .is-active .story-title { font-size: min(1rem, 9.6cqw); }
+}
+
+/* A compact colophon sits together at the lower-right edge of About. */
+.horizontal-layout .connect-footer {
+ align-self: flex-end;
+ flex-direction: column;
+ align-items: flex-end;
+ justify-content: flex-end;
+ gap: 0;
+ border: 0;
+ padding-top: 0;
+ text-align: right;
+ color: #424b58;
+}
+.connect-footer .motion-controls { justify-content: flex-end; gap: 18px; }
+.connect-footer .motion-controls button { font-size: .6875rem; }
+
+/* Keep the rail geometry fixed while its boundary controls snap shut. */
+.section-navigation button:disabled { visibility: hidden; opacity: 0; pointer-events: none; }
+
+/* Move the cool and warm pools across the shared canvas as chapters travel. */
+.hero-shell {
+ background:
+  radial-gradient(ellipse at calc(90% - var(--chapter-progress, 0) * 35%) calc(18% + var(--chapter-progress, 0) * 25%), #99b4d5 0%, transparent 65%),
+  radial-gradient(ellipse at calc(10% + var(--chapter-progress, 0) * 40%) 85%, #dcc4bb 0%, transparent 60%),
+  #c9d1db;
+ background-size: 100% 100%;
+ background-position: 0 0;
+}
+/* A brief paper-white exposure accompanies the hard shutter cut. */
+.section-navigation button { position: relative; isolation: isolate; }
+.section-navigation button::after { content: ''; position: absolute; inset: -4px; background: #f8f7f3; opacity: 0; pointer-events: none; }
+.section-navigation button.is-snapping::after { animation: nav-exposure 340ms steps(1, end); }
+@keyframes nav-exposure {
+ 0%, 20% { opacity: .9; }
+ 40%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .section-navigation button.is-snapping::after { animation: none; }
+}
