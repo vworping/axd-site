@@ -6,18 +6,27 @@
 
 ![AXD logo](site/assets/images/share-logo.png?v=13)
 
-A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Three horizontally navigable chapters connect the photographs, project stories, and About & Say Hello.
+A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Three horizontally navigable chapters connect the photographs, project stories, and About & Say Hello. The finished portfolio includes standalone Constellation and [pet.] experiences.
 
 ## What's inside
 
 - Five hero photographs with palettes from **Perceptual Palette Drift**.
 - Project previews, complete stories, photo galleries, and expanded images.
+- [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board.
 - [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
-- A palette-to-brackets intro and a spelling name animation, with reduced-motion and pause support.
+- A palette-to-brackets intro, spelling name animation, shutter transitions, and ambient page gradients, with reduced-motion and pause support.
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
 - Clean web images with watermarked copies available through **Take a copy**.
 
 Plain HTML, CSS, and JavaScript. No framework or package installation is required to edit, preview, or build.
+
+## Building [pet.]
+
+The [PET page](https://mindofaxd.com/pet) tells the story of a **personal engagement tool**: a badge that starts a hello, brings a phone into the exchange, and uses an NFC card to carry the conversation forward. It brings together two enclosure CAD studies, the three-step interaction, and notes on learning ESP firmware, wiring the reader, and revising the case.
+
+An embedded, interactive OS preview lets visitors explore the animated greeting, Hello flow, settings, and Constellation photo inspection. Phone, radio, and card events are simulated; the preview does not create live introductions or write NFC cards. The page shares the portfolio's motion controls, shutter transitions, expanded image viewer, and watermarked Save / copy tools.
+
+Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-preview/`. See the [PET page notes](docs/PET-EXPERIENCE.md) for the source files, enclosure credits, and snapshot sync workflow.
 
 ## Edit content
 
@@ -27,6 +36,8 @@ Plain HTML, CSS, and JavaScript. No framework or package installation is require
 | Hero photos and measured palettes | [`site/assets/data/photographs.js`](site/assets/data/photographs.js) |
 | About text, portrait, contact links, background | [`site/index.html`](site/index.html) |
 | [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
+| Constellation explorer and snapshot updates | [`docs/CONSTELLATION.md`](docs/CONSTELLATION.md) |
+| [pet.] OS preview and sync workflow | [`docs/PET-EXPERIENCE.md`](docs/PET-EXPERIENCE.md) |
 | Layout, spacing, responsive overrides | [`site/layout.css`](site/layout.css) |
 | Fonts, base styles, core visual treatment | [`site/styles.css`](site/styles.css) |
 
@@ -42,13 +53,17 @@ python3 -m http.server 6767 --bind 0.0.0.0 --directory site
 
 Open **http://localhost:6767/**. For a phone on the same Wi-Fi, use `http://YOUR-MAC-IP:6767/`. On a Mac, `ipconfig getifaddr en0` usually returns the Wi-Fi address. If the port is occupied, use a different port or the already-running server.
 
+Preview the standalone pages at `/constellation/` and `/pet.html`; Python's static server uses the `.html` filename for the PET page.
+
 ## Build and publish
 
 ```sh
 node site/build.mjs
+node --test site/security.test.mjs
+git diff --check
 ```
 
-The output is `site/dist/`. The build generates production metadata and adds content hashes to script and stylesheet URLs so edited content refreshes correctly.
+The output is `site/dist/`. The build generates production metadata, security headers, and content hashes for script and stylesheet URLs so edited content refreshes correctly. The security tests check all four HTML pages, HTTPS redirects, and the OS preview's embedding policy. Build and tests were verified with Node.js 23.11.
 
 **Cloudflare Workers Builds** deploys the `main` branch of this repository to the existing `axd-site` Worker. `wrangler.jsonc` runs the build and serves only `site/dist/`. Push a reviewed commit to `main` to publish. See [deployment & rollback](docs/DEPLOYMENT.md).
 
@@ -59,8 +74,13 @@ site/                  Editable website source
   assets/data/         Project stories and hero photographs
   assets/fonts/        Local fonts and their licenses
   assets/images/       Optimized web photographs and logo assets
+  constellation/       Published palette explorer and web photographs
   pet-preview/         Saved interactive OS preview for the [pet.] page
+  sync-pet.mjs          Refreshes the OS snapshot from a local PET checkout
+  worker.mjs           HTTPS redirects and response security headers
+  security.test.mjs    Build-dependent Worker security checks
   dist/                Generated public output; ignored by Git
+  .generated/          Generated Worker security headers; ignored by Git
 docs/                  Editing, deployment, and palette provenance
 wrangler.jsonc         Existing Cloudflare Worker + build configuration
 ```
@@ -69,6 +89,6 @@ The old portfolio is preserved in Git under **`pre-redesign-2026-09-19`**. On th
 
 ## Images and credits
 
-Photography and site content © Andre Weiss. Font licenses are included under `site/assets/fonts/`. Palette origins are recorded in [`docs/palette-provenance.json`](docs/palette-provenance.json).
+Photography and site content © Andre Weiss. Font licenses accompany the fonts in the main site, Constellation, and PET preview. Palette origins are recorded in [`docs/palette-provenance.json`](docs/palette-provenance.json); photograph sources are mapped in [`docs/image-sources.json`](docs/image-sources.json).
 
 Displayed photographs are resized web copies. Download watermarking does not prevent screenshots or extraction of displayed images.

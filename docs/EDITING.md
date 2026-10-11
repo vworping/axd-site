@@ -58,7 +58,10 @@ The portrait frame follows the photograph's natural proportions. Its padding is 
 | `dialog-motion.js` | Opening shutter animation. |
 | `section-navigation.js` | Horizontal chapters, touch/wheel/keyboard navigation. |
 | `image-downloads.js` | Watermarked save/copy exports. |
+| `ambient-gradient.css`, `ambient-gradient.js` | Shared background gradients and scroll response on standalone pages. |
+| `experience.css`, `pet-experience.js` | PET page layout, enclosure viewer, and OS embed integration. |
 | `build.mjs` | Creates deployable output, production URLs, and cache versions. |
+| `worker.mjs`, `security.test.mjs` | HTTPS redirects, response security headers, and regression checks. |
 
 Floating project photos use separate inner frames so their base positions stay fixed. Reduced motion, Pause motion, hidden tabs, and inactive sections stop the effect.
 
@@ -72,6 +75,7 @@ Before publishing:
 node --check site/assets/data/projects.js
 node --check site/script.js
 node site/build.mjs
+node --test site/security.test.mjs
 git diff --check
 ```
 
@@ -79,4 +83,4 @@ A build alone does not publish. Cloudflare deploys when a commit is pushed to `m
 
 ## Standalone experience pages
 
-PET’s first-person build story is in `site/pet.html`, styled by `site/experience.css` and linked from the Work chapter. See [PET page notes](PET-EXPERIENCE.md) for image sources, current status, and the next photography update. Add new standalone pages to the copy list and `pages` array in `site/build.mjs` so they receive metadata processing, asset hashes, and sitemap entries.
+PET’s first-person build story is in `site/pet.html`, styled by `site/experience.css` and linked from the Work chapter. See [PET page notes](PET-EXPERIENCE.md) for image sources and the OS sync workflow. The palette explorer lives in `site/constellation/`; see [Constellation notes](CONSTELLATION.md) for snapshot updates. Add new standalone pages to the copy list and `pages` array in `site/build.mjs` so they receive metadata processing, asset hashes, and sitemap entries.

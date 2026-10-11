@@ -34,6 +34,6 @@ The Making it paragraph links the Waveshare display (`B0DD7N19FT`), NULLLAB RC52
 
 ## Validation
 
-Local build and JavaScript syntax checks; Worker framing-policy checks; browser checks of deck switching, viewer opening/closing, watermarked image export, Hello through guest arrival, Constellation photo save options, and mobile embed sizing. The page is published through the portfolio’s main-branch deployment. The separate Constellation experience update remains deferred.
+Local build and JavaScript syntax checks; Worker framing-policy checks; browser checks of deck switching, viewer opening/closing, watermarked image export, Hello through guest arrival, Constellation photo save options, and mobile embed sizing. The page is published through the portfolio’s main-branch deployment. The separate [Constellation experience](CONSTELLATION.md) is now included in the portfolio.
 
 October 8 update: verified one visible page-level motion toggle, pause/resume, and Hello through guest arrival in the browser; checked all preview manifest hashes and byte equality with the development CSS/JS. Native UI, protocol, socket, and certificate-name tests passed using the local LVGL 8.3.11 copy. The separate TLS test could not build because the temporary SDK Mbed TLS headers were missing. Removed six superseded OS screenshots, their greeting font, and unused gallery CSS. No device was flashed.

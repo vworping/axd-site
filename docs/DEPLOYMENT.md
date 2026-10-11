@@ -15,7 +15,7 @@ The domain remains attached to the existing Worker. No DNS migration is needed f
 ## Publishing edits
 
 1. Edit files under `site/` and preview locally.
-2. Run `node site/build.mjs` and relevant syntax checks.
+2. Run `node site/build.mjs`, `node --test site/security.test.mjs`, and relevant syntax checks.
 3. Review `git diff`; stage the intended files explicitly. `site/dist/` and `.local-archive/` must remain ignored.
 4. Commit and push to `main`.
 5. Wait for **Workers Builds: axd-site** to report success in the GitHub commit checks.
@@ -48,6 +48,8 @@ Do not force-push the old tag over `main`.
 
 `site/worker.mjs` runs before assets and redirects HTTP requests to HTTPS, preserving the path and query. Localhost HTTP previews remain supported. The `ASSETS` binding serves the static build afterward. Requests now invoke this small Worker; Cloudflare Worker request limits apply.
 
-`site/build.mjs` generates `site/dist/_headers` and an ignored `site/.generated/security-headers.json` bundled into the Worker. The Worker attaches these headers directly to asset responses: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP allows the existing Cloudflare Web Analytics script and reporting endpoint. It automatically hashes the inline intro bootstrap. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
+`site/build.mjs` generates `site/dist/_headers` and ignored security-header JSON files bundled into the Worker. The Worker attaches these headers directly to all asset responses, including Constellation, PET, and the PET OS preview: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP allows the existing Cloudflare Web Analytics script and reporting endpoint. It automatically hashes the inline scripts from all four HTML pages, including the intro bootstrap and Constellation explorer. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
+
+Only `/pet-preview/` and `/pet-preview/index.html` allow same-origin framing so the PET page can embed the OS preview. All other pages deny framing. Run `node site/build.mjs && node --test site/security.test.mjs` to check security headers, inline-script compatibility, framing exceptions, and HTTPS redirects across the portfolio and subpages.
 
 These controls do not prevent screenshots or scraping. Account MFA is configured separately in Cloudflare, GitHub, and email settings.
