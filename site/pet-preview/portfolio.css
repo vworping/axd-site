@@ -1,4 +1,4 @@
-html { color-scheme: normal; background: transparent; }
+:root { color-scheme: light; background: transparent; }
 body { padding: 0; background: transparent; --paper: #f8f7f3; }
 .preview-head { display: none; }
 .workspace { max-width: none; }
@@ -8,7 +8,8 @@ body { padding: 0; background: transparent; --paper: #f8f7f3; }
 .preview-foot > span { display: none; }
 .controls { margin-top: 8px; }
 .portfolio-embedded .controls [data-action="motion"] { display: none; }
-.controls button { min-height: 44px; border-color: #8d9baa; }
+.controls button { min-height: 44px; border: 2px solid currentColor; background: transparent; color: #27313f; font-weight: 700; }
+.controls button:disabled { opacity: .5; }
 dialog { border: 0; color: #1b222b; }
 dialog::backdrop { background: #0b1118d9; }
 .image-save-dialog { --ink: #1b222b; }
