@@ -28,12 +28,25 @@
     if (focused && !available) {
       (button === previous ? next : previous).focus({ preventScroll: true });
     }
-    if (!navigationReady || paused || reduced.matches) return;
-    const animation = window.AXDSnapshot(button, available);
+    const settledState = available ? 'visible' : 'hidden';
+    if (!navigationReady || paused || reduced.matches) {
+      button.dataset.snapshot = settledState;
+      return;
+    }
+    // Disabled controls stop accepting input immediately, but remain painted
+    // until their closing shutter completes. A reversal cancels the old finish.
+    button.dataset.snapshot = available ? 'opening' : 'closing';
+    const animation = window.AXDSnapshot(button, available, {
+      duration: available ? 460 : 360,
+      easing: 'cubic-bezier(.65,0,.35,1)',
+      fill: 'both'
+    });
     buttonAnimations.set(button, animation);
     animation.finished.catch(() => {}).finally(() => {
       if (buttonAnimations.get(button) === animation) {
+        button.dataset.snapshot = settledState;
         buttonAnimations.delete(button);
+        animation.cancel();
       }
     });
   }
@@ -76,7 +89,7 @@
   previous.addEventListener('click', () => goTo(index - 1, false, true));
   next.addEventListener('click', () => goTo(index + 1, false, true));
   const syncMotion = () => {
-    if (paused || reduced.matches) buttonAnimations.forEach(animation => animation.cancel());
+    if (paused || reduced.matches) buttonAnimations.forEach(animation => animation.finish());
     sync();
   };
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; syncMotion(); });

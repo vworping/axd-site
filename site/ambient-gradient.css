@@ -1,0 +1,31 @@
+/* The portfolio's warm/cool canvas, carried through the long project pages. */
+body.ambient-gradient { background: transparent; isolation: isolate; }
+.ambient-gradient::before {
+  content: '';
+  position: fixed;
+  inset: -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at calc(90% - var(--ambient-progress, 0) * 35%) calc(18% + var(--ambient-progress, 0) * 25%), #99b4d5 0%, transparent 65%),
+    radial-gradient(ellipse at calc(10% + var(--ambient-progress, 0) * 40%) 85%, #dcc4bb 0%, transparent 60%),
+    #c9d1db;
+  animation: ambient-drift 18s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift {
+  from { transform: translate3d(-3%, -2%, 0); }
+  to { transform: translate3d(3%, 2%, 0); }
+}
+.ambient-gradient.motion-paused::before,
+.ambient-gradient.motion-hidden::before { animation-play-state: paused; }
+.ambient-gradient .interaction {
+  background: transparent;
+  color: var(--ink);
+  border-block: 1px solid var(--line);
+}
+.ambient-gradient .interaction li { border-color: var(--line); }
+.ambient-gradient .interaction li > span,
+.ambient-gradient .interaction p { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) {
+  .ambient-gradient::before { animation: none; }
+}

@@ -820,7 +820,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .section-navigation .round-arrow { flex: 0 0 44px; width: 44px; height: 44px; }
 .section-navigation button:not(:disabled):hover { transform: none; }
 .section-navigation button:not(:disabled):hover .round-arrow { background: var(--ink); color: #d2d8df; }
-.section-navigation button:disabled { opacity: .3; cursor: default; }
+.section-navigation button:disabled { cursor: default; pointer-events: none; }
 .section-navigation #section-current { min-width: 0; }
 @media (max-width: 700px) {
  .section-navigation { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 64px; gap: 14px; }
@@ -874,7 +874,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .connect-footer .motion-controls button { font-size: .6875rem; }
 
 /* Keep the rail geometry fixed while its boundary controls snap shut. */
-.section-navigation button:disabled { visibility: hidden; opacity: 0; pointer-events: none; }
+.section-navigation button[data-snapshot="hidden"] { visibility: hidden; opacity: 0; pointer-events: none; }
 
 /* Move the cool and warm pools across the shared canvas as chapters travel. */
 .hero-shell {

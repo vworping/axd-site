@@ -348,8 +348,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .dismiss-button:hover { background: #0000000d; }
 .dismiss-button:focus-visible { outline: 3px solid currentColor; outline-offset: 6px; }
 </style>
+  <link rel="stylesheet" href="../ambient-gradient.css">
+  <script src="../ambient-gradient.js" defer></script>
 </head>
-<body>
+<body class="ambient-gradient">
   <a class="skip-link" href="#map-controls">Skip to constellation controls</a>
   <div class="app">
     <header class="masthead">
@@ -528,7 +530,7 @@ const dialog = $('focus-dialog');
 const positions = new Map();
 const pointElements = new Map();
 const view = { scale: 1, x: 0, y: 0, width: 1, height: 1 };
-let previewImage = (nodes.find(node => node.id === '5546') || nodes[Math.floor(nodes.length / 2)]).image;
+let previewImage = (nodes.find(node => node.id === '9386') || nodes[Math.floor(nodes.length / 2)]).image;
 let activeImage = null;
 let drag = null;
 let moved = false;

@@ -5,7 +5,7 @@
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; });
 
   // Shared by project dialogs and chapter navigation controls.
-  window.AXDSnapshot = (element, opening) => element.animate((opening ? [
+  window.AXDSnapshot = (element, opening, options = {}) => element.animate((opening ? [
     { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: .7 },
     { clipPath: 'inset(46% 0 46% 0)', transform: 'scale(.99)', opacity: 1, offset: .18 },
     { clipPath: 'inset(0% 0 0% 0)', transform: 'scale(1)', opacity: 1 }
@@ -15,7 +15,8 @@
     { clipPath: 'inset(49.5% 0 49.5% 0)', transform: 'scale(.985)', opacity: 0 }
   ]).map(frame => ({ ...frame, visibility: 'visible' })), {
     duration: opening ? 220 : 180,
-    easing: opening ? 'cubic-bezier(.16,1,.3,1)' : 'cubic-bezier(.7,0,.84,0)'
+    easing: opening ? 'cubic-bezier(.16,1,.3,1)' : 'cubic-bezier(.7,0,.84,0)',
+    ...options
   });
 
   window.AXDDialogs = {
