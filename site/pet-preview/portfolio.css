@@ -1,4 +1,5 @@
-body { padding: 0; background: #bec9d7; --paper: #f8f7f3; }
+html { color-scheme: normal; background: transparent; }
+body { padding: 0; background: transparent; --paper: #f8f7f3; }
 .preview-head { display: none; }
 .workspace { max-width: none; }
 .frame { padding: 5px; border: 1px solid #d5d6d280; border-radius: 3px; background: #f8f7f3; box-shadow: none; }
