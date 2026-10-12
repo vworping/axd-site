@@ -9,7 +9,8 @@ const txt=(s,x,y,w,size=24,cls='',color='')=>`<div class="el txt ${cls}" style="
 const title=(s,x,y,w,size=72,cls='')=>`<h1 class="el display ${cls}" style="${pos(x,y,w)}font-size:${size/10.24}cqw">${s}</h1>`;
 const box=(x,y,w,h,cls='panel',extra='')=>`<div aria-hidden="true" class="el ${cls}" style="${pos(x,y,w,h)}${extra}"></div>`;
 const btn=(s,x,y,w,h,action,fill=false,size=24,cls='')=>`<button aria-label="${s?esc(s.replace(/<[^>]*>/g,'')):'Explore Palette Constellation'}" class="el button ${fill?'primary':''} ${cls}" data-action="${action}" style="${pos(x,y,w,h)}font-size:${size/10.24}cqw">${s}</button>`;
-const qr=()=>`<div class="el hello-qr ${m.opening?'is-opening':''}" style="${pos(696,178,296,312)}"><b class="qr-brand">[pet.]</b><i class="qr-accent"></i>${m.opening?`<div class="el serif" style="${pos(24,71,256)}font-size:${56/10.24}cqw">One<br>moment.</div><div class="el loading-track" style="${pos(24,278,248,4)}"><i></i></div>`:`<img class="el" style="${pos(16,40,264,264)}" src="assets/preview-qr.svg" alt="QR placeholder for the interactive preview">`}</div>`+txt(m.opening?'OPENING YOUR LINK':'SCAN ME',696,498,296,18,'qr-caption muted');
+const helloGreeting=()=>`<div class="el greeting-link hello-greeting" style="${pos(32,168,592,160)}" aria-label="Hello"><span class="greeting-brackets">[<span class="greeting-word">hello</span>]</span></div>`;
+const qr=()=>`<div class="el hello-sheet" style="${pos(656,168,336,336)}">${m.opening?txt('Opening link',24,76,288,32,'display hello-info')+`<div class="el loading-track" style="${pos(24,252,288,4)}"><i></i></div>`:`<img class="el" style="${pos(0,0,336,336)}" src="assets/preview-qr.svg?v=clean-qr-13" alt="Demo QR code linking to the PET project page">`}</div>`+txt(m.opening?'OPENING YOUR LINK':'Demo QR opens the PET page.',656,536,336,18,'hello-info muted');
 const header=()=>{
  const names={home:'',pet:'BUILDING / PET',atla:'BUILDING / ATLA',palette:'COLOR STUDIES',hello:'A SMALL HELLO',settings:'SETTINGS',wifi:'WI-FI',password:'JOIN NETWORK',network:'NETWORK DETAILS'};
  return btn(m.page==='home'?'[pet.]':'← Back',32,16,104,44,m.page==='home'?'home':'back',false,18)+(m.page==='home'?'':btn('Home',144,16,84,44,'home',false,18))+txt(names[m.page],252,29,440,18,'micro muted')+txt(m.opening?'Opening link':m.hello?(m.joined?'Phone linked':'Phone link'):(m.wifi?'Wi-Fi on':'Wi-Fi off'),704,29,160,18,'muted header-status')+btn('Settings',880,16,112,44,'settings',false,18)+box(32,76,960,1,'rule');
@@ -36,20 +37,21 @@ function page(){
   h+=`<div class="el main-photo" style="${pos(48,228,mainWidth,mainHeight)}--spread-accent:${s.accent}">${paletteCard(s.source,0)}</div><div class="el palette-deck" style="${pos(matchX,228,976-matchX,mainHeight)}--spread-accent:${s.accent}" aria-label="Closest palette photographs">${s.neighbors.map((p,i)=>paletteCard(p,i+1)).join('')}</div>`;
  }else if(m.page==='hello'){
   const step=m.received?2:m.opening?0:!m.hello||m.form?1:0;
-  ['INTRODUCTION','SAY HELLO','CONNECT'].forEach((name,i)=>{h+=`<div class="el hello-step ${i===step?'active':''}" style="${pos(32+i*268,96,248,36)}" ${i===step?'aria-current="step"':''}>0${i+1} / ${name}</div>`+box(32+i*268,140,248,2,'rule',`background:${i===step?'var(--green)':'var(--line)'}`);});
+  ['INTRODUCTION','SAY HELLO','CONNECT'].forEach((name,i)=>{h+=`<div class="el hello-step ${i===step?'active':''}" style="${pos(32+i*328,96,304,36)}" ${i===step?'aria-current="step"':''}>0${i+1} / ${name}</div>`+box(32+i*328,140,304,2,'rule',`background:${i===step?'var(--green)':'var(--line)'}`);});
+
   if(m.received){
-   h+=txt('<span class="guest-name">Maya Chen</span> — hi!',32,174,960,84,'serif guest-greeting')+txt("What's up?",32,303,940,56,'serif')+txt('Color and human connection',36,375,940,28)+box(32,448,960,128);
-   const messages={idle:'Add this conversation to a business card.',armed:'Tap a business card to save this conversation.',review:'Card found. Save this conversation to it?',saved:'Updated. This card is ready to give.',clearing:'Remove any card, then tap one writable NFC tag. Its link will be erased.',cleared:'Tag cleared. Ready to set a business card.'};
-   h+=txt(messages[m.cardStage],56,['armed','saved','clearing'].includes(m.cardStage)?491:464,680,18,'card-message',['saved','cleared'].includes(m.cardStage)?'var(--green)':'');
-   if(['idle','cleared'].includes(m.cardStage))h+=btn('Card time',56,512,212,48,'card-arm',false,24,'hello-outline')+btn('Clear tag',284,512,160,48,'card-clear',false,18);
-   if(m.cardStage==='review')h+=txt('Card 22222222',56,528,400,18,'muted');
-   h+=btn(m.cardStage==='review'?'Save to card':'Done',764,484,204,56,m.cardStage==='review'?'card-save':'accept',true);
+   const review=m.cardStage==='review',saved=m.cardStage==='saved';
+   h+=txt('NICE TO MEET YOU',32,178,592,18,'hello-info','var(--green)')+title('Maya Chen',32,214,592,72,'guest-greeting')+box(32,352,592,1,'rule')+txt('CONVERSATION STARTER',32,374,592,18,'hello-info muted')+txt('Color and human connection',32,414,592,28,'hello-topic')+box(656,168,336,340,'hello-sheet')+title(saved?'Card updated.':'NFC card',680,196,288,32,'hello-paper')+txt(saved?'Ready to share.':review?'Confirm the card below.':'Save this introduction.',680,258,288,18,'hello-info hello-paper');
+   const messages={idle:'Prepare a tag to save this introduction, or select Done.',armed:'Hold a blank NFC tag on PET.',review:'Tag found. Select Save to card to confirm.',saved:'Updated. This card is ready to give.',clearing:'Remove any card, then tap a writable tag to erase its link.',cleared:'Tag cleared. Ready for a new introduction.'};
+   h+=box(32,524,960,1,'rule')+txt(messages[m.cardStage],32,544,960,18,'hello-info card-message',saved?'var(--green)':'var(--muted)');
+   if(['idle','cleared'].includes(m.cardStage))h+=btn('Prepare tag',680,364,164,48,'card-arm',false,24,'hello-action hello-outline')+btn('Clear tag',856,364,112,48,'card-clear',false,18,'hello-action hello-paper');
+   if(review)h+=txt('Card 22222222',680,376,288,18,'hello-info hello-paper');
+   h+=btn(review?'Save to card':'Done',680,428,288,56,review?'card-save':'accept',true,24,'hello-action');
   }else if(!m.hello&&!m.opening){
-   h+=txt('Say what?',32,209,960,144,'serif hello-large')+txt("This Hello ended. Let's try again.",36,384,940,28,'muted')+btn('Start a fresh hello',32,506,344,62,'hello',false,24,'hello-outline');
+   h+=title('Try again.',32,190,592,72)+txt('This introduction has ended.',32,336,592,28,'hello-info')+txt('Open a new link when you are ready.',32,408,592,24,'hello-info muted')+box(656,168,336,336,'hello-sheet')+title('New hello',680,208,288,32,'hello-paper')+btn('Start again',680,420,288,56,'hello',true,24,'hello-action');
   }else{
-   if(m.form&&!m.opening)h+=txt('Hello...',32,231,620,144,'serif hello-large')+txt('say it back?',32,389,620,72,'serif hello-regular','var(--green)');
-   else h+=txt('A',32,194,620,72,'serif hello-regular')+txt('small',32,255,620,144,'serif hello-bold','var(--green)')+txt('hello.',32,405,620,72,'serif hello-regular');
-   h+=qr()+box(32,506,588,1,'rule')+txt(m.opening?'A little hello is on its way.':m.form?'Finish on your phone. Your hello will appear here.':'Scan with your phone. Start a conversation.',32,520,616,24,'muted');
+   const form=m.form&&!m.opening;
+   h+=(form?title('Your turn.',32,188,592,72)+box(32,300,592,1,'rule')+txt('NAME',32,328,592,18,'hello-info muted')+txt('Introduce yourself on your phone.',32,364,592,28,'hello-info')+box(32,418,592,1,'rule')+txt('TOPIC',32,440,592,18,'hello-info muted')+txt("What would you like to talk about?",32,476,592,28,'hello-info'):helloGreeting()+txt('Scan to start a conversation.',32,400,592,28,'hello-info')+txt('No app or sign-in needed.',32,452,592,18,'hello-info muted'))+qr();
   }
  }else if(m.page==='settings'){
   h=title('Settings',32,110,950)+btn('Wi-Fi <span aria-hidden="true">›</span>',32,228,320,92,'wifi',false,24,'settings-control')+btn(`Motion <span>${m.motion?'On':'Off'}</span>`,32,336,320,92,'motion',m.motion,24,'settings-control')+btn('Sleep',32,444,320,92,'sleep',false,24,'settings-control')+txt('Brightness',424,290,360,36)+txt(`<output>${m.brightness}%</output>`,828,296,148,28,'brightness-value','var(--green)')+`<input id="brightness" class="el range" aria-label="Brightness" style="${pos(424,360,552,48)}--level:${m.brightness}%" type="range" min="0" max="100" value="${m.brightness}"><i id="brightness-handle" class="el brightness-handle" style="${pos(424+552*m.brightness/100-40,368,32,32)}" aria-hidden="true"></i>`+title(m.connections,720,450,256,72,'hello-count hello-total')+txt('Hellos',720,530,256,24,'hello-count');
@@ -130,7 +132,7 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('keydown',e=>{if(!paletteDialog&&e.target.closest('.palette-deck')&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();advanceDeck(e.key==='ArrowLeft'?-1:1);}});
 function startGreeting(){
  clearInterval(greetingTimer);
- if(m.page!=='home'||!m.motion)return;
+ if(!$('.greeting-word')||!m.motion)return;
  const words=['hello','hi','hey','howdy','hola','buenas','salut','bonjour','coucou'],colors=['#bfd6b8','#e8b5ce','#e8bf88','#aacbdc','#d6c2ed','#e6ad94','#bfd6b8','#aacbdc','#e8b5ce'];
  let index=0,hold=10,erasing=true,current='hello';
  const word=$('.greeting-word'),link=$('.greeting-link');
@@ -139,7 +141,7 @@ function startGreeting(){
   const next=(index+1)%words.length,target=words[next];let prefix=0;
   while(current[prefix]&&current[prefix]===target[prefix])prefix++;
   if(erasing&&current.length>prefix)current=current.slice(0,-1);
-  else {erasing=false;link.style.color=colors[next];current+=target[current.length]??'';}
+  else {erasing=false;link.style.color=m.page==='hello'?'var(--green)':colors[next];current+=target[current.length]??'';}
   const before=word.getBoundingClientRect().width;word.textContent=current;
   const after=word.getBoundingClientRect().width;
   word.animate([{width:before+'px'},{width:after+'px'}],{duration:180,easing:'ease-out'});
@@ -147,13 +149,22 @@ function startGreeting(){
  },210);
 }
 function display(){ $('.dim').style.opacity=(100-m.brightness)/128;$('.screen').classList.toggle('still',!m.motion);document.querySelector('.controls [data-action="motion"]').textContent=m.motion?'Pause motion':'Resume motion'; }
-function render(){cancelAnimationFrame(deckFrame);clearInterval(greetingTimer);paletteDialog=null;ui.innerHTML=header()+`<main class="page" aria-label="${m.page}">${page()}</main>`;document.querySelectorAll('[data-demo]').forEach(b=>{const d=b.dataset.demo;b.disabled=m.page!=='hello'||(d==='ready'?!m.opening:d==='tag'?!m.received||!['armed','clearing'].includes(m.cardStage):m.received||!m.hello||m.opening||(d==='receive'&&!m.form)||(d==='open'&&!m.joined)||(d==='join'&&m.joined)||(d==='disconnect'&&!m.joined));});display();startDeck();startGreeting();}
+function render(){cancelAnimationFrame(deckFrame);clearInterval(greetingTimer);paletteDialog=null;ui.innerHTML=header()+`<main class="page" aria-label="${m.page}">${page()}</main>`;
+ const next=$('[data-demo="next"]');next.disabled=m.page==='hello'&&(m.opening||m.received&&m.cardStage==='review');next.textContent=m.page!=='hello'?'Try Hello':m.opening?'Preparing link…':m.received?(['armed','clearing'].includes(m.cardStage)?'Tap NFC tag':m.cardStage==='review'?'Review tag above':'Restart Hello'):!m.hello?'New hello':m.form?'Send introduction':'Scan QR';
+ $('[data-demo="reset"]').disabled=m.page==='home';display();startDeck();startGreeting();}
 function go(p){m.page=p;render();}
 function reset(){clearTimeout(openingTimer);m.hello=m.joined=m.form=m.received=m.opening=false;m.cardStage='idle';}
 function back(){const p=m.page;if(p==='hello'||p==='done')reset();go(p==='settings'?m.settingsReturn:p==='wifi'?'settings':['password','network'].includes(p)?'wifi':'home');}
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-save-image],dialog'))return;
  const b=e.target.closest('button');if(!b)return;const a=b.dataset.action,d=b.dataset.demo;if(b.dataset.network){m.network=b.dataset.network;m.enterprise=m.network==='eduroam';}
+ if(d==='reset'){reset();go('home');return;}
+ if(d==='next'){
+  if(m.page==='hello'&&m.received&&['armed','clearing'].includes(m.cardStage)){m.cardStage=m.cardStage==='armed'?'review':'cleared';render();return;}
+  if(m.page!=='hello'||m.received||!m.hello&&!m.opening){reset();m.opening=true;go('hello');openingTimer=setTimeout(()=>{if(m.page==='hello'&&m.opening){m.opening=false;m.hello=true;render();}},1800);}
+  else if(!m.opening){if(m.form){m.received=true;m.cardStage='idle';}else{m.joined=true;m.form=true;}render();}
+  return;
+ }
  if(d&&m.page==='hello'){
   if(d==='tag'&&m.received){if(m.cardStage==='armed')m.cardStage='review';else if(m.cardStage==='clearing')m.cardStage='cleared';render();return;}
   if(d==='ready'&&m.opening){clearTimeout(openingTimer);m.opening=false;m.hello=true;render();return;}
