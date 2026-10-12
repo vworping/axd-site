@@ -248,7 +248,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 #palette-orbit path { stroke: none; cursor: pointer; outline: none; transition: opacity .2s, transform .24s ease, filter .24s; }
 #palette-orbit path[data-muted="true"] { opacity: .26; }
 #palette-orbit path[data-selected="true"] { opacity: 1; stroke: var(--paper); stroke-width: 1.8; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 4px 4px #19232725); }
-.palette-selection { position: absolute; left: 50%; top: calc(50% - 12.5px); transform: translate(-50%, -50%); display: grid; gap: 6px; width: 145px; text-align: center; pointer-events: none; }
+.palette-selection { position: absolute; left: 50%; top: calc(50% - 12.5px); transform: translate(-50%, -50%); display: grid; gap: 6px; width: 145px; min-height: 64px; padding: 8px 0; background: transparent; color: inherit; text-align: center; }
 .palette-selection[hidden] { display: none; }
 .selected-color-index { font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
 #selected-color-hex { font-size: 1rem; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: .015em; }
@@ -265,6 +265,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-mini-image img { display: block; width: 100%; height: auto; object-fit: contain; object-position: center; }
 .palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
 .palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
+.palette-mini, .palette-selection { -webkit-tap-highlight-color: transparent; }
 .intro-copy .lead { max-width: 360px; font-size: clamp(1.125rem, 1.8vw, 1.5rem); line-height: 1.45; }
 .explorer-section { border-top: 1px solid var(--line); }
 .frame-space { height: 390px; flex: 0 0 390px; }
@@ -376,11 +377,11 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
         <div class="palette-sculpture">
           <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
-          <div class="palette-selection" id="palette-selection" hidden>
+          <button type="button" class="palette-selection" id="palette-selection" aria-label="Clear color selection" hidden>
             <span class="selected-color-index" id="selected-color-index"></span>
             <strong id="selected-color-hex"></strong>
-            <span class="selected-color-relation">Similar colors in<br>these photos ↓</span>
-          </div>
+            <span class="selected-color-relation">Clear color ×</span>
+          </button>
           <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
             <div class="palette-peek-photos" id="palette-photos"></div>
           </div>
@@ -921,7 +922,9 @@ new ResizeObserver(() => draw()).observe(stage);
     pinned = true;
     previewOpen = true;
     sync();
-    card.focus({ preventScroll: true });
+    // Touch/mouse previews return to the wheel without leaving a focus box on
+    // the photo. Keyboard previews return to their thumbnail for continued browsing.
+    (event.detail === 0 ? card : art).focus({ preventScroll: true });
     openFocus(image);
   });
   const running = () => !paused && !previewOpen && active < 0 && visible && !document.hidden;
@@ -937,6 +940,10 @@ new ResizeObserver(() => draw()).observe(stage);
   }
   function clear() { if (previewOpen) return; active = -1; pinned = false; sync(); }
   function select(index, pin = false) { if (previewOpen) return; suppressHover = false; active = index; pinned = pin; sync(); }
+  $('palette-selection').addEventListener('click', () => {
+    art.focus({ preventScroll: true });
+    clear();
+  });
   paths.forEach((path, index) => {
     path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned && !suppressHover) select(index); });
     // Focus must not move the slice or reveal overlapping photos mid-tap.
@@ -974,7 +981,10 @@ new ResizeObserver(() => draw()).observe(stage);
   sculpture.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !sculpture.contains(document.activeElement)) clear(); });
   sculpture.addEventListener('focusout', event => { if (!pinned && !sculpture.contains(event.relatedTarget)) clear(); });
   sculpture.addEventListener('keydown', event => { if (event.key === 'Escape') clear(); });
-  document.addEventListener('pointerdown', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
+  // The wheel's center and surrounding gaps are also valid dismissal targets.
+  document.addEventListener('pointerdown', event => {
+    if (active >= 0 && !event.target.closest('#palette-orbit path, .palette-mini, #palette-selection')) clear();
+  });
   document.addEventListener('focusin', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; sync(); });
   document.addEventListener('visibilitychange', sync);
