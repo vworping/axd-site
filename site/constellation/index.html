@@ -830,7 +830,17 @@ new ResizeObserver(() => draw()).observe(stage);
 // One continuous ribbon, moving between geometric and organic silhouettes.
 (() => {
   const art = $('palette-orbit'), sculpture = art.parentElement, tag = $('palette-tag');
-  const sequence = ['0322', '6026', '8371', '0675', '7419', '2732'].map(id => nodes.find(node => node.id === id) || nodes[0]);
+  function shuffled(items) {
+    const result = [...items];
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+  }
+  // Explore the whole collection, with a different palette and shape order each visit.
+  const sequence = shuffled(nodes);
+  const forms = shuffled([0, 1, 2, 3, 4, 5]);
   const paths = Array.from({ length: 5 }, () => {
     const path = svgEl('path', { role: 'button', tabindex: 0, 'aria-pressed': 'false' });
     art.append(path); return path;
@@ -852,16 +862,17 @@ new ResizeObserver(() => draw()).observe(stage);
     return 142 + 25 * Math.sin(theta * 2 - time * .17) + 10 * Math.cos(theta * 3); // An asymmetric loop.
   }
   function paint() {
-    const phase = elapsed / 6500, index = Math.floor(phase) % sequence.length;
+    const phase = elapsed / 3200, index = Math.floor(phase) % sequence.length;
     const blend = smooth(phase % 1), first = sequence[index], next = sequence[(index + 1) % sequence.length];
     const a = first.palette, b = next.palette, time = elapsed / 1000;
-    const formPhase = elapsed / 8500, form = Math.floor(formPhase) % 6, morph = smooth(formPhase % 1);
-    let angle = -.9 + time * .09;
+    const formPhase = elapsed / 4400, formIndex = Math.floor(formPhase) % forms.length, morph = smooth(formPhase % 1);
+    const form = forms[formIndex], nextForm = forms[(formIndex + 1) % forms.length];
+    let angle = -.9 + time * .16;
     paths.forEach((path, i) => {
       const end = angle + mix(a[i].weight, b[i].weight, blend) * Math.PI * 2;
       const outline = [];
       const point = (theta, inner) => {
-        const outer = mix(radius(theta, form, time), radius(theta, (form + 1) % 6, time), morph);
+        const outer = mix(radius(theta, form, time), radius(theta, nextForm, time), morph);
         const r = inner ? 73 + (outer - 143) * .17 : outer;
         const twist = inner ? .12 * Math.sin(time * .23) : 0;
         return `${(200 + r * Math.cos(theta + twist) * (1 + stretch * .08)).toFixed(2)},${(200 + r * Math.sin(theta + twist) * (1 - stretch * .06)).toFixed(2)}`;
@@ -906,11 +917,11 @@ new ResizeObserver(() => draw()).observe(stage);
     const card = event.target.closest('[data-image]');
     if (!card) return;
     const image = card.dataset.image;
-    // Hold the exact palette through the dialog, and return focus to the wheel
-    // without selecting a color again when the dialog restores focus.
+    // Pin even a hovered color so all three matches survive closing the dialog.
+    pinned = true;
     previewOpen = true;
     sync();
-    art.focus({ preventScroll: true });
+    card.focus({ preventScroll: true });
     openFocus(image);
   });
   const running = () => !paused && !previewOpen && active < 0 && visible && !document.hidden;
@@ -950,7 +961,7 @@ new ResizeObserver(() => draw()).observe(stage);
     if (!previewOpen) return;
     previewOpen = false;
     suppressHover = true;
-    clear();
+    sync();
   });
   // Closing an overlay can emit pointerenter without a deliberate new hover.
   // Resume inspection only after the pointer moves, or a color is clicked/focused.
@@ -958,7 +969,7 @@ new ResizeObserver(() => draw()).observe(stage);
     if (!suppressHover || previewOpen || event.pointerType === 'touch' || !(event.movementX || event.movementY)) return;
     suppressHover = false;
     const index = paths.indexOf(event.target);
-    if (index >= 0) select(index);
+    if (index >= 0 && !pinned) select(index);
   });
   sculpture.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !sculpture.contains(document.activeElement)) clear(); });
   sculpture.addEventListener('focusout', event => { if (!pinned && !sculpture.contains(event.relatedTarget)) clear(); });

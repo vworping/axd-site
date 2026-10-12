@@ -53,6 +53,7 @@
       ['photographer', 'baker’s'],
     ];
     let index = 0, version = 0, timeout;
+    let remaining = [];
     let inView = false, loaded = false, stopped = paused;
     const animations = new Set();
     const running = () => loaded && inView && !stopped && !reduced.matches && !document.hidden;
@@ -84,7 +85,7 @@
     }
     function schedule() {
       clearTimeout(timeout);
-      if (running()) timeout = setTimeout(morphPair, 4200);
+      if (running()) timeout = setTimeout(morphPair, 1800 + Math.random() * 700);
     }
     function settlePair() {
       version++;
@@ -97,7 +98,9 @@
     async function morphPair() {
       if (!running()) return;
       const revision = ++version;
-      const next = (index + 1) % pairs.length;
+      // Visit every other pairing in a fresh random order before refilling.
+      if (!remaining.length) remaining = pairs.map((_, i) => i).filter(i => i !== index);
+      const [next] = remaining.splice(Math.floor(Math.random() * remaining.length), 1);
       try {
         await Promise.all(words.map(async (word, i) => {
           for (const text of spellingSteps(pairs[index][i], pairs[next][i])) {
@@ -107,7 +110,7 @@
             word.textContent = text;
             word.style.width = `${after}px`;
             const animation = word.animate([{ width: `${before}px` }, { width: `${after}px` }], {
-              duration: 90, easing: 'cubic-bezier(.22,.7,.2,1)'
+              duration: 55, easing: 'cubic-bezier(.22,.7,.2,1)'
             });
             animations.add(animation);
             await animation.finished;

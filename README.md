@@ -46,7 +46,7 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 
 For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
 
-For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” The animation fits the longest sentence before cycling, respects the shared pause control and reduced-motion preference, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
+For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” Pairings cycle in random order, holding for 1.8–2.5 seconds with 55ms spelling steps. The animation fits the longest sentence before cycling, respects the shared pause control and reduced-motion preference, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
 
 ## Preview locally
 
