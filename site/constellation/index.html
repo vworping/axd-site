@@ -922,8 +922,15 @@ new ResizeObserver(() => draw()).observe(stage);
   function select(index, pin = false) { if (previewOpen) return; suppressHover = false; active = index; pinned = pin; sync(); }
   paths.forEach((path, index) => {
     path.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch' && !pinned && !suppressHover) select(index); });
+    // Focus must not move the slice or reveal overlapping photos mid-tap.
+    // Commit the selection and focus together once the click has landed.
+    path.addEventListener('pointerdown', event => { if (event.button === 0) event.preventDefault(); });
     path.addEventListener('focus', () => select(index));
-    path.addEventListener('click', () => pinned && active === index ? clear() : select(index, true));
+    path.addEventListener('click', () => {
+      const release = pinned && active === index;
+      path.focus({ preventScroll: true });
+      release ? clear() : select(index, true);
+    });
     path.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); pinned && active === index ? clear() : select(index, true); }
       else if (event.key === 'Escape') { event.preventDefault(); clear(); }
