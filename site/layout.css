@@ -794,6 +794,17 @@ html[data-input="pointer"] :focus { outline: none !important; }
 
 /* Enlarge the period to finish at the same right edge as ANDRE. */
 .hero h1 .name-period { font-size: 1.392em; line-height: 0; letter-spacing: -.066092em; }
+@media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .horizontal-layout .hero h1 { width: max-content; max-width: 100%; margin-inline: auto; text-align: left; letter-spacing: -.092em; }
+ .horizontal-layout .hero h1 > span { padding-inline-end: .092em; }
+}
+
+/* Complete brackets stay outside the changing words, as in the About heading. */
+.hero-research { min-width: 0; width: 100%; }
+.horizontal-layout .hero-research > #hero-tagline { max-width: none; white-space: nowrap; }
+.tagline-label { display: inline-block; font-size: var(--tagline-size, 1em); }
+.tagline-bracket { display: inline-flex; align-items: baseline; gap: .025em; }
+.tagline-word { display: inline-block; flex: none; overflow: hidden; white-space: nowrap; vertical-align: bottom; padding-inline: .04em; }
 
 /* One stable navigation row, with visible boundaries at the first/last chapter. */
 .section-navigation {

@@ -33,6 +33,107 @@
     return steps;
   }
 
+  // The hero uses the same spelling motion and unclipped brackets as the name.
+  function startTagline() {
+    const tagline = document.getElementById('hero-tagline');
+    if (!tagline) return;
+    const line = tagline.querySelector('.tagline-label');
+    const words = [...line.querySelectorAll('.tagline-word')];
+    const pairs = [
+      ['photographer', 'researcher’s'],
+      ['data analyst', 'researcher’s'],
+      ['data analyst', 'photographer’s'],
+      ['photographer', 'data analyst’s'],
+      ['creative technologist', 'photographer’s'],
+      ['creative technologist', 'researcher’s'],
+      ['strategist', 'researcher’s'],
+      ['strategist', 'photographer’s'],
+      ['friend', 'photographer’s'],
+      ['baker', 'researcher’s'],
+      ['photographer', 'baker’s'],
+    ];
+    let index = 0, version = 0, timeout;
+    let inView = false, loaded = false, stopped = paused;
+    const animations = new Set();
+    const running = () => loaded && inView && !stopped && !reduced.matches && !document.hidden;
+    function wordWidth(word, text) {
+      const probe = word.cloneNode(false);
+      probe.textContent = text;
+      probe.style.cssText = 'position:absolute;visibility:hidden;width:max-content';
+      word.parentElement.append(probe);
+      const width = probe.getBoundingClientRect().width;
+      probe.remove();
+      return width;
+    }
+    function fit() {
+      // Fit the longest complete sentence once, so changing roles never reflows
+      // the hero or changes its type size during the animation.
+      const probe = line.cloneNode(true);
+      probe.style.cssText = 'position:absolute;visibility:hidden;width:max-content;font-size:inherit';
+      const slots = [...probe.querySelectorAll('.tagline-word')];
+      slots.forEach(slot => slot.style.width = 'auto');
+      tagline.append(probe);
+      const width = Math.max(...pairs.map(pair => {
+        slots.forEach((slot, i) => slot.textContent = pair[i]);
+        return probe.getBoundingClientRect().width;
+      }));
+      probe.remove();
+      const size = parseFloat(getComputedStyle(tagline).fontSize);
+      line.style.setProperty('--tagline-size', `${size * Math.min(1, (tagline.clientWidth - 2) / width)}px`);
+      words.forEach(word => word.style.width = `${wordWidth(word, word.textContent)}px`);
+    }
+    function schedule() {
+      clearTimeout(timeout);
+      if (running()) timeout = setTimeout(morphPair, 4200);
+    }
+    function settlePair() {
+      version++;
+      animations.forEach(animation => animation.cancel());
+      animations.clear();
+      words.forEach((word, i) => word.textContent = pairs[index][i]);
+      fit();
+      schedule();
+    }
+    async function morphPair() {
+      if (!running()) return;
+      const revision = ++version;
+      const next = (index + 1) % pairs.length;
+      try {
+        await Promise.all(words.map(async (word, i) => {
+          for (const text of spellingSteps(pairs[index][i], pairs[next][i])) {
+            if (revision !== version || !running()) return;
+            const before = word.getBoundingClientRect().width;
+            const after = wordWidth(word, text);
+            word.textContent = text;
+            word.style.width = `${after}px`;
+            const animation = word.animate([{ width: `${before}px` }, { width: `${after}px` }], {
+              duration: 90, easing: 'cubic-bezier(.22,.7,.2,1)'
+            });
+            animations.add(animation);
+            await animation.finished;
+            animations.delete(animation);
+          }
+        }));
+        if (revision === version) index = next;
+      } catch (error) {
+        if (error.name !== 'AbortError') throw error;
+      } finally {
+        if (revision === version) settlePair();
+      }
+    }
+    document.addEventListener('axd:motion', event => { stopped = event.detail.paused; settlePair(); });
+    reduced.addEventListener('change', settlePair);
+    document.addEventListener('visibilitychange', settlePair);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; settlePair(); }).observe(tagline);
+    } else inView = true;
+    if ('ResizeObserver' in window) new ResizeObserver(settlePair).observe(tagline);
+    else window.addEventListener('resize', settlePair, { passive: true });
+    const font = document.fonts ? document.fonts.load('400 24px "DM Sans"') : Promise.resolve();
+    font.catch(() => {}).then(() => { loaded = true; settlePair(); });
+  }
+  startTagline();
+
   function measure(text) {
     const probe = word.cloneNode(false);
     probe.textContent = text;

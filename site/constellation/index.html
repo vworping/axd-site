@@ -239,6 +239,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
 .palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; height: clamp(350px, 34vw, 425px); justify-self: end; margin-left: -110px; }
+/* Reuse the hero photo cue as an overlay, without changing the wheel's layout. */
+.palette-hint { position: absolute; z-index: 3; top: 4%; right: 8%; display: flex; flex-direction: column; align-items: flex-end; gap: 0; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
+.palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: -1px 2px 0 0; overflow: visible; transform: rotate(-4deg); }
+.palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
 #palette-orbit path { stroke: none; cursor: pointer; outline: none; transition: opacity .2s, transform .24s ease, filter .24s; }
 #palette-orbit path[data-muted="true"] { opacity: .26; }
@@ -371,6 +375,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
         <div class="palette-sculpture">
           <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <div class="palette-hint" aria-hidden="true"><span>Click me</span><svg viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M55 4C53 18 42 29 19 36M19 36L26 27M19 36L30 37"/></svg></div>
           <div class="palette-selection" id="palette-selection" hidden>
             <span class="selected-color-index" id="selected-color-index"></span>
             <strong id="selected-color-hex"></strong>
