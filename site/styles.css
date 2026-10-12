@@ -76,6 +76,9 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
   font-size: .875rem;
 }
 .intro-skip .intro-skip-arrow { width: 1em; height: 1em; margin-left: 15px; fill: currentColor; vertical-align: -.15em; }
+@media (max-width: 700px), (max-height: 600px) and (pointer: coarse) {
+  .intro-skip { bottom: max(8px, env(safe-area-inset-bottom)); }
+}
 .intro-pending .hero-shell { visibility: hidden; }
 .intro-pending.intro-reveal .hero-shell { visibility: visible; }
 .intro-pending .site-header .brand { visibility: hidden; }

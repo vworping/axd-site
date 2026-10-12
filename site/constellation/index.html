@@ -240,8 +240,8 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .constellation-hero { min-height: 400px; }
 .palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; height: clamp(350px, 34vw, 425px); justify-self: end; margin-left: -110px; }
 /* Reuse the hero photo cue as an overlay, without changing the wheel's layout. */
-.palette-hint { position: absolute; z-index: 3; bottom: 2%; right: 6%; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .45em; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
-.palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: 0 2px 0 0; overflow: visible; transform: rotate(4deg) scaleY(-1); }
+.palette-hint { position: absolute; z-index: 3; bottom: 8%; right: 11%; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .45em; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
+.palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: 0 2px 0 0; overflow: visible; transform: translateX(-1.25em) rotate(4deg) scaleY(-1); }
 .palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .palette-selection:not([hidden]) ~ .palette-hint { visibility: hidden; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
