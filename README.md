@@ -11,8 +11,9 @@ A photography portfolio built around a stack of prints, measured color palettes,
 ## What's inside
 
 - Five hero photographs with palettes from **Perceptual Palette Drift**.
+- A bracketed hero tagline that cycles through eleven role pairings, sharing the About page’s spelling animation and fitting the available width without shifting the layout.
 - Project previews, complete stories, photo galleries, and expanded images.
-- [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board.
+- [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board. A responsive **Click me** cue reuses the hero’s arrow as an overlay, adding no page space; tapping a color pins it while opening its photo previews.
 - [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
 - A palette-to-brackets intro, spelling name animation, shutter transitions, and ambient page gradients, with reduced-motion and pause support.
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
@@ -34,6 +35,8 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | --- | --- |
 | Project dates, descriptions, collaborators, photos, and links | [`site/assets/data/projects.js`](site/assets/data/projects.js) |
 | Hero photos and measured palettes | [`site/assets/data/photographs.js`](site/assets/data/photographs.js) |
+| Hero tagline pairings and About name animation | [`site/name-motion.js`](site/name-motion.js) |
+| Hero tagline markup, initial wording, and screen-reader text | [`site/index.html`](site/index.html) |
 | About text, portrait, contact links, background | [`site/index.html`](site/index.html) |
 | [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
 | Constellation explorer and snapshot updates | [`docs/CONSTELLATION.md`](docs/CONSTELLATION.md) |
@@ -42,6 +45,8 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | Fonts, base styles, core visual treatment | [`site/styles.css`](site/styles.css) |
 
 For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
+
+For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” The animation fits the longest sentence before cycling, respects the shared pause control and reduced-motion preference, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
 
 ## Preview locally
 
@@ -75,6 +80,7 @@ site/                  Editable website source
   assets/fonts/        Local fonts and their licenses
   assets/images/       Optimized web photographs and logo assets
   constellation/       Published palette explorer and web photographs
+  name-motion.js       Shared spelling motion for the About name and hero tagline
   pet-preview/         Saved interactive OS preview for the [pet.] page
   sync-pet.mjs          Refreshes the OS snapshot from a local PET checkout
   worker.mjs           HTTPS redirects and response security headers
