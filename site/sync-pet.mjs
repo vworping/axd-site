@@ -13,15 +13,13 @@ const files = new Map();
 let html = await readFile(new URL('pet-badge-concept.html', design), 'utf8');
 const js = await readFile(new URL('pet-os.js', design), 'utf8');
 const css = await readFile(new URL('pet-os.css', design), 'utf8');
-const index = await readFile(new URL('index.html', site), 'utf8');
-const saveDialog = index.match(/<dialog class="image-save-dialog"[\s\S]*?<\/dialog>/)?.[0];
-if (!saveDialog || !html.includes('</head>') || !html.includes('</body>') || !js.includes("'pet:motion'")) {
+if (!html.includes('</head>') || !html.includes('</body>') || !js.includes("'pet:motion'")) {
   throw new Error('Preview integration changed. Review the source before syncing; no files were written.');
 }
 // Portfolio adapters stay separate and are never overwritten by this sync.
 await Promise.all(['portfolio.css', 'portfolio.js'].map(file => readFile(new URL(file, output))));
 html = html.replace('</head>', '<link rel="stylesheet" href="portfolio.css"></head>')
-  .replace('</body>', `${saveDialog}<script src="../dialog-motion.js"></script><script src="../image-downloads.js"></script><script src="portfolio.js"></script></body>`);
+  .replace('</body>', `<script src="portfolio.js"></script></body>`);
 files.set('index.html', html);
 files.set('pet-os.js', js);
 files.set('pet-os.css', css);
