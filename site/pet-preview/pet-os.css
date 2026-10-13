@@ -38,11 +38,10 @@
 .palette-card{display:flex;flex-direction:column;width:20.8984375cqw;height:32.8125cqw;padding:.78125cqw;text-align:left;background:var(--panel);color:var(--ink);overflow:hidden;box-shadow:0 .6cqw 1.5cqw #0003}
 .main-photo .palette-card{width:100%}
 .palette-photo{display:flex;flex:none;width:100%;height:26.171875cqw;align-items:center;justify-content:center}
-.palette-photo img{display:block;max-width:100%;max-height:24.609375cqw;object-fit:contain;pointer-events:none}
+.palette-photo img{display:block;width:16.40625cqw;height:24.609375cqw;object-fit:cover;pointer-events:none}
 .palette-card .swatches{flex:none;margin-top:.9765625cqw;height:.78125cqw}
 .palette-caption{display:block;margin-top:.9765625cqw;font-size:1.7578125cqw;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink)}
-.palette-deck .palette-card{position:relative;flex:none;transition:transform .42s cubic-bezier(.22,.7,.2,1);transform:translateY(0)}
-.palette-deck [data-slot="0"]{transform:translateY(0);box-shadow:0 0 0 2px var(--spread-accent),0 .6cqw 1.5cqw #0003}
+.palette-deck .palette-card{position:relative;flex:none}
 .main-photo .palette-card{background:var(--panel)}
 .main-photo .palette-caption,.spread-name{color:var(--spread-accent)}
 .palette-title{letter-spacing:-.035em}
