@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s),ui=$('.os');
-const m={page:'home',settingsReturn:'home',spread:0,palettePaused:false,wifi:false,brightness:100,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,hello:false,joined:false,form:false,received:false,opening:false,cardStage:'idle',connections:0,network:'Studio',savedNetwork:'',enterprise:false};
+const m={page:'home',settingsReturn:'home',spread:0,wifi:false,brightness:100,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,hello:false,joined:false,form:false,received:false,opening:false,cardStage:'idle',connections:0,network:'Studio',savedNetwork:'',enterprise:false};
 const P=window.PET_CONSTELLATION.spreads;let openingTimer,greetingTimer;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pos=(x,y,w,h)=>`left:${x/10.24}cqw;top:${y/10.24}cqw;width:${w/10.24}cqw;${h?`height:${h/10.24}cqw;`:''}`;
@@ -31,8 +31,7 @@ function page(){
  }else if(m.page==='palette'){
   const s=P[m.spread],mainWidth=214,mainHeight=336,matchX=286;
   h=title('Palette Constellation',48,118,470,32,'palette-title');
-  h+=`<button id="palette-spread" class="el button spread-toggle" style="${pos(544,106,224,56)}" aria-label="Spread" aria-haspopup="listbox" aria-expanded="false" aria-controls="spread-options" data-action="spread-menu"><span style="color:${s.accent}">${s.name}</span><i aria-hidden="true"></i></button><div id="spread-options" class="el spread-options" style="${pos(544,170,224)}--spread-accent:${s.accent}" role="listbox" aria-label="Spread options" hidden>${P.map((p,i)=>`<button role="option" data-spread="${i}" style="color:${p.accent}" aria-selected="${i===m.spread}" tabindex="-1">${p.name}</button>`).join('')}</div>`;
-  h+=btn(m.palettePaused||!m.motion?'Resume motion':'Stop motion',784,106,192,56,'palette-motion',false,18);
+  h+=`<button id="palette-spread" class="el button spread-toggle" style="${pos(752,106,224,56)}" aria-label="Spread" aria-haspopup="listbox" aria-expanded="false" aria-controls="spread-options" data-action="spread-menu"><span style="color:${s.accent}">${s.name}</span><i aria-hidden="true"></i></button><div id="spread-options" class="el spread-options" style="${pos(752,170,224)}--spread-accent:${s.accent}" role="listbox" aria-label="Spread options" hidden>${P.map((p,i)=>`<button role="option" data-spread="${i}" style="color:${p.accent}" aria-selected="${i===m.spread}" tabindex="-1">${p.name}</button>`).join('')}</div>`;
   h+=txt('Main',48,192,mainWidth,18,'',s.accent)+txt('Closest palettes',matchX,192,320,18,'muted');
   h+=`<div class="el main-photo" style="${pos(48,228,mainWidth,mainHeight)}--spread-accent:${s.accent}">${paletteCard(s.source,0)}</div><div class="el palette-deck" style="${pos(matchX,228,976-matchX,mainHeight)}--spread-accent:${s.accent}" aria-label="Closest palette photographs">${s.neighbors.map((p,i)=>paletteCard(p,i+1)).join('')}</div>`;
  }else if(m.page==='hello'){
@@ -57,7 +56,7 @@ function page(){
   h=title('Settings',32,110,950)+btn('Wi-Fi <span aria-hidden="true">›</span>',32,228,320,92,'wifi',false,24,'settings-control')+btn(`Motion <span>${m.motion?'On':'Off'}</span>`,32,336,320,92,'motion',m.motion,24,'settings-control')+btn('Sleep',32,444,320,92,'sleep',false,24,'settings-control')+txt('Brightness',424,290,360,36)+txt(`<output>${m.brightness}%</output>`,828,296,148,28,'brightness-value','var(--green)')+`<input id="brightness" class="el range" aria-label="Brightness" style="${pos(424,360,552,48)}--level:${m.brightness}%" type="range" min="0" max="100" value="${m.brightness}"><i id="brightness-handle" class="el brightness-handle" style="${pos(424+552*m.brightness/100-40,368,32,32)}" aria-hidden="true"></i>`+title(m.connections,720,450,256,72,'hello-count hello-total')+txt('Hellos',720,530,256,24,'hello-count');
  }else if(m.page==='wifi'){
   const active=m.wifi&&m.savedNetwork;
-  h=txt(m.wifi?'Hello service online.':'Hello needs Wi-Fi.',32,192,944,18,'muted')+title('Wi-Fi',32,110,590)+txt(m.wifi?'Connected':'Wi-Fi off',640,144,336,24,'brightness-value','var(--green)')+btn('Scan',32,228,320,92,'scan',false,24,'settings-control')+btn('Manual entry',32,336,320,92,'manual-network',false,24,'settings-control')+btn('Wi-Fi off',32,444,320,92,'wifi-off',false,24,'settings-control')+(active?btn(`<span class="network-name">${esc(m.savedNetwork)}</span><small>2.4 GHz</small><small>Manage ›</small>`,424,228,536,92,'network',true,24,'connected-network'):'')+`<div class="el wifi-networks" style="${pos(424,active?336:228,552,active?200:308)}">${['Studio','Guest','Workshop','Lobby','Office','eduroam'].filter(n=>!active||n!==m.savedNetwork).map(n=>`<button class="button" data-network="${n}" data-action="password"><span class="network-name">${n}</span><small>2.4 GHz　 ›</small></button>`).join('')}</div>`+(!active&&m.savedNetwork?btn('Manage saved network ›',424,544,536,40,'network',false,18):'');
+  h=(m.wifi?'':txt('Hello needs Wi-Fi.',32,192,944,18,'muted'))+title('Wi-Fi',32,110,590)+txt(m.wifi?'Connected':'Wi-Fi off',640,144,336,24,'brightness-value','var(--green)')+btn('Scan',32,228,320,92,'scan',false,24,'settings-control')+btn('Manual entry',32,336,320,92,'manual-network',false,24,'settings-control')+btn('Wi-Fi off',32,444,320,92,'wifi-off',false,24,'settings-control')+(active?btn(`<span class="network-name">${esc(m.savedNetwork)}</span><small>2.4 GHz</small><small>Manage ›</small>`,424,228,536,92,'network',true,24,'connected-network'):'')+`<div class="el wifi-networks" style="${pos(424,active?336:228,552,active?200:308)}">${['Studio','Guest','Workshop','Lobby','Office','eduroam'].filter(n=>!active||n!==m.savedNetwork).map(n=>`<button class="button" data-network="${n}" data-action="password"><span class="network-name">${n}</span><small>2.4 GHz　 ›</small></button>`).join('')}</div>`+(!active&&m.savedNetwork?btn('Manage saved network ›',424,544,536,40,'network',false,18):'');
  }else if(m.page==='network'){
   h=title('Network details',32,110,960)+box(32,228,960,348)+txt(esc(m.savedNetwork),56,250,652,36)+txt(m.wifi?'Connected':'Saved',744,259,224,24,'brightness-value','var(--green)')+box(56,310,912,1,'rule')+['BAND','CHANNEL','SIGNAL','IP ADDRESS'].map((heading,i)=>txt(heading,56+232*i,334,216,18,'muted')+txt(m.wifi?['2.4 GHz','6','-48 dBm','192.0.2.10'][i]:'--',56+232*i,369,216,24)).join('')+box(56,421,912,1,'rule')+txt('Forget removes saved credentials and disconnects Wi-Fi.',56,441,912,18,'muted')+btn('Edit connection',56,488,440,64,'edit-network',false,24,'edit-network')+btn('Forget this network',512,488,456,64,'forget-wifi',false,24,'forget-network');
  }else if(m.page==='password'){
@@ -69,7 +68,6 @@ function page(){
 let paletteDialog,returnPhoto;
 const swatches=p=>p.palette.map((c,i)=>`<i style="background:${c.hex};flex:${c.weight};--swatch-index:${i}"></i>`).join('');
 function paletteCard(p,i){return `<button class="palette-card" data-photo="${i}" aria-label="Inspect ${i?'closest palette '+i:'main photograph'}, ${esc(P[m.spread].name)}"><span class="palette-photo"><img src="${p.src}" alt="${esc(p.id)} / ${p.year}" draggable="false"></span><span class="swatches">${swatches(p)}</span><span class="palette-caption">${i?`Distance ${p.distance.toFixed(2)}`:P[m.spread].name}</span></button>`;}
-function shutterFrames(){return [{clipPath:'inset(49.5% 0 49.5% 0)',transform:'scale(.985)',opacity:.7},{clipPath:'inset(46% 0 46% 0)',transform:'scale(.99)',opacity:1,offset:.18},{clipPath:'inset(0% 0 0% 0)',transform:'scale(1)',opacity:1}];}
 function inspectionLayout(p){
  const [width,height]=p.detailDimensions,frameWidth=width+24,frameHeight=height+42;
  const diameter=Math.min(288,Math.max(216,Math.round(height*.75)),656-frameWidth);
@@ -83,15 +81,12 @@ function paletteWheel(p){
 function inspectPhoto(index,trigger){
  if(paletteDialog)return;const s=P[m.spread],p=[s.source,...s.neighbors][index],frame=inspectionLayout(p);returnPhoto=trigger;
  paletteDialog=document.createElement('div');paletteDialog.className='palette-detail';paletteDialog.setAttribute('role','dialog');paletteDialog.setAttribute('aria-modal','true');paletteDialog.setAttribute('aria-label','Photograph and measured palette');
- paletteDialog.innerHTML=`<div class="detail-sheet" style="--spread-accent:${s.accent}"><div class="el detail-heading" style="${pos(48,29,552)}"><span class="detail-kicker" style="color:${s.accent}">${index?'CLOSEST PALETTE':'MAIN PHOTOGRAPH'}</span><span class="detail-meta">${esc(p.id)} / ${p.year}</span></div>${btn('Close',832,16,144,44,'close-photo',false,18,'detail-close')}<figure class="el detail-print" style="${pos(frame.x,frame.y,frame.width+24,frame.height+42)}"><img class="el detail-photo" style="${pos(12,12,frame.width,frame.height)}" src="${p.detailSrc}" alt="${esc(p.id)} / ${p.year}"><figcaption class="el" style="${pos(12,frame.height+20,frame.width)}"><span>${esc(p.id)} / ${p.year}</span><i style="background:${s.accent}"></i></figcaption></figure>${title(s.name,frame.wheelX,140,frame.diameter+224,40,'spread-name detail-title')}${txt('MEASURED PALETTE',frame.wheelX,196,frame.diameter+224,18,'muted detail-palette-label')}<div class="el palette-wheel" style="${pos(frame.wheelX,frame.wheelY,frame.diameter,frame.diameter)}background:conic-gradient(${paletteWheel(p)})" role="img" aria-label="Five measured colors; each segment shows its share of the photograph"></div><div class="el palette-values" style="${pos(frame.legendX,frame.legendY,184,frame.legendHeight)}">${p.palette.map(c=>`<div><i style="background:${c.hex}"></i><span>${c.hex.toUpperCase()}</span><span>${(c.weight*100).toFixed(1)}%</span></div>`).join('')}</div>${index?txt(`Distance ${p.distance.toFixed(2)}`,624,29,184,18,'muted detail-distance'):''}</div>`;
+ paletteDialog.innerHTML=`<div class="detail-sheet" style="--spread-accent:${s.accent}"><div class="el detail-heading" style="${pos(32,16,568,44)}"><span class="detail-kicker" style="color:${s.accent}">${index?'CLOSEST PALETTE':'MAIN PHOTOGRAPH'}</span><span class="detail-meta">${esc(p.id)} / ${p.year}</span></div>${btn('Close',848,16,144,44,'close-photo',false,18,'detail-close')}<figure class="el detail-print" style="${pos(frame.x,frame.y,frame.width+24,frame.height+42)}"><img class="el detail-photo" style="${pos(12,12,frame.width,frame.height)}" src="${p.detailSrc}" alt="${esc(p.id)} / ${p.year}"><figcaption class="el" style="${pos(12,frame.height+12,frame.width,30)}"><span>${esc(p.id)} / ${p.year}</span><i style="background:${s.accent}"></i></figcaption></figure>${title(s.name,frame.wheelX,140,frame.diameter+224,32,'spread-name detail-title')}${txt('MEASURED PALETTE',frame.wheelX,196,frame.diameter+224,18,'muted detail-palette-label')}<div class="el palette-wheel" style="${pos(frame.wheelX,frame.wheelY,frame.diameter,frame.diameter)}background:conic-gradient(${paletteWheel(p)})" role="img" aria-label="Five measured colors; each segment shows its share of the photograph"></div><div class="el palette-values" style="${pos(frame.legendX,frame.legendY,184,frame.legendHeight)}">${p.palette.map(c=>`<div><i style="background:${c.hex}"></i><span>${c.hex.toUpperCase()}</span><span>${(c.weight*100).toFixed(1)}%</span></div>`).join('')}</div>${index?txt(`Distance ${p.distance.toFixed(2)}`,640,27,184,18,'muted detail-distance'):''}</div>`;
 
  ui.append(paletteDialog);$('.page').inert=true;ui.querySelectorAll(':scope > button').forEach(b=>b.inert=true);paletteDialog.querySelector('button').focus({preventScroll:true});
- paletteDialog.classList.toggle('no-motion',!m.motion||m.palettePaused);
- if(m.motion&&!m.palettePaused)paletteDialog.querySelector('.detail-sheet').animate(shutterFrames(),{duration:220,easing:'cubic-bezier(.16,1,.3,1)'});
 }
-async function closePhoto(){
+function closePhoto(){
  if(!paletteDialog||paletteDialog.dataset.closing)return;const dialog=paletteDialog;dialog.dataset.closing='true';
- if(m.motion&&!m.palettePaused)await dialog.querySelector('.detail-sheet').animate(shutterFrames(),{duration:180,easing:'cubic-bezier(.7,0,.84,0)',direction:'reverse',fill:'forwards'}).finished.catch(()=>{});
  dialog.remove();paletteDialog=null;$('.page').inert=false;ui.querySelectorAll(':scope > button').forEach(b=>b.inert=false);returnPhoto?.focus({preventScroll:true});
 }
 function toggleSpread(open){const menu=$('#spread-options');if(!menu)return;const expanded=open??menu.hidden;menu.hidden=!expanded;$('#palette-spread').setAttribute('aria-expanded',String(expanded));if(expanded)menu.querySelector('[aria-selected="true"]').focus();}
@@ -164,7 +159,6 @@ document.addEventListener('click',e=>{
  if(a==='spread-menu'){toggleSpread();return;}
  if(b.dataset.photo!==undefined){inspectPhoto(+b.dataset.photo,b);return;}
  if(a==='close-photo'){closePhoto();return;}
- if(a==='palette-motion'){if(!m.motion){m.motion=true;m.palettePaused=false;}else m.palettePaused=!m.palettePaused;b.textContent=m.palettePaused?'Resume motion':'Stop motion';display();return;}
  if(a==='show-password'){const input=$('#wifi-password'),show=input.type==='password';input.type=show?'text':'password';b.setAttribute('aria-label',show?'Hide password':'Show password');b.setAttribute('aria-pressed',String(show));return;}
  if(a==='enterprise-toggle'){m.enterprise=!m.enterprise;$('#wifi-username').style.display=m.enterprise?'':'none';b.textContent=m.enterprise?'Username + password':'Password only';return;}
  if(a==='manual-network'){m.network='';m.enterprise=false;go('password');return;}
@@ -192,7 +186,6 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#palette')go('pale
 document.addEventListener('pet:motion',event=>{
  m.motion=!event.detail.paused;
  display();startGreeting();
- paletteDialog?.classList.toggle('no-motion',!m.motion||m.palettePaused);
 });
 render();
 })();
