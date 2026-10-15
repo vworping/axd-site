@@ -9,4 +9,7 @@ body { padding: 0; background: transparent; --paper: #f8f7f3; }
 .controls { margin-top: 8px; }
 .portfolio-embedded .controls [data-action="motion"] { display: none; }
 .controls button { min-height: 44px; border: 2px solid currentColor; background: transparent; color: #27313f; font-weight: 700; }
+/* Keep focus feedback inside the embedded preview's bounds. */
+.controls button:focus { outline: none; }
+.controls button:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
 .controls button:disabled { opacity: .5; }
