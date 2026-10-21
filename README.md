@@ -19,6 +19,8 @@ A photography portfolio built around a stack of prints, measured color palettes,
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
 - Clean web images with watermarked copies available through **Take a copy**.
 
+The intro plays on homepage arrivals and through “Replay intro.” Links to Work or About skip it, so returning from PET or Constellation lands directly in the requested chapter. Their [AXD] logos link to the homepage and play the intro.
+
 Plain HTML, CSS, and JavaScript. No framework or package installation is required to edit, preview, or build.
 
 ## Building [pet.]
