@@ -54,7 +54,7 @@ The portrait frame follows the photograph's natural proportions. Its padding is 
 | `story-shelf.js` | Project previews and bounded mobile photo positions. |
 | `photo-deck.js` | Hero photo sizing and flipping. |
 | `logo-motion.js` | Palette logo and intro animation. |
-| `name-motion.js` | AX → AXD → AXDRE → ANDRE, then varied spelling transitions. |
+| `name-motion.js` | About name spelling transitions and staggered whole-word hero tagline rolls. |
 | `dialog-motion.js` | Opening shutter animation. |
 | `section-navigation.js` | Horizontal chapters, touch/wheel/keyboard navigation. |
 | `image-downloads.js` | Watermarked save/copy exports. |

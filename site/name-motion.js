@@ -33,7 +33,7 @@
     return steps;
   }
 
-  // The hero uses the same spelling motion and unclipped brackets as the name.
+  // Whole words roll inside closely fitted brackets; the About name keeps spelling.
   function startTagline() {
     const tagline = document.getElementById('hero-tagline');
     if (!tagline) return;
@@ -58,40 +58,47 @@
     const animations = new Set();
     const running = () => loaded && inView && !stopped && !reduced.matches && !document.hidden;
     function wordWidth(word, text) {
-      const probe = word.cloneNode(false);
+      const probe = document.createElement('span');
+      probe.className = 'tagline-value';
       probe.textContent = text;
-      probe.style.cssText = 'position:absolute;visibility:hidden;width:max-content';
-      word.parentElement.append(probe);
+      probe.style.cssText = 'position:absolute;visibility:hidden;width:max-content;white-space:nowrap';
+      word.append(probe);
       const width = probe.getBoundingClientRect().width;
       probe.remove();
       return width;
     }
     function fit() {
-      // Fit the longest complete sentence once, so changing roles never reflows
-      // the hero or changes its type size during the animation.
-      const probe = line.cloneNode(true);
-      probe.style.cssText = 'position:absolute;visibility:hidden;width:max-content;font-size:inherit';
-      const slots = [...probe.querySelectorAll('.tagline-word')];
-      slots.forEach(slot => slot.style.width = 'auto');
-      tagline.append(probe);
-      const width = Math.max(...pairs.map(pair => {
-        slots.forEach((slot, i) => slot.textContent = pair[i]);
-        return probe.getBoundingClientRect().width;
-      }));
-      probe.remove();
-      const size = parseFloat(getComputedStyle(tagline).fontSize);
-      line.style.setProperty('--tagline-size', `${size * Math.min(1, (tagline.clientWidth - 2) / width)}px`);
-      words.forEach(word => word.style.width = `${wordWidth(word, word.textContent)}px`);
+      // Fit the longest phrases once per viewport so type size stays constant.
+      // Then close each bracket around its current phrase instead of retaining
+      // the measuring space around shorter words.
+      line.style.removeProperty('--tagline-size');
+      const reserve = () => words.forEach((word, i) => {
+        word.style.width = `${Math.ceil(Math.max(...pairs.map(pair => wordWidth(word, pair[i]))))}px`;
+      });
+      reserve();
+      const available = tagline.clientWidth - 2;
+      const width = line.getBoundingClientRect().width;
+      if (available > 0 && width > available) {
+        const size = parseFloat(getComputedStyle(line).fontSize);
+        line.style.setProperty('--tagline-size', `${size * available / width}px`);
+      }
+      words.forEach((word, i) => word.style.width = `${Math.ceil(wordWidth(word, pairs[index][i]))}px`);
+    }
+    function value(text) {
+      const span = document.createElement('span');
+      span.className = 'tagline-value';
+      span.textContent = text;
+      return span;
     }
     function schedule() {
       clearTimeout(timeout);
-      if (running()) timeout = setTimeout(morphPair, 1800 + Math.random() * 700);
+      if (running()) timeout = setTimeout(morphPair, 3000);
     }
     function settlePair() {
       version++;
       animations.forEach(animation => animation.cancel());
       animations.clear();
-      words.forEach((word, i) => word.textContent = pairs[index][i]);
+      words.forEach((word, i) => word.replaceChildren(value(pairs[index][i])));
       fit();
       schedule();
     }
@@ -103,19 +110,27 @@
       const [next] = remaining.splice(Math.floor(Math.random() * remaining.length), 1);
       try {
         await Promise.all(words.map(async (word, i) => {
-          for (const text of spellingSteps(pairs[index][i], pairs[next][i])) {
-            if (revision !== version || !running()) return;
-            const before = word.getBoundingClientRect().width;
-            const after = wordWidth(word, text);
-            word.textContent = text;
-            word.style.width = `${after}px`;
-            const animation = word.animate([{ width: `${before}px` }, { width: `${after}px` }], {
-              duration: 55, easing: 'cubic-bezier(.22,.7,.2,1)'
-            });
-            animations.add(animation);
-            await animation.finished;
+          if (pairs[index][i] === pairs[next][i]) return;
+          const outgoing = word.firstElementChild;
+          const incoming = value(pairs[next][i]);
+          const before = word.getBoundingClientRect().width;
+          const after = Math.ceil(wordWidth(word, pairs[next][i]));
+          word.append(incoming);
+          const options = { duration: 400, delay: i * 100, easing: 'cubic-bezier(.22,.7,.2,1)', fill: 'both' };
+          const rolling = [
+            outgoing.animate([{ transform: 'translateY(0)' }, { transform: 'translateY(-100%)' }], options),
+            incoming.animate([{ transform: 'translateY(100%)' }, { transform: 'translateY(0)' }], options),
+            word.animate([{ width: `${before}px` }, { width: `${after}px` }], options),
+          ];
+          rolling.forEach(animation => animations.add(animation));
+          await Promise.all(rolling.map(animation => animation.finished));
+          if (revision !== version || !running()) return;
+          word.replaceChildren(incoming);
+          word.style.width = `${after}px`;
+          rolling.forEach(animation => {
+            animation.cancel();
             animations.delete(animation);
-          }
+          });
         }));
         if (revision === version) index = next;
       } catch (error) {

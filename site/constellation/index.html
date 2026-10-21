@@ -38,6 +38,7 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 h1 { font: 900 clamp(2.5rem, 4.5vw, 4.25rem)/.98 var(--display); letter-spacing: -.075em; margin: 18px 0 24px -.04em; }
 .lead { font-size: clamp(1.25rem, 2.2vw, 1.8rem); letter-spacing: -.04em; line-height: 1.2; max-width: 380px; }
 .intro-copy > p:not(.eyebrow):not(.lead) { max-width: 355px; margin-top: 18px; font-size: .9375rem; line-height: 1.7; }
+.intro-links { display: flex; flex-wrap: wrap; gap: 0 24px; }
 .explore-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 18px; border-bottom: 1px solid var(--muted); font-size: .8125rem; }
 h2 { font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.14; letter-spacing: -.04em; font-weight: 400; }
 .preview-print { display: block; padding: 0; width: 100%; background: transparent; }
@@ -270,13 +271,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .explorer-section { border-top: 1px solid var(--line); }
 .frame-space { height: 390px; flex: 0 0 390px; }
 .preview-shelf { justify-content: flex-start; min-height: 0; }
-.map-note { height: 0; min-height: 308px; flex: 1 1 0; display: flex; flex-direction: column; position: relative; margin: 24px 8px 0; padding: 21px 20px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
+.map-note { height: auto; min-height: 0; max-height: 360px; flex: 0 1 auto; display: flex; flex-direction: column; position: relative; margin: 24px 8px 0; padding: 18px 20px 14px; background: #e4e3dcbc; border-left: 2px solid #737e82; }
 .map-note h3 { flex-shrink: 0; font: 400 .9375rem var(--body); margin-bottom: 12px; letter-spacing: -.02em; }
 .map-note p { font-size: .75rem; line-height: 1.65; margin: 10px 0 0; color: var(--muted); }
 .map-note-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d9baa transparent; padding-right: 10px; }
 .map-note-scroll > p:first-child { margin-top: 0; }
 .map-note-scroll:focus-visible { outline: 1px solid var(--muted); outline-offset: 3px; }
 .map-topic { border-top: 1px solid #8d9baa66; margin-top: 12px; }
+.map-topic + .map-topic { margin-top: 0; }
 .map-topic summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; font-size: .75rem; list-style: none; }
 .map-topic summary::-webkit-details-marker { display: none; }
 .map-topic summary:focus-visible { outline: 1px solid var(--muted); outline-offset: -1px; }
@@ -306,12 +308,14 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-details { margin-top: 44px; font-size: .6875rem; }
 .neighbor-heading { margin: 0 0 26px; }
 .neighbor-heading h2 { font-size: 1.25rem; margin: 0; }
-#neighbors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; justify-items: center; gap: 14px 10px; padding: 4px 8px; max-width: 490px; margin-inline: auto; }
-.neighbor-card { position: relative; display: block; width: min(100%, calc(230px * var(--print-ratio) + 16px)); padding: 8px 8px 0; background: var(--paper); border: 0; transform: rotate(4deg); box-shadow: 0 12px 22px -14px #19232799; transition: transform .2s, box-shadow .2s; }
-.neighbor-card:nth-child(2) { transform: rotate(-4deg); margin-top: 16px; }
-.neighbor-card:nth-child(3) { grid-column: 1 / -1; width: min(70%, calc(230px * var(--print-ratio) + 16px)); transform: rotate(2deg); }
+#neighbors { display: grid; isolation: isolate; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; justify-items: center; gap: 14px 10px; padding: 4px 8px; max-width: 490px; margin-inline: auto; }
+.neighbor-card { --print-angle: 4deg; position: relative; z-index: 2; display: block; width: min(100%, calc(230px * var(--print-ratio) + 16px)); padding: 8px 8px 0; background: var(--paper); border: 0; transform: rotate(var(--print-angle)); box-shadow: 0 12px 22px -14px #19232799; transition: transform .2s, box-shadow .2s; }
+.neighbor-card:nth-child(2) { --print-angle: -4deg; margin-top: 16px; }
+/* Only the third print's upper image tucks behind the first two prints.
+   Keep their captions above it, including on hover and keyboard focus. */
+.neighbor-card:nth-child(3) { --print-angle: 2deg; z-index: 1; grid-column: 1 / -1; width: min(70%, calc(230px * var(--print-ratio) + 16px)); margin-top: clamp(-64px, -14%, -32px); }
 .neighbor-card:nth-child(2)::before { transform: rotate(-5deg); left: 16%; }
-.neighbor-card:hover, .neighbor-card:focus-visible { transform: translateY(-6px) rotate(0); box-shadow: 0 20px 25px -16px #192327aa; z-index: 3; }
+.neighbor-card:hover, .neighbor-card:focus-visible { transform: translateY(-3px) rotate(var(--print-angle)); box-shadow: 0 20px 25px -16px #192327aa; }
 .neighbor-photo { display: block; }
 .neighbor-photo img { width: 100%; height: auto; max-height: none; margin: 0; }
 .neighbor-card .palette { max-width: none; height: 5px; margin-top: 8px; }
@@ -329,7 +333,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
   .print-caption { font-size: .5625rem; gap: 3px; }
 }
 @media (max-width: 700px) {
-  .map-note { margin: 6px 0 8px; height: 340px; min-height: 0; flex: none; }
+  .map-note { margin: 6px 0 8px; max-height: none; flex: none; }
   .frame-space { height: 320px; flex-basis: 320px; }
 }
 @media (max-width: 600px) {
@@ -353,6 +357,19 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .dismiss-button { flex-shrink: 0; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; font-size: 1.8rem; line-height: 1; }
 .dismiss-button:hover { background: #0000000d; }
 .dismiss-button:focus-visible { outline: 3px solid currentColor; outline-offset: 6px; }
+
+
+/* A short project story follows the interactive explorer. */
+.project-story { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 72px); padding-block: 48px 20px; border-top: 1px solid var(--line); scroll-margin-top: 28px; }
+.project-story h2 { margin-top: 16px; font-size: clamp(1.75rem, 3vw, 2.5rem); }
+.project-story-copy { max-width: 62ch; font-size: .9375rem; line-height: 1.75; }
+.project-story-copy > p + p { margin-top: 20px; }
+.story-method { margin-top: 26px; border-top: 1px solid var(--line); font-size: .8125rem; color: var(--muted); }
+.story-method summary { padding-block: 10px; min-height: 44px; color: var(--ink); }
+.story-method p { padding-bottom: 8px; }
+@media (max-width: 700px) {
+  .project-story { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 34px 16px; }
+}
 </style>
   <link rel="stylesheet" href="../ambient-gradient.css">
   <script src="../ambient-gradient.js" defer></script>
@@ -372,8 +389,9 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         <div class="intro-copy">
           <p class="eyebrow" id="collection-count"></p>
           <h1 id="constellation-title">Palette<br>constellation.</h1>
-          <p class="lead">Explore the colors that connect six years of photographs.</p>
-          <a class="explore-link" href="#explorer">Explore the map ↓</a>
+          <p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>
+          <p>Open a photograph to explore its closest palettes.</p>
+          <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
         </div>
         <div class="palette-sculpture">
           <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
@@ -438,6 +456,21 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </section>
         </div>
 
+      </section>
+      <section class="project-story" id="about-project" aria-labelledby="project-story-title">
+        <div>
+          <p class="eyebrow">About this project</p>
+          <h2 id="project-story-title">Finding connections<br>through color.</h2>
+        </div>
+        <div class="project-story-copy">
+          <p>I noticed darker tones and vibrant colors recurring in my photographs. I wanted to see whether there was an implicit consistency in my work.</p>
+          <p>Palette Constellation explores that question through 150 photographs from 2020–2025. Each photograph is summarized as five colors and their relative proportions. The wheel finds photographs with a similar individual color; the map and “Closest palettes” compare whole palettes. The map is an approximate view, and the closest matches come from the underlying palette comparisons.</p>
+          <p>Color can be a starting point for choosing photographs for a website, campaign, or brand. Comparing colors and their proportions can surface visual connections—a potential way to narrow a selection for a design project. Subject, composition, and story still shape the final choice.</p>
+          <details class="story-method">
+            <summary>How the palettes are measured</summary>
+            <p>Sampled image pixels are grouped into five colors in CIELAB, a color space designed to approximate perceived color differences. Their proportions describe the retained sample. The current extraction filters extreme shadows and highlights when enough pixels remain, so each palette is a simplified summary. Color similarity alone does not assess photographic quality.</p>
+          </details>
+        </div>
       </section>
     </main>
     <footer class="site-footer"><a class="back-link" href="/#work">← Back to the portfolio</a><span>PERCEPTUAL PALETTE DRIFT</span></footer>

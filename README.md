@@ -11,7 +11,7 @@ A photography portfolio built around a stack of prints, measured color palettes,
 ## What's inside
 
 - Five hero photographs with palettes from **Perceptual Palette Drift**.
-- A bracketed hero tagline that cycles through eleven role pairings, sharing the About page’s spelling animation and fitting the available width without shifting the layout.
+- A bracketed hero tagline that rolls through eleven role pairings while the About name keeps its spelling animation. Brackets fit each phrase closely; narrow screens use two readable lines.
 - Project previews, complete stories, photo galleries, and expanded images.
 - [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board. A responsive **Click me** cue reuses the hero’s arrow as an overlay, adding no page space; tapping a color pins it while opening its photo previews.
 - [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
@@ -46,7 +46,7 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 
 For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
 
-For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” Pairings cycle in random order, holding for 1.8–2.5 seconds with 55ms spelling steps. The animation fits the longest sentence before cycling, respects the shared pause control and reduced-motion preference, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
+For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” Pairings cycle in random order, holding for three seconds, with 400ms whole-word rolls and a 100ms stagger. Each word window resizes smoothly so the brackets fit the current phrase without empty padding. Type size is fitted against the longest phrases and stays constant; screens up to 700px use two lines. The animation respects the shared pause control and reduced-motion preference, settles on complete words, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
 
 ## Preview locally
 
@@ -80,7 +80,8 @@ site/                  Editable website source
   assets/fonts/        Local fonts and their licenses
   assets/images/       Optimized web photographs and logo assets
   constellation/       Published palette explorer and web photographs
-  name-motion.js       Shared spelling motion for the About name and hero tagline
+  name-motion.js       About spelling motion and whole-word hero tagline rolls
+  sync-constellation.mjs Refreshes the explorer snapshot and preserves its site background
   pet-preview/         Saved interactive OS preview for the [pet.] page
   sync-pet.mjs          Refreshes the OS snapshot from a local PET checkout
   worker.mjs           HTTPS redirects and response security headers

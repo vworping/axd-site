@@ -471,6 +471,9 @@ html[data-input="pointer"] :focus { outline: none !important; }
  }
  .horizontal-layout .connect-email { margin-top: 0; font-size: .9rem; }
  .horizontal-layout .connect-socials { margin: 0; gap: 4px; }
+ /* Align the visible icons with the arrow while retaining 44px tap targets. */
+ .horizontal-layout .connect-hello > span { letter-spacing: 0; }
+ .horizontal-layout .connect-socials a { justify-items: end; }
  .horizontal-layout .connect-footer { padding-top: 10px; }
 }
 
@@ -799,12 +802,18 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .hero h1 > span { padding-inline-end: .092em; }
 }
 
-/* Complete brackets stay outside the changing words, as in the About heading. */
+/* Closely fitted brackets resize smoothly as complete phrases roll upward. */
 .hero-research { min-width: 0; width: 100%; }
 .horizontal-layout .hero-research > #hero-tagline { max-width: none; white-space: nowrap; }
-.tagline-label { display: inline-block; font-size: var(--tagline-size, 1em); }
+.tagline-label { display: inline-flex; align-items: baseline; gap: .28em; font-size: var(--tagline-size, 1em); }
+.tagline-clause { display: block; white-space: nowrap; }
 .tagline-bracket { display: inline-flex; align-items: baseline; gap: .025em; }
-.tagline-word { display: inline-block; flex: none; overflow: hidden; white-space: nowrap; vertical-align: bottom; padding-inline: .04em; }
+.tagline-word { position: relative; display: inline-grid; justify-items: start; flex: none; overflow: hidden; white-space: nowrap; vertical-align: bottom; line-height: 1.35; text-align: left; }
+.tagline-value { display: block; width: max-content; grid-area: 1 / 1; }
+@media (max-width: 700px) {
+ .horizontal-layout .hero-research > #hero-tagline { font-size: clamp(.9375rem, 3.9vw, 1.125rem); line-height: 1.5; }
+ .tagline-label { flex-direction: column; align-items: flex-start; gap: 0; }
+}
 
 /* One stable navigation row, with visible boundaries at the first/last chapter. */
 .section-navigation {
