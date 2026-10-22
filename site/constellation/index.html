@@ -891,6 +891,7 @@ function paletteCuePath(rim, normal, tail) {
   const art = $('palette-orbit'), wheelStage = art.parentElement, interaction = art.closest('.constellation-hero'), tag = $('palette-tag');
   const selection = $('palette-selection'), hint = wheelStage.querySelector('.palette-hint');
   const hintLabel = hint.querySelector('span'), hintArrow = hint.querySelector('svg'), hintPath = hint.querySelector('path');
+  const mobileCue = matchMedia('(max-width: 700px)');
   let wheelWidth = 0, wheelHeight = 0, arrowTail = [0, 0];
   function shuffled(items) {
     const result = [...items];
@@ -982,7 +983,7 @@ function paletteCuePath(rim, normal, tail) {
       selection.style.top = `${cy / (3 * area) / 400 * wheelHeight}px`;
       // Keep the label and tail fixed. Only the shaft length follows the
       // changing rim, with a 20px outward gap and no orbit or loop.
-      const arrowAngle = 1.08;
+      const arrowAngle = mobileCue.matches ? .62 : 1.08;
       const edge = point(arrowAngle, false);
       const rim = [edge[0] / 400 * wheelWidth, edge[1] / 400 * wheelHeight];
       const before = point(arrowAngle - .01, false), after = point(arrowAngle + .01, false);
