@@ -105,7 +105,7 @@
 }
 @media (max-width: 700px) {
   .horizontal-layout .site-header { gap: 12px; min-height: 80px; padding-block: 12px; }
-  .site-header nav { display: grid; grid-template-columns: max-content max-content; gap: 0 16px; align-content: center; justify-items: start; max-width: none; font-size: .75rem; }
+  .site-header nav { display: grid; grid-template-columns: max-content max-content; gap: 0 16px; align-content: center; justify-items: end; text-align: right; max-width: none; font-size: .75rem; }
   .site-header nav a { min-height: 20px; line-height: 1.15; }
   .site-header nav a::after { bottom: 0; }
   .horizontal-layout .project-chapter { padding: 8px var(--gutter) 20px; }
@@ -120,11 +120,8 @@
   .constellation-chapter .palette-peek { height: 140px; padding-block: 4px; }
   .constellation-chapter .palette-mini { width: min(100%, calc(100px * var(--mini-ratio) + 12px)); }
   .constellation-chapter .palette-mini-image img { max-height: 100px; }
-  .constellation-chapter.is-spotlit .intro-copy > :is(.eyebrow, #c-constellation-title, .intro-links),
-  .constellation-chapter .mobile-color-browsing .intro-copy > :is(.eyebrow, #c-constellation-title, .intro-links) { display: none; }
-  .constellation-chapter.is-spotlit .spotlight-exit { position: static; grid-row: 1; justify-self: end; min-height: 32px; margin-bottom: 8px; }
-  .constellation-chapter .palette-stage { height: var(--mobile-palette-height, calc(min(90cqw, 320px) + 20px)); aspect-ratio: auto; }
-  .constellation-chapter #c-palette-orbit { height: calc(100% - 45px); }
+  .constellation-chapter .palette-stage { height: auto; aspect-ratio: 1.15; }
+  .constellation-chapter #c-palette-orbit { height: calc(100% - 35px); }
   .constellation-chapter #c-constellation-title { font-size: 12cqw; margin-block: 4px 2px; }
   .constellation-chapter .intro-copy > .lead { grid-row: 4; max-width: none; font-size: 1.25rem; }
   .constellation-chapter .project-story { margin-top: 20px; padding-block: 24px 8px; }
@@ -141,7 +138,7 @@
   .pet-chapter .v2-heading > p:last-child { font-size: .9375rem; }
   .section-navigation button { max-width: 100%; }
 }
-@media (max-width: 700px) and (max-height: 760px) {
+@media (max-width: 360px) {
   .constellation-chapter #c-constellation-title { font-size: 10.5cqw; }
   .constellation-chapter .intro-copy > .lead { font-size: 1.125rem; }
   .constellation-chapter .intro-discovery, .constellation-chapter .palette-peek { height: 120px; }

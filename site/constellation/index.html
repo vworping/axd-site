@@ -874,11 +874,15 @@ new ResizeObserver(() => draw()).observe(stage);
 function paletteCuePath(rim, normal, tail) {
   const tip = rim.map((value, i) => value + normal[i] * 20);
   const distance = Math.hypot(tip[0] - tail[0], tip[1] - tail[1]);
+  const back = distance ? tail.map((value, i) => (value - tip[i]) / distance) : normal;
   const neckLength = Math.min(8, distance * .22);
-  const neck = tip.map((value, i) => value + normal[i] * neckLength);
-  const first = [tail[0], tail[1] - Math.min(14, distance * .3)];
-  const second = neck.map((value, i) => value + normal[i] * Math.min(10, distance * .2));
-  const wing = side => [tip[0] + normal[0] * 8 - normal[1] * side * 4, tip[1] + normal[1] * 8 + normal[0] * side * 4];
+  const neck = tip.map((value, i) => value + back[i] * neckLength);
+  const bend = Math.min(12, distance * .12);
+  // Both control points advance toward the tip, even when the rim's normal
+  // turns away from the label. This prevents a short cue folding into a hook.
+  const first = [tail[0] - back[0] * distance * .32 + back[1] * bend, tail[1] - back[1] * distance * .32 - back[0] * bend];
+  const second = neck.map((value, i) => value + back[i] * distance * .22);
+  const wing = side => [tip[0] + back[0] * 8 - back[1] * side * 4, tip[1] + back[1] * 8 + back[0] * side * 4];
   return `M${tail} C${first} ${second} ${neck} L${tip} M${wing(-1)} L${tip} L${wing(1)}`;
 }
 
@@ -1012,7 +1016,6 @@ function paletteCuePath(rim, normal, tail) {
     pinned = active >= 0;
     previewOpen = true;
     previewOnMobile = matchMedia('(max-width: 700px)').matches;
-    focusMobilePalette();
     sync();
     // Touch/mouse previews return to the wheel without leaving a focus box on
     // the photo. Keyboard previews return to their thumbnail for continued browsing.
@@ -1031,22 +1034,19 @@ function paletteCuePath(rim, normal, tail) {
     if (running()) frame = requestAnimationFrame(tick);
   }
   function clear() { if (previewOpen) return; active = -1; pinned = false; sync(); }
-  function focusMobilePalette() {
-    if (!matchMedia('(max-width: 700px)').matches) return;
-    const reveal = !interaction.classList.contains('mobile-color-browsing');
-    interaction.classList.add('mobile-color-browsing');
-    // Reuse the title's space for matches. Keep the photos and this compact
-    // layout through clearing a color and opening or closing a photograph.
-    if (reveal && scroller) {
-      const top = interaction.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
-      scroller.scrollTo({ top: Math.max(0, top - 8), behavior: 'instant' });
+  function revealMobileMatches() {
+    if (!scroller || !matchMedia('(max-width: 700px)').matches) return;
+    const photos = tag.getBoundingClientRect(), viewport = scroller.getBoundingClientRect();
+    if (photos.top < viewport.top || photos.bottom > viewport.bottom) {
+      const lead = interaction.querySelector('.lead').getBoundingClientRect();
+      scroller.scrollTo({ top: Math.max(0, lead.top - viewport.top + scroller.scrollTop - 16), behavior: reducedMotion.matches ? 'instant' : 'smooth' });
     }
   }
   function select(index, pin = false) {
     if (previewOpen) return;
     suppressHover = false; active = index; pinned = pin;
-    if (pin) focusMobilePalette();
     sync();
+    if (pin) revealMobileMatches();
   }
   $('palette-selection').addEventListener('click', () => {
     art.focus({ preventScroll: true });
@@ -1106,31 +1106,9 @@ function paletteCuePath(rim, normal, tail) {
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();
   }).observe(art);
-  // Fit the phone composition to its actual chapter viewport, including
-  // browser chrome and the bottom rail, rather than assuming a tall phone.
+  // Keep wheel proportions tied to width. Short screens scroll naturally;
+  // selecting a color, dismissing spotlight, or browser chrome cannot squash it.
   const scroller = interaction.closest('[data-section]');
-  if (scroller) {
-    document.addEventListener('axd:chapter', event => {
-      if (event.detail.id !== scroller.dataset.section) interaction.classList.remove('mobile-color-browsing');
-    });
-    let fitFrame = 0;
-    const fitMobile = () => {
-      cancelAnimationFrame(fitFrame);
-      fitFrame = requestAnimationFrame(() => {
-        if (!matchMedia('(max-width: 700px)').matches) {
-          wheelStage.style.removeProperty('--mobile-palette-height');
-          return;
-        }
-        const top = wheelStage.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
-        const preferred = Math.min(interaction.clientWidth * .9, 320) + 20;
-        const height = Math.round(Math.min(preferred, Math.max(150, scroller.clientHeight - top - 28)));
-        wheelStage.style.setProperty('--mobile-palette-height', `${height}px`);
-      });
-    };
-    const fitObserver = new ResizeObserver(fitMobile);
-    fitObserver.observe(scroller);
-    fitObserver.observe(interaction);
-  }
   sync();
 })();
 

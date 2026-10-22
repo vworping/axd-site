@@ -35,3 +35,17 @@ test('changing the wheel edge adjusts the cue without moving its tail', () => {
   assert.deepEqual(second.slice(0, 2), tail);
   assert.notDeepEqual(first.slice(8, 10), second.slice(8, 10));
 });
+
+test('the cue advances toward its tip without folding back when the rim turns', () => {
+  const tail = [260, 330];
+  for (let angle = 0; angle < Math.PI * 2; angle += .13) {
+    for (const rim of [[230, 270], [260, 305], [280, 315]]) {
+      const v = coordinates(cue(rim, [Math.cos(angle), Math.sin(angle)], tail));
+      const tip = v.slice(8, 10), delta = tip.map((value, i) => value - tail[i]);
+      const lengthSquared = delta.reduce((sum, value) => sum + value * value, 0);
+      const progress = [0, 2, 4, 6, 8].map(offset => ((v[offset] - tail[0]) * delta[0] + (v[offset + 1] - tail[1]) * delta[1]) / lengthSquared);
+      for (let i = 1; i < progress.length; i++) assert.ok(progress[i] >= progress[i - 1], 'Each control point must advance along the arrow');
+      near(progress.at(-1), 1);
+    }
+  }
+});
