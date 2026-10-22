@@ -39,9 +39,7 @@ h1 { font: 900 clamp(2.5rem, 4.5vw, 4.25rem)/.98 var(--display); letter-spacing:
 .lead { font-size: clamp(1.25rem, 2.2vw, 1.8rem); letter-spacing: -.04em; line-height: 1.2; max-width: 380px; }
 .intro-copy > p:not(.eyebrow):not(.lead) { max-width: 355px; margin-top: 18px; font-size: .9375rem; line-height: 1.7; }
 .intro-links { display: flex; flex-wrap: wrap; gap: 0 24px; }
-.intro-discovery { position: relative; height: 160px; margin-top: 18px; }
-.discovery-copy > p { max-width: 35ch; font-size: .9375rem; line-height: 1.65; }
-.intro-discovery:has(.palette-peek:not([hidden])) .discovery-copy { visibility: hidden; }
+.intro-discovery { position: relative; height: 208px; margin-top: 12px; }
 .explore-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 18px; border-bottom: 1px solid var(--muted); font-size: .8125rem; }
 h2 { font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.14; letter-spacing: -.04em; font-weight: 400; }
 .preview-print { display: block; padding: 0; width: 100%; background: transparent; }
@@ -248,26 +246,26 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-hint { position: absolute; z-index: 3; bottom: 8%; right: 11%; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .45em; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
 .palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: 0 2px 0 0; overflow: visible; transform: translateX(-1.25em) rotate(4deg) scaleY(-1); }
 .palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.palette-selection:not([hidden]) ~ .palette-hint { visibility: hidden; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
-#palette-orbit path { stroke: none; cursor: pointer; outline: none; pointer-events: fill; transition: opacity .2s; }
-#palette-orbit path[data-muted="true"] { opacity: .5; }
-#palette-orbit path[data-selected="true"], #palette-orbit path:hover { opacity: 1; stroke: #25303b90; stroke-width: 2; paint-order: stroke fill; vector-effect: non-scaling-stroke; }
+#palette-orbit .palette-slice { stroke: none; pointer-events: none; transition: opacity .2s; }
+#palette-orbit .palette-slice[data-muted="true"] { opacity: .5; }
+#palette-orbit .palette-slice[data-selected="true"] { opacity: 1; stroke: #25303b90; stroke-width: 2; paint-order: stroke fill; vector-effect: non-scaling-stroke; }
+#palette-orbit .palette-hit { fill: transparent; stroke: none; cursor: pointer; outline: none; pointer-events: fill; }
 .palette-selection { position: absolute; left: 50%; top: calc(50% - 12.5px); transform: translate(-50%, -50%); display: grid; gap: 6px; width: 145px; min-height: 64px; padding: 8px 0; background: transparent; color: inherit; text-align: center; }
 .palette-selection[hidden] { display: none; }
 .selected-color-index { font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
 #selected-color-hex { font-size: 1rem; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: .015em; }
 .selected-color-relation { font-size: .625rem; color: var(--muted); line-height: 1.35; }
-#palette-orbit path:focus-visible { stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; }
-.palette-peek { position: absolute; z-index: 2; inset: 0 auto auto 0; width: min(360px, 100%); height: 160px; padding: 8px 4px 0; pointer-events: none; }
+#palette-orbit:has(.palette-hit:focus-visible) .palette-slice[data-selected="true"] { stroke: var(--ink); }
+.palette-peek { position: absolute; z-index: 2; inset: 0; width: min(460px, 100%); height: 208px; margin-inline: auto; padding: 10px 6px; pointer-events: none; }
 .palette-peek[hidden] { display: none; }
-.palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: end; justify-items: center; }
-.palette-mini { width: min(100%, calc(110px * var(--mini-ratio) + 10px)); min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; pointer-events: auto; }
+.palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: 100%; gap: 14px; align-items: center; justify-items: center; }
+.palette-mini { width: min(100%, calc(144px * var(--mini-ratio) + 12px)); min-width: 0; padding: 6px 6px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; pointer-events: auto; }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
 .palette-mini:nth-child(3) { transform: rotate(-2deg); }
 .palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
 .palette-mini-image { display: block; overflow: hidden; }
-.palette-mini-image img { display: block; width: auto; height: auto; max-width: 100%; max-height: 104px; margin-inline: auto; object-fit: contain; object-position: center; }
+.palette-mini-image img { display: block; width: auto; height: auto; max-width: 100%; max-height: 144px; margin-inline: auto; object-fit: contain; object-position: center; }
 .palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
 .palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
 .palette-mini, .palette-selection { -webkit-tap-highlight-color: transparent; }
@@ -394,15 +392,12 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
           <p class="eyebrow" id="collection-count"></p>
           <h1 id="constellation-title">Palette<br>constellation.</h1>
           <p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>
-          <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
           <div class="intro-discovery">
-          <div class="discovery-copy">
-          <p>Open a photograph to explore its closest palettes.</p>
-          </div>
           <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
             <div class="palette-peek-photos" id="palette-photos"></div>
           </div>
           </div>
+          <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
         </div>
         <div class="palette-sculpture">
           <div class="palette-stage">
@@ -885,8 +880,12 @@ new ResizeObserver(() => draw()).observe(stage);
   // Explore the whole collection, with a different palette and shape order each visit.
   const sequence = shuffled(nodes);
   const forms = shuffled([0, 1, 2, 3, 4, 5]);
+  const slices = Array.from({ length: 5 }, () => {
+    const path = svgEl('path', { class: 'palette-slice', 'aria-hidden': 'true' });
+    art.append(path); return path;
+  });
   const paths = Array.from({ length: 5 }, () => {
-    const path = svgEl('path', { role: 'button', tabindex: 0, 'aria-pressed': 'false' });
+    const path = svgEl('path', { class: 'palette-hit', role: 'button', tabindex: 0, 'aria-pressed': 'false' });
     art.append(path); return path;
   });
   const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
@@ -914,26 +913,33 @@ new ResizeObserver(() => draw()).observe(stage);
     let angle = -.9 + time * .16;
     paths.forEach((path, i) => {
       const end = angle + mix(a[i].weight, b[i].weight, blend) * Math.PI * 2;
-      const outline = [];
-      const point = (theta, inner) => {
+      const selected = active === i;
+      const point = (theta, inner, lift) => {
         const outer = mix(radius(theta, form, time), radius(theta, nextForm, time), morph);
-        const r = inner ? 73 + (outer - 143) * .17 : outer;
-        const twist = inner ? .12 * Math.sin(time * .23) : 0;
-        return `${(200 + r * Math.cos(theta + twist) * (1 + stretch * .08)).toFixed(2)},${(200 + r * Math.sin(theta + twist) * (1 - stretch * .06)).toFixed(2)}`;
+        const r = (inner ? 73 + (outer - 143) * .17 : outer) + lift;
+        // Shared radial edges keep the painted and expanded hit regions on
+        // the same side of every boundary, even while the ring morphs.
+        return `${(200 + r * Math.cos(theta) * (1 + stretch * .08)).toFixed(2)},${(200 + r * Math.sin(theta) * (1 - stretch * .06)).toFixed(2)}`;
       };
-      for (let j = 0; j <= 64; j++) outline.push(point(angle + (end - angle) * j / 64, false));
-      for (let j = 64; j >= 0; j--) outline.push(point(angle + (end - angle) * j / 64, true));
+      const outline = (outerLift, innerLift) => {
+        const points = [];
+        for (let j = 0; j <= 64; j++) points.push(point(angle + (end - angle) * j / 64, false, outerLift));
+        for (let j = 64; j >= 0; j--) points.push(point(angle + (end - angle) * j / 64, true, innerLift));
+        return `M${points.join(' L')} Z`;
+      };
       const from = rgb(a[i].hex), to = rgb(b[i].hex);
       const hex = '#' + from.map((v, c) => Math.round(mix(v, to[c], blend)).toString(16).padStart(2, '0')).join('');
-      path.setAttribute('d', `M${outline.join(' L')} Z`);
-      path.setAttribute('fill', hex);
+      // Only the painted slice lifts. The fixed hit region includes the lift's
+      // outer edge and keeps its angular boundaries shared with its neighbors.
+      path.setAttribute('d', outline(7, 0));
+      const slice = slices[i];
+      slice.setAttribute('d', outline(selected ? 7 : 0, selected ? 7 : 0));
+      slice.setAttribute('fill', hex);
       path.setAttribute('aria-label', `Color ${i + 1}, ${hex}. Show photographs with similar colors.`);
       path.setAttribute('aria-pressed', String(pinned && active === i));
-      const selected = active === i;
       path.setAttribute('data-selected', String(selected));
-      path.setAttribute('data-muted', String(active >= 0 && !selected));
-      // Keep the visible slice and its hit area fixed while inspecting it.
-      // Moving it on hover exposed adjacent slices beneath the same pointer.
+      slice.setAttribute('data-selected', String(selected));
+      slice.setAttribute('data-muted', String(active >= 0 && !selected));
       if (selected) {
         $('selected-color-index').textContent = `COLOR ${String(i + 1).padStart(2, '0')}`;
         $('selected-color-hex').textContent = hex.toUpperCase();
@@ -941,7 +947,10 @@ new ResizeObserver(() => draw()).observe(stage);
       }
       angle = end;
     });
-    tag.hidden = active < 0;
+    // Keep the first or last inspected matches in view instead of replacing
+    // them with an empty reserved slot when the color selection is cleared.
+    if (!shownColor) showMatches(slices[0].getAttribute('fill'));
+    tag.hidden = false;
     $('palette-selection').hidden = active < 0;
   }
   function showMatches(hex) {
@@ -961,7 +970,7 @@ new ResizeObserver(() => draw()).observe(stage);
     if (!card) return;
     const image = card.dataset.image;
     // Pin even a hovered color so all three matches survive closing the dialog.
-    pinned = true;
+    pinned = active >= 0;
     previewOpen = true;
     sync();
     // Touch/mouse previews return to the wheel without leaving a focus box on

@@ -8,7 +8,7 @@ Preserve the portfolio's wheel refinements when replacing this snapshot: opening
 
 These refinements now live in the source templates as well. The wheel invitation describes individual-color discovery; the map and photograph modal compare complete palettes. The short “About this project” section records Andre's motivation and potential design uses, with the measurement limitations in an expandable note. The research PDF is intentionally withheld.
 
-Wheel selection keeps the slice geometry fixed: a subtle solid outline and dimmed neighboring colors highlight the selected slice without moving it under the pointer. Its hit area is the filled SVG path. Matching photographs replace the helper copy in a fixed-height area beside the wheel, keeping all slices accessible and the map in the same position when colors are selected or cleared.
+Wheel selection lifts the painted slice slightly outward with a subtle outline and dimmed neighbors. Separate, fixed SVG hit paths include the lifted edge while preserving each color's angular boundaries. The larger photograph strip stays centered beneath the invitation and retains the first or last inspected matches after clearing a selection, so the page never gains an empty slot or shifts. The arrow stays visible in a reserved area beneath the wheel. A simple underlined Exit spotlight control sits at the right edge; clicking surrounding chapter space also dismisses the spotlight.
 
 The third “Closest palettes” print tucks behind the upper pair. The upper cards keep their stacking order during hover and keyboard focus so their photo IDs, years, comparison values, and numbered links remain available.
 

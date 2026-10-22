@@ -69,8 +69,7 @@ export async function composeChapters(shell, output) {
     constellation.slice(constellation.indexOf('<dialog'), constellation.indexOf('<script>const DATA'));
   cHTML = cHTML.replace('<h1 id="constellation-title">Palette<br>constellation.</h1>', '<h2 id="constellation-title">Palette<br>constellation.</h2>')
     .replace('<p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>', '<p class="lead">Select a color. See where it takes you.</p>')
-    .replace('<div class="palette-stage">', '<div class="palette-stage"><button class="spotlight-exit" id="spotlight-exit" type="button">Exit spotlight <span aria-hidden="true">×</span></button>')
-    .replace('Open a photograph to explore its closest palettes.', 'Open a photograph, then scroll down to explore the connections between whole palettes.')
+    .replace('<div class="palette-sculpture">', '<button class="spotlight-exit" id="spotlight-exit" type="button">Exit spotlight <span aria-hidden="true">×</span></button><div class="palette-sculpture">')
     .replace('<span>Click me</span>', '<span>Select a color</span>');
   let cCSS = [...constellation.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(match => match[1]).join('\n');
   let cJS = constellation.match(/<script>const DATA([\s\S]*?)<\/script>/)[0].replace(/^<script>|<\/script>$/g, '');

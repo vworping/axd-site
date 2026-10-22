@@ -69,6 +69,9 @@
   document.addEventListener('axd:chapter', event => setChapter(event.detail.id));
   track.addEventListener('scroll', () => { paintSpotlight(); scheduleCanvas(); }, { passive: true });
   exitSpotlight.addEventListener('click', clearSpotlight);
+  constellation.addEventListener('pointerdown', event => {
+    if (!event.target.closest('#c-palette-orbit .palette-hit, .palette-mini, #c-palette-selection, #c-spotlight-exit')) clearSpotlight();
+  });
   chapters.forEach(chapter => chapter.addEventListener('scroll', () => {
     if (chapter === constellation && constellation.scrollTop > 40) clearSpotlight();
     scheduleCanvas();

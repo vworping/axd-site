@@ -12,6 +12,7 @@ function preview(reduced = false) {
       classList: { toggle: (name, on) => on ? classes.add(name) : classes.delete(name), remove: name => classes.delete(name) },
       addEventListener(type, callback) { listeners.set(type, [...(listeners.get(type) || []), callback]); },
       emit(type, detail) { for (const callback of listeners.get(type) || []) callback({ detail }); },
+      dispatch(type, event) { for (const callback of listeners.get(type) || []) callback(event); },
       getBoundingClientRect: () => ({ width: 1000, left: 0, right: 1000 }),
       scrollHeight: 1500, clientHeight: 500, scrollTop: 0,
     };
@@ -22,7 +23,7 @@ function preview(reduced = false) {
   track.children[1].scrollTop = 1000;
   const ids = new Map(track.children.map(chapter => [chapter.dataset.section, chapter]));
   ids.set('section-track', track);
-  ids.set('c-spotlight-exit', node());
+  ids.set('c-spotlight-exit', { ...node(), hidden: false });
   ids.set('c-focus-dialog', node());
   document.documentElement = { style: { setProperty: (name, value) => values.set(name, value) } };
   document.getElementById = id => ids.get(id);
@@ -88,4 +89,22 @@ test('reduced motion keeps the canvas static during chapter navigation', () => {
   page.frames();
   assert.equal(page.value('progress'), .5);
   assert.equal(page.value('depth'), 1);
+});
+
+test('pressing surrounding chapter space dismisses the spotlight', () => {
+  const page = preview();
+  page.track.children[1].dispatch('pointerdown', { target: { closest: () => null } });
+  assert.equal(page.document.getElementById('c-spotlight-exit').hidden, true);
+});
+
+test('pressing a wheel or photo control does not dismiss the spotlight before activation', () => {
+  for (const control of ['#c-palette-orbit .palette-hit', '.palette-mini', '#c-palette-selection']) {
+    const page = preview();
+    page.track.children[1].dispatch('pointerdown', {
+      target: { closest: selectors => selectors.split(', ').includes(control) ? {} : null },
+    });
+    assert.equal(page.document.getElementById('c-spotlight-exit').hidden, false, control);
+    page.document.getElementById('c-spotlight-exit').emit('click');
+    assert.equal(page.document.getElementById('c-spotlight-exit').hidden, true);
+  }
 });
