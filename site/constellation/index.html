@@ -260,7 +260,10 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-peek { position: absolute; z-index: 2; inset: 0; width: min(460px, 100%); height: 208px; margin-inline: auto; padding: 10px 6px; pointer-events: none; }
 .palette-peek[hidden] { display: none; }
 .palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); height: 100%; gap: 14px; align-items: center; justify-items: center; }
-.palette-mini { width: min(100%, calc(144px * var(--mini-ratio) + 12px)); min-width: 0; padding: 6px 6px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; pointer-events: auto; }
+.palette-mini { position: relative; width: min(100%, calc(144px * var(--mini-ratio) + 12px)); min-width: 0; padding: 6px 6px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; pointer-events: auto; }
+.palette-mini::before { content: ''; position: absolute; z-index: 1; top: -9px; left: 35%; width: 30%; height: 19px; background: #ece3c699; border-inline: 1px dashed #a9a28b55; transform: rotate(-4deg); pointer-events: none; }
+.palette-mini:nth-child(2)::before { left: 18%; transform: rotate(6deg); }
+.palette-mini:nth-child(3)::before { left: 43%; transform: rotate(3deg); }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
 .palette-mini:nth-child(3) { transform: rotate(-2deg); }
 .palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
@@ -391,13 +394,13 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         <div class="intro-copy">
           <p class="eyebrow" id="collection-count"></p>
           <h1 id="constellation-title">Palette<br>constellation.</h1>
+          <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
           <p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>
           <div class="intro-discovery">
           <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
             <div class="palette-peek-photos" id="palette-photos"></div>
           </div>
           </div>
-          <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
         </div>
         <div class="palette-sculpture">
           <div class="palette-stage">
@@ -407,7 +410,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
             <strong id="selected-color-hex"></strong>
             <span class="selected-color-relation">Clear color ×</span>
           </button>
-          <div class="palette-hint" aria-hidden="true"><span>Click me</span><svg viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M55 4C53 18 42 29 19 36M19 36L26 27M19 36L30 37"/></svg></div>
+          <div class="palette-hint" aria-hidden="true"><span>Click me</span><svg viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M48 38C46 24 32 12 8 8M8 8L18 6M8 8L13 18"/></svg></div>
           </div>
         </div>
       </section>
@@ -869,6 +872,8 @@ new ResizeObserver(() => draw()).observe(stage);
 // One continuous ribbon, moving between geometric and organic silhouettes.
 (() => {
   const art = $('palette-orbit'), wheelStage = art.parentElement, interaction = art.closest('.constellation-hero'), tag = $('palette-tag');
+  const selection = $('palette-selection'), hint = wheelStage.querySelector('.palette-hint');
+  let wheelWidth = 0, wheelHeight = 0, hintWidth = 0;
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -910,30 +915,28 @@ new ResizeObserver(() => draw()).observe(stage);
     const a = first.palette, b = next.palette, time = elapsed / 1000;
     const formPhase = elapsed / 4400, formIndex = Math.floor(formPhase) % forms.length, morph = smooth(formPhase % 1);
     const form = forms[formIndex], nextForm = forms[(formIndex + 1) % forms.length];
+    const point = (theta, inner) => {
+      const outer = mix(radius(theta, form, time), radius(theta, nextForm, time), morph);
+      const r = inner ? 73 + (outer - 143) * .17 : outer;
+      return [200 + r * Math.cos(theta) * (1 + stretch * .08), 200 + r * Math.sin(theta) * (1 - stretch * .06)];
+    };
     let angle = -.9 + time * .16;
     paths.forEach((path, i) => {
       const end = angle + mix(a[i].weight, b[i].weight, blend) * Math.PI * 2;
       const selected = active === i;
-      const point = (theta, inner, lift) => {
-        const outer = mix(radius(theta, form, time), radius(theta, nextForm, time), morph);
-        const r = (inner ? 73 + (outer - 143) * .17 : outer) + lift;
-        // Shared radial edges keep the painted and expanded hit regions on
-        // the same side of every boundary, even while the ring morphs.
-        return `${(200 + r * Math.cos(theta) * (1 + stretch * .08)).toFixed(2)},${(200 + r * Math.sin(theta) * (1 - stretch * .06)).toFixed(2)}`;
-      };
-      const outline = (outerLift, innerLift) => {
+      const outline = () => {
         const points = [];
-        for (let j = 0; j <= 64; j++) points.push(point(angle + (end - angle) * j / 64, false, outerLift));
-        for (let j = 64; j >= 0; j--) points.push(point(angle + (end - angle) * j / 64, true, innerLift));
+        for (let j = 0; j <= 64; j++) points.push(point(angle + (end - angle) * j / 64, false).map(v => v.toFixed(2)).join(','));
+        for (let j = 64; j >= 0; j--) points.push(point(angle + (end - angle) * j / 64, true).map(v => v.toFixed(2)).join(','));
         return `M${points.join(' L')} Z`;
       };
       const from = rgb(a[i].hex), to = rgb(b[i].hex);
       const hex = '#' + from.map((v, c) => Math.round(mix(v, to[c], blend)).toString(16).padStart(2, '0')).join('');
-      // Only the painted slice lifts. The fixed hit region includes the lift's
-      // outer edge and keeps its angular boundaries shared with its neighbors.
-      path.setAttribute('d', outline(7, 0));
+      // Selection changes emphasis only; painted and hit geometry are identical.
+      const shape = outline();
+      path.setAttribute('d', shape);
       const slice = slices[i];
-      slice.setAttribute('d', outline(selected ? 7 : 0, selected ? 7 : 0));
+      slice.setAttribute('d', shape);
       slice.setAttribute('fill', hex);
       path.setAttribute('aria-label', `Color ${i + 1}, ${hex}. Show photographs with similar colors.`);
       path.setAttribute('aria-pressed', String(pinned && active === i));
@@ -947,6 +950,23 @@ new ResizeObserver(() => draw()).observe(stage);
       }
       angle = end;
     });
+    if (wheelWidth && wheelHeight) {
+      // Center the readout in the actual hole, independent of caption space
+      // or asymmetry in the current morph. The arrow follows its local edge.
+      const inner = Array.from({ length: 128 }, (_, i) => point(i / 128 * Math.PI * 2, true));
+      let area = 0, cx = 0, cy = 0;
+      inner.forEach(([x, y], i) => {
+        const [nextX, nextY] = inner[(i + 1) % inner.length];
+        const cross = x * nextY - nextX * y;
+        area += cross; cx += (x + nextX) * cross; cy += (y + nextY) * cross;
+      });
+      selection.style.left = `${(cx / (3 * area) - 20) / 360 * wheelWidth}px`;
+      selection.style.top = `${(cy / (3 * area) - 20) / 360 * wheelHeight}px`;
+      const threshold = 20 + (wheelWidth - hintWidth - 6) / wheelWidth * 360;
+      const edge = Array.from({ length: 256 }, (_, i) => point(i / 256 * Math.PI * 2, false)).filter(([x]) => x >= threshold);
+      const lowerEdge = edge.length ? Math.max(...edge.map(([, y]) => y)) : 290;
+      hint.style.top = `${(lowerEdge - 20) / 360 * wheelHeight + 10}px`;
+    }
     // Keep the first or last inspected matches in view instead of replacing
     // them with an empty reserved slot when the color selection is cleared.
     if (!shownColor) showMatches(slices[0].getAttribute('fill'));
@@ -1042,9 +1062,10 @@ new ResizeObserver(() => draw()).observe(stage);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(art);
   new ResizeObserver(entries => {
     const { width, height } = entries[0].contentRect;
+    wheelWidth = width; wheelHeight = height; hintWidth = hint.offsetWidth;
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();
-  }).observe(wheelStage);
+  }).observe(art);
   sync();
 })();
 
