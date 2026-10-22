@@ -243,8 +243,9 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; justify-self: end; margin-left: -110px; }
 .palette-stage { position: relative; width: 100%; height: clamp(350px, 34vw, 425px); }
 /* Reuse the hero photo cue as an overlay, without changing the wheel's layout. */
-.palette-hint { position: absolute; z-index: 3; bottom: 8%; right: 11%; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .45em; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
-.palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: 0 2px 0 0; overflow: visible; transform: translateX(-1.25em) rotate(4deg) scaleY(-1); }
+.palette-hint { position: absolute; z-index: 3; inset: 0; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; pointer-events: none; }
+.palette-hint > span { position: absolute; left: 72%; bottom: 8px; transform: translateX(-50%); }
+.palette-hint svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
 .palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
 #palette-orbit .palette-slice { stroke: none; pointer-events: none; transition: opacity .2s; }
@@ -404,13 +405,13 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
         <div class="palette-sculpture">
           <div class="palette-stage">
-          <svg id="palette-orbit" tabindex="-1" viewBox="20 20 360 360" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
           <button type="button" class="palette-selection" id="palette-selection" aria-label="Clear color selection" hidden>
             <span class="selected-color-index" id="selected-color-index"></span>
             <strong id="selected-color-hex"></strong>
             <span class="selected-color-relation">Clear color ×</span>
           </button>
-          <div class="palette-hint" aria-hidden="true"><span>Click me</span><svg viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M48 38C46 24 32 12 8 8M8 8L18 6M8 8L13 18"/></svg></div>
+          <div class="palette-hint" aria-hidden="true"><span>Choose one</span><svg preserveAspectRatio="none" aria-hidden="true" focusable="false"><path/></svg></div>
           </div>
         </div>
       </section>
@@ -869,11 +870,24 @@ $('collection-count').textContent = `${nodes.length} photographs · ${years[0]}�
 updatePreview(previewImage);
 new ResizeObserver(() => draw()).observe(stage);
 
+// A simple, fixed-tail cue with a straight, symmetric arrowhead.
+function paletteCuePath(rim, normal, tail) {
+  const tip = rim.map((value, i) => value + normal[i] * 20);
+  const distance = Math.hypot(tip[0] - tail[0], tip[1] - tail[1]);
+  const neckLength = Math.min(8, distance * .22);
+  const neck = tip.map((value, i) => value + normal[i] * neckLength);
+  const first = [tail[0], tail[1] - Math.min(14, distance * .3)];
+  const second = neck.map((value, i) => value + normal[i] * Math.min(10, distance * .2));
+  const wing = side => [tip[0] + normal[0] * 8 - normal[1] * side * 4, tip[1] + normal[1] * 8 + normal[0] * side * 4];
+  return `M${tail} C${first} ${second} ${neck} L${tip} M${wing(-1)} L${tip} L${wing(1)}`;
+}
+
 // One continuous ribbon, moving between geometric and organic silhouettes.
 (() => {
   const art = $('palette-orbit'), wheelStage = art.parentElement, interaction = art.closest('.constellation-hero'), tag = $('palette-tag');
   const selection = $('palette-selection'), hint = wheelStage.querySelector('.palette-hint');
-  let wheelWidth = 0, wheelHeight = 0, hintWidth = 0;
+  const hintLabel = hint.querySelector('span'), hintArrow = hint.querySelector('svg'), hintPath = hint.querySelector('path');
+  let wheelWidth = 0, wheelHeight = 0, arrowTail = [0, 0];
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -898,7 +912,7 @@ new ResizeObserver(() => draw()).observe(stage);
   const mix = (a, b, t) => a + (b - a) * t;
   let elapsed = 0, last = 0, frame = 0, visible = true, paused = motionPaused;
   let active = -1, pinned = false, stretch = 0, shownColor = '';
-  let previewOpen = false, suppressHover = false;
+  let previewOpen = false, previewOnMobile = false, suppressHover = false;
   const colorIndex = nodes.map(node => ({ node, colors: node.palette.map(color => ({ hex: color.hex, rgb: rgb(color.hex) })) }));
 
   function radius(theta, form, time) {
@@ -952,7 +966,7 @@ new ResizeObserver(() => draw()).observe(stage);
     });
     if (wheelWidth && wheelHeight) {
       // Center the readout in the actual hole, independent of caption space
-      // or asymmetry in the current morph. The arrow follows its local edge.
+      // or asymmetry in the current morph.
       const inner = Array.from({ length: 128 }, (_, i) => point(i / 128 * Math.PI * 2, true));
       let area = 0, cx = 0, cy = 0;
       inner.forEach(([x, y], i) => {
@@ -960,12 +974,17 @@ new ResizeObserver(() => draw()).observe(stage);
         const cross = x * nextY - nextX * y;
         area += cross; cx += (x + nextX) * cross; cy += (y + nextY) * cross;
       });
-      selection.style.left = `${(cx / (3 * area) - 20) / 360 * wheelWidth}px`;
-      selection.style.top = `${(cy / (3 * area) - 20) / 360 * wheelHeight}px`;
-      const threshold = 20 + (wheelWidth - hintWidth - 6) / wheelWidth * 360;
-      const edge = Array.from({ length: 256 }, (_, i) => point(i / 256 * Math.PI * 2, false)).filter(([x]) => x >= threshold);
-      const lowerEdge = edge.length ? Math.max(...edge.map(([, y]) => y)) : 290;
-      hint.style.top = `${(lowerEdge - 20) / 360 * wheelHeight + 10}px`;
+      selection.style.left = `${cx / (3 * area) / 400 * wheelWidth}px`;
+      selection.style.top = `${cy / (3 * area) / 400 * wheelHeight}px`;
+      // Keep the label and tail fixed. Only the shaft length follows the
+      // changing rim, with a 20px outward gap and no orbit or loop.
+      const arrowAngle = 1.08;
+      const edge = point(arrowAngle, false);
+      const rim = [edge[0] / 400 * wheelWidth, edge[1] / 400 * wheelHeight];
+      const before = point(arrowAngle - .01, false), after = point(arrowAngle + .01, false);
+      const tangent = [(after[0] - before[0]) * wheelWidth, (after[1] - before[1]) * wheelHeight];
+      const magnitude = Math.hypot(...tangent), normal = [tangent[1] / magnitude, -tangent[0] / magnitude];
+      hintPath.setAttribute('d', paletteCuePath(rim, normal, arrowTail));
     }
     // Keep the first or last inspected matches in view instead of replacing
     // them with an empty reserved slot when the color selection is cleared.
@@ -992,10 +1011,11 @@ new ResizeObserver(() => draw()).observe(stage);
     // Pin even a hovered color so all three matches survive closing the dialog.
     pinned = active >= 0;
     previewOpen = true;
+    previewOnMobile = matchMedia('(max-width: 700px)').matches;
     sync();
     // Touch/mouse previews return to the wheel without leaving a focus box on
     // the photo. Keyboard previews return to their thumbnail for continued browsing.
-    (event.detail === 0 ? card : art).focus({ preventScroll: true });
+    (event.detail === 0 && !previewOnMobile ? card : art).focus({ preventScroll: true });
     openFocus(image);
   });
   const running = () => !paused && !previewOpen && active < 0 && visible && !document.hidden;
@@ -1038,6 +1058,7 @@ new ResizeObserver(() => draw()).observe(stage);
   $('focus-dialog').addEventListener('close', () => {
     if (!previewOpen) return;
     previewOpen = false;
+    if (previewOnMobile) interaction.classList.add('mobile-preview-complete');
     suppressHover = true;
     sync();
   });
@@ -1062,10 +1083,35 @@ new ResizeObserver(() => draw()).observe(stage);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(art);
   new ResizeObserver(entries => {
     const { width, height } = entries[0].contentRect;
-    wheelWidth = width; wheelHeight = height; hintWidth = hint.offsetWidth;
+    wheelWidth = width; wheelHeight = height;
+    const label = hintLabel.getBoundingClientRect(), stage = wheelStage.getBoundingClientRect();
+    arrowTail = [label.left + label.width / 2 - stage.left + 8, label.top - stage.top - 10];
+    hintArrow.setAttribute('viewBox', `0 0 ${width} ${stage.height}`);
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();
   }).observe(art);
+  // Fit the phone composition to its actual chapter viewport, including
+  // browser chrome and the bottom rail, rather than assuming a tall phone.
+  const scroller = interaction.closest('[data-section]');
+  if (scroller) {
+    let fitFrame = 0;
+    const fitMobile = () => {
+      cancelAnimationFrame(fitFrame);
+      fitFrame = requestAnimationFrame(() => {
+        if (!matchMedia('(max-width: 700px)').matches) {
+          wheelStage.style.removeProperty('--mobile-palette-height');
+          return;
+        }
+        const top = wheelStage.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
+        const preferred = Math.min(interaction.clientWidth * .9, 320) + 20;
+        const height = Math.round(Math.min(preferred, Math.max(150, scroller.clientHeight - top - 28)));
+        wheelStage.style.setProperty('--mobile-palette-height', `${height}px`);
+      });
+    };
+    const fitObserver = new ResizeObserver(fitMobile);
+    fitObserver.observe(scroller);
+    fitObserver.observe(interaction);
+  }
   sync();
 })();
 
