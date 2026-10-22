@@ -6,7 +6,7 @@
 
 ![AXD logo](site/assets/images/share-logo.png?v=13)
 
-A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Three horizontally navigable chapters connect the photographs, project stories, and About & Say Hello. The finished portfolio includes standalone Constellation and [pet.] experiences.
+A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Five sideways chapters connect Photography, Constellation, PET, Collaborations, and About & Say Hello. Constellation and PET scroll vertically inside the shared rail, over one continuous gradient. Direct links open the same integrated experience at `/constellation`, `/PET`, `/work`, and `/about`.
 
 ## What's inside
 
@@ -21,7 +21,7 @@ A photography portfolio built around a stack of prints, measured color palettes,
 
 The intro plays on homepage arrivals and through “Replay intro.” Links to Work or About skip it, so returning from PET or Constellation lands directly in the requested chapter. Their [AXD] logos link to the homepage and play the intro.
 
-Plain HTML, CSS, and JavaScript. No framework or package installation is required to edit, preview, or build.
+Plain HTML, CSS, and JavaScript. No framework or package installation is required. Run the build before previewing: it composes the saved project content into the main page.
 
 ## Building [pet.]
 
@@ -55,22 +55,27 @@ For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-mot
 From the repository root:
 
 ```sh
-python3 -m http.server 6767 --bind 0.0.0.0 --directory site
+node site/build.mjs
+node site/preview.mjs
 ```
 
-Open **http://localhost:6767/**. For a phone on the same Wi-Fi, use `http://YOUR-MAC-IP:6767/`. On a Mac, `ipconfig getifaddr en0` usually returns the Wi-Fi address. If the port is occupied, use a different port or the already-running server.
+Open **http://127.0.0.1:6767/**. If that port is occupied, use `PORT=6770 node site/preview.mjs`. This local server runs the same routing and security handler as production. Rebuild and reload after editing.
 
-Preview the standalone pages at `/constellation/` and `/pet.html`; Python's static server uses the `.html` filename for the PET page.
+Direct links: `/constellation`, `/PET`, `/work`, and `/about`. Old `/pet`, `/pet.html`, and `/constellation/` links redirect to their canonical chapters. Browser titles follow the current chapter: Palace, Palace: Constellation, Palace: PET, Palace: Collaborations, and Palace: About.
+
+`site/compose-chapters.mjs` composes the Constellation snapshot and PET source into the main page, namespaces their IDs and styles, and emits chapter scripts/styles in `site/dist/`. Edit source files, not generated output. Shared chapter styling lives in `site/chapters.css`; the spotlight and gradient depth live in `site/chapter-experience.js`. The spotlight starts in the markup, before Constellation enters view, and clears after a photo opens, vertical scrolling, Exit spotlight, or Escape. It never gates the map. Vertical scrolling stays within a chapter; horizontal gestures, left/right arrow keys, and navigation controls change chapters.
+
+PET’s “Working toward V2” section records the open LCD/e-ink, NFC business-card, and multi-person Hello design questions. The OS preview remains the current prototype.
 
 ## Build and publish
 
 ```sh
 node site/build.mjs
-node --test site/security.test.mjs
+node --test site/security.test.mjs site/chapter-experience.test.mjs
 git diff --check
 ```
 
-The output is `site/dist/`. The build generates production metadata, security headers, and content hashes for script and stylesheet URLs so edited content refreshes correctly. The security tests check all four HTML pages, HTTPS redirects, and the OS preview's embedding policy. Build and tests were verified with Node.js 23.11.
+The output is `site/dist/`. The build generates production metadata, security headers, and content hashes for script and stylesheet URLs so edited content refreshes correctly. The tests check chapter routing and metadata, legacy redirects, composed IDs and accessible labels, asset references, HTTPS, and the OS preview’s embedding policy. Build and tests were verified with Node.js 23.11.
 
 **Cloudflare Workers Builds** deploys the `main` branch of this repository to the existing `axd-site` Worker. `wrangler.jsonc` runs the build and serves only `site/dist/`. Push a reviewed commit to `main` to publish. See [deployment & rollback](docs/DEPLOYMENT.md).
 

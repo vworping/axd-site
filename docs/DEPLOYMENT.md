@@ -48,8 +48,14 @@ Do not force-push the old tag over `main`.
 
 `site/worker.mjs` runs before assets and redirects HTTP requests to HTTPS, preserving the path and query. Localhost HTTP previews remain supported. The `ASSETS` binding serves the static build afterward. Requests now invoke this small Worker; Cloudflare Worker request limits apply.
 
-`site/build.mjs` generates `site/dist/_headers` and ignored security-header JSON files bundled into the Worker. The Worker attaches these headers directly to all asset responses, including Constellation, PET, and the PET OS preview: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP allows the existing Cloudflare Web Analytics script and reporting endpoint. It automatically hashes the inline scripts from all four HTML pages, including the intro bootstrap and Constellation explorer. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
+`site/build.mjs` generates `site/dist/_headers` and ignored security-header JSON files bundled into the Worker. The Worker attaches these headers directly to all asset responses, including Constellation, PET, and the PET OS preview: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP allows the existing Cloudflare Web Analytics script and reporting endpoint. It automatically hashes the inline scripts from the composed portfolio and PET OS preview, including the intro bootstrap and Constellation explorer. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
 
 Only `/pet-preview/` and `/pet-preview/index.html` allow same-origin framing so the PET page can embed the OS preview. All other pages deny framing. Run `node site/build.mjs && node --test site/security.test.mjs` to check security headers, inline-script compatibility, framing exceptions, and HTTPS redirects across the portfolio and subpages.
 
 These controls do not prevent screenshots or scraping. Account MFA is configured separately in Cloudflare, GitHub, and email settings.
+
+## Integrated chapter routing
+
+The Worker serves the shared built document for `/`, `/constellation`, `/PET`, `/work`, and `/about`, applying the appropriate title, description, canonical URL, and social metadata. Legacy project paths redirect without dropping query strings. The browser updates its route and title as chapters change, and Back/Forward selects the corresponding chapter. `chapter-routes.mjs` is the server route table.
+
+The build composes the original Constellation and PET sources into `dist/index.html`; they are no longer independently served pages. Only the PET OS preview remains an iframe. Preview with `node site/build.mjs` followed by `node site/preview.mjs` so local route behavior matches production.

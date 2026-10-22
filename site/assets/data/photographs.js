@@ -1,6 +1,6 @@
 window.PHOTOGRAPHS = [
   {
-    "src": "assets/images/hero/_DSC6532.webp",
+    "src": "/assets/images/hero/_DSC6532.webp",
     "alt": "An upside-down close-up portrait with a strand of light across the face.",
     "width": 800,
     "height": 1200,
@@ -53,7 +53,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/hero/_DSC8824.webp",
+    "src": "/assets/images/hero/_DSC8824.webp",
     "alt": "A person beside a Speedway gas pump at night, lit by pink light.",
     "width": 1200,
     "height": 1200,
@@ -106,7 +106,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/hero/_DSC9422-Edit.webp",
+    "src": "/assets/images/hero/_DSC9422-Edit.webp",
     "alt": "A person in a cap sits in the grass at dusk, with a dark building behind them.",
     "width": 1200,
     "height": 1200,
@@ -159,7 +159,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/hero/_DSC6724.webp",
+    "src": "/assets/images/hero/_DSC6724.webp",
     "alt": "A portrait in darkness, with a pattern of small lights projected across the face and shoulders.",
     "width": 1200,
     "height": 1200,
@@ -212,7 +212,7 @@ window.PHOTOGRAPHS = [
     ]
   },
   {
-    "src": "assets/images/hero/_DSC9386.webp",
+    "src": "/assets/images/hero/_DSC9386.webp",
     "alt": "A person in silver clothing reclines in alternating bands of sunlight and shadow.",
     "width": 800,
     "height": 1200,

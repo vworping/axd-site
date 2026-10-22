@@ -1,0 +1,91 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { test } from 'node:test';
+import { runInNewContext } from 'node:vm';
+
+const source = await readFile(new URL('chapter-experience.js', import.meta.url), 'utf8');
+
+function preview(reduced = false) {
+  const node = () => {
+    const listeners = new Map(), classes = new Set();
+    return {
+      classList: { toggle: (name, on) => on ? classes.add(name) : classes.delete(name), remove: name => classes.delete(name) },
+      addEventListener(type, callback) { listeners.set(type, [...(listeners.get(type) || []), callback]); },
+      emit(type, detail) { for (const callback of listeners.get(type) || []) callback({ detail }); },
+      getBoundingClientRect: () => ({ width: 1000, left: 0, right: 1000 }),
+      scrollHeight: 1500, clientHeight: 500, scrollTop: 0,
+    };
+  };
+  const document = node(), shell = node(), track = node(), values = new Map();
+  track.children = ['top', 'constellation', 'PET', 'work', 'about'].map(id => ({ ...node(), dataset: { section: id, route: id === 'top' ? '/' : '/' + id } }));
+  track.scrollLeft = 1000;
+  track.children[1].scrollTop = 1000;
+  const ids = new Map(track.children.map(chapter => [chapter.dataset.section, chapter]));
+  ids.set('section-track', track);
+  ids.set('c-spotlight-exit', node());
+  ids.set('c-focus-dialog', node());
+  document.documentElement = { style: { setProperty: (name, value) => values.set(name, value) } };
+  document.getElementById = id => ids.get(id);
+  document.querySelector = () => shell;
+  document.querySelectorAll = () => track.children;
+  let callbacks = [], now = 0;
+  runInNewContext(source, {
+    document, window: node(), location: { pathname: '/constellation' },
+    matchMedia: () => ({ ...node(), matches: reduced }),
+    MutationObserver: class { observe() {} },
+    requestAnimationFrame(callback) { callbacks.push(callback); return callbacks.length; },
+  });
+  return {
+    document, track, value: name => values.get('--chapter-' + name),
+    frames(count = 180) {
+      for (let i = 0; i < count && callbacks.length; i++) {
+        const pending = callbacks; callbacks = []; now += 16;
+        pending.forEach(callback => callback(now));
+      }
+    },
+  };
+}
+
+test('canvas blends a scrolled chapter into an unscrolled neighbor before arrival', () => {
+  const page = preview();
+  assert.equal(page.value('depth'), 1);
+  page.track.scrollLeft = 1500;
+  page.track.emit('scroll');
+  page.frames(1);
+  assert.ok(page.value('depth') < 1 && page.value('depth') > .5, 'First frame eases toward the visible chapter mixture');
+  page.frames();
+  assert.equal(page.value('depth'), .5);
+  assert.equal(page.value('progress'), .75);
+  page.track.scrollLeft = 2000;
+  page.track.emit('scroll');
+  page.document.emit('axd:chapter', { id: 'PET' });
+  page.frames(1);
+  assert.ok(page.value('depth') > 0 && page.value('depth') < .5, 'Arrival must not reset the canvas abruptly');
+  page.frames();
+  assert.equal(page.value('depth'), 0);
+  assert.equal(page.value('progress'), 1);
+});
+
+test('pausing motion freezes the current canvas instead of resetting it', () => {
+  const page = preview();
+  page.frames();
+  page.document.emit('axd:motion', { paused: true });
+  page.track.scrollLeft = 2000;
+  page.track.emit('scroll');
+  page.frames();
+  assert.equal(page.value('progress'), .5);
+  assert.equal(page.value('depth'), 1);
+  page.document.emit('axd:motion', { paused: false });
+  page.frames();
+  assert.equal(page.value('progress'), 1);
+  assert.equal(page.value('depth'), 0);
+});
+
+test('reduced motion keeps the canvas static during chapter navigation', () => {
+  const page = preview(true);
+  page.track.scrollLeft = 2000;
+  page.track.emit('scroll');
+  page.frames();
+  assert.equal(page.value('progress'), .5);
+  assert.equal(page.value('depth'), 1);
+});

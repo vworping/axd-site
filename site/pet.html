@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#bec9d7">
-  <title>Building PET</title>
-  <meta name="description" content="PET, a wearable introduction. The device, its screens, and my first time building with ESP.">
+  <title>Palace: PET</title>
+  <meta name="description" content="PET, a wearable introduction. A working prototype and the display, NFC, and shared-interaction questions shaping V2.">
   <link rel="canonical" href="https://mindofaxd.com/pet.html">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Building PET">
+  <meta property="og:title" content="Palace: PET">
   <meta property="og:description" content="A wearable introduction. The device, the screens, and the build.">
   <meta property="og:url" content="https://mindofaxd.com/pet.html">
   <meta property="og:image" content="https://mindofaxd.com/assets/images/pet/enclosure-04c.webp">
@@ -37,10 +37,11 @@
   <main id="story" class="wrap">
     <section class="device-hero" aria-labelledby="pet-title">
       <div class="intro-copy">
-        <p class="eyebrow">2026 · IN PROGRESS</p>
+        <p class="eyebrow">2026 · PROTOTYPE / V2 IN DEVELOPMENT</p>
         <h1 id="pet-title">[pet.]</h1>
         <p class="lead">personal engagement tool</p>
         <p>I wanted a way to show people what I’m working on while we’re talking. PET puts my projects on a small touch display and lets someone say hello from their phone.</p>
+        <div class="pet-intro-links"><a href="#pet-os">Try the prototype ↓</a><a href="#pet-v2">Working toward V2 ↓</a></div>
       </div>
       <div class="device-gallery" aria-label="Enclosure studies">
         <figure class="device-print print-early">
@@ -71,7 +72,7 @@
       </ol>
     </section>
 
-    <section class="os-section" aria-labelledby="os-title">
+    <section class="os-section" id="pet-os" aria-labelledby="os-title">
       <div class="section-heading"><div><h2 id="os-title">The OS</h2><p class="os-note">Interactive demo · no live introductions</p></div><button type="button" id="motion-toggle" aria-pressed="false" hidden>Pause motion</button></div>
       <iframe id="os-preview" src="pet-preview/index.html" title="Interactive PET OS preview" loading="lazy"></iframe>
     </section>
@@ -80,6 +81,19 @@
       <h2 id="build-title">Making it</h2>
       <div><p>This is my first time working with ESP. I’m using AI coding help to figure out the firmware, HTML/CSS to try out the screens, and CAD for the enclosure. Along the way, I’ve been wiring the NFC reader, testing card links on my phone, and revising the case.</p>
       <p class="parts">Built around a <a href="https://www.amazon.com/dp/B0DD7N19FT" target="_blank" rel="noopener noreferrer">Waveshare touch display ↗</a>, a <a href="https://www.amazon.com/dp/B0H8CGVYVV" target="_blank" rel="noopener noreferrer">NULLLAB NFC reader ↗</a>, and a <a href="https://www.amazon.com/dp/B0FT3C1WRP" target="_blank" rel="noopener noreferrer">3.7 V LiPo battery ↗</a>.</p></div>
+    </section>
+
+    <section class="v2-study" id="pet-v2" aria-labelledby="v2-title">
+      <div class="v2-heading">
+        <p class="eyebrow">NEXT ITERATION</p>
+        <h2 id="v2-title">Working toward V2.</h2>
+        <p>Three questions shaping the next prototype.</p>
+      </div>
+      <div class="v2-decisions">
+        <article><span class="decision-number">01 / DISPLAY</span><h3>LCD or e-ink?</h3><p>I’m weighing an animated display against a slimmer, quieter e-ink profile.</p></article>
+        <article><span class="decision-number">02 / NFC</span><h3>What should a tap carry?</h3><p>I’m exploring an NFC business card that connects my profile to the conversation.</p></article>
+        <article><span class="decision-number">03 / SHARED INTERACTION</span><h3>A popular hello?</h3><p>I’m working out how to acknowledge simultaneous introductions and keep each exchange distinct.</p></article>
+      </div>
     </section>
   </main>
   <footer class="experience-footer wrap"><a class="back-link" href="./#work">← Back to the portfolio</a><p>[pet.]</p></footer>

@@ -3,15 +3,16 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { test } from 'node:test';
 import worker from './worker.mjs';
+import { chapterMetadata, chapterRoutes } from './chapter-routes.mjs';
 
 // Build first: node site/build.mjs && node --test site/security.test.mjs
 // Exercise the deployed Worker handler with an in-memory asset binding.
 const routes = {
   '/': 'index.html',
-  '/constellation/': 'constellation/index.html',
-  '/constellation/index.html': 'constellation/index.html',
-  '/pet': 'pet.html',
-  '/pet.html': 'pet.html',
+  '/constellation': 'index.html',
+  '/PET': 'index.html',
+  '/work': 'index.html',
+  '/about': 'index.html',
   '/pet-preview/': 'pet-preview/index.html',
   '/pet-preview/index.html': 'pet-preview/index.html',
 };
@@ -22,7 +23,7 @@ for (const [route, file] of Object.entries(routes)) {
     const response = await worker.fetch(new Request(`https://mindofaxd.com${route}`), {
       ASSETS: { fetch: async () => new Response(html, { headers: { 'Content-Type': 'text/html' } }) },
     });
-    assert.equal(await response.text(), html);
+    assert.equal(await response.text(), chapterRoutes[route] ? chapterMetadata(html, route) : html);
     assert.equal(response.headers.get('Content-Type'), 'text/html');
     assert.equal(response.headers.get('X-Content-Type-Options'), 'nosniff');
     assert.equal(response.headers.get('Referrer-Policy'), 'strict-origin-when-cross-origin');
@@ -70,9 +71,48 @@ test('framing exception does not extend to other subpages or missing assets', as
 });
 
 test('localhost HTTP preview remains usable', async () => {
-  const response = await worker.fetch(new Request('http://localhost:6767/pet.html'), {
+  const response = await worker.fetch(new Request('http://localhost:6767/PET'), {
     ASSETS: { fetch: async () => new Response('Local preview') },
   });
   assert.equal(response.status, 200);
   assert.equal(await response.text(), 'Local preview');
+});
+
+test('direct chapter requests fetch the shared document and receive their own metadata', async () => {
+  const html = await readFile(new URL('dist/index.html', import.meta.url), 'utf8');
+  for (const [path, { title }] of Object.entries(chapterRoutes)) {
+    const response = await worker.fetch(new Request(`https://mindofaxd.com${path}`), {
+      ASSETS: { fetch: async request => {
+        assert.equal(new URL(request.url).pathname, '/');
+        return new Response(html, { headers: { 'Content-Type': 'text/html' } });
+      } },
+    });
+    const content = await response.text();
+    assert.ok(content.includes(`<title>${title}</title>`));
+    assert.ok(content.includes(`rel="canonical" href="https://mindofaxd.com${path}"`));
+    assert.ok(content.indexOf('id="constellation"') < content.indexOf('id="PET"'));
+  }
+});
+
+test('legacy and trailing-slash project links preserve query strings', async () => {
+  for (const [from, to] of [['/pet', '/PET'], ['/pet.html', '/PET'], ['/PET/', '/PET'], ['/constellation/', '/constellation'], ['/constellation/index.html', '/constellation'], ['/about/', '/about']]) {
+    const response = await worker.fetch(new Request(`https://mindofaxd.com${from}?ref=application`), {});
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get('Location'), `https://mindofaxd.com${to}?ref=application`);
+  }
+});
+
+test('composed chapters have unique IDs, resolved labels, and executable assets', async () => {
+  const html = await readFile(new URL('dist/index.html', import.meta.url), 'utf8');
+  const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(new Set(ids).size, ids.length, 'Duplicate IDs across chapters');
+  for (const [, references] of html.matchAll(/aria-(?:labelledby|describedby)="([^"]+)"/g)) {
+    for (const id of references.split(' ')) assert.ok(ids.includes(id), `Missing accessible label: ${id}`);
+  }
+  for (const [, path] of html.matchAll(/(?:src|href)="(\/[^"?]+\.(?:js|css))(?:\?[^"]*)?"/g)) {
+    await readFile(new URL(`dist${path}`, import.meta.url));
+  }
+  assert.ok(html.includes('Working toward V2.'));
+  assert.ok(!html.includes('<!-- CONSTELLATION_CHAPTER -->'));
+  assert.ok(!html.includes('<!-- PET_CHAPTER -->'));
 });

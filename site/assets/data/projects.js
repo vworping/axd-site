@@ -13,7 +13,7 @@ window.PROJECTS = [
       "collaboration"
     ],
     "cover": {
-      "src": "assets/images/projects/converse/converse-all-star-01-cover.jpg",
+      "src": "/assets/images/projects/converse/converse-all-star-01-cover.jpg",
       "width": 1800,
       "height": 1200,
       "aspect": 1.5,
@@ -21,14 +21,14 @@ window.PROJECTS = [
     },
     "images": [
       {
-        "src": "assets/images/projects/converse/converse-all-star-01-cover.jpg",
+        "src": "/assets/images/projects/converse/converse-all-star-01-cover.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/converse/converse-all-star-02-image.jpg",
+        "src": "/assets/images/projects/converse/converse-all-star-02-image.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,
@@ -36,14 +36,14 @@ window.PROJECTS = [
         "alt": "A person riding a skateboard beside a colorful brick mural"
       },
       {
-        "src": "assets/images/projects/converse/converse-all-star-03-image.jpg",
+        "src": "/assets/images/projects/converse/converse-all-star-03-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/converse/converse-all-star-04-image.jpg",
+        "src": "/assets/images/projects/converse/converse-all-star-04-image.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,
@@ -156,7 +156,7 @@ window.PROJECTS = [
       "youth resources"
     ],
     "cover": {
-      "src": "assets/images/projects/ica city headshots/ica-city-01-cover.jpg",
+      "src": "/assets/images/projects/ica city headshots/ica-city-01-cover.jpg",
       "width": 1200,
       "height": 1800,
       "aspect": 0.6667,
@@ -164,7 +164,7 @@ window.PROJECTS = [
     },
     "images": [
       {
-        "src": "assets/images/projects/ica city headshots/ica-city-01-cover.jpg",
+        "src": "/assets/images/projects/ica city headshots/ica-city-01-cover.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,
@@ -172,21 +172,21 @@ window.PROJECTS = [
         "alt": "A smiling person poses with a large brown dog"
       },
       {
-        "src": "assets/images/projects/ica city headshots/ica-city-02-image.jpg",
+        "src": "/assets/images/projects/ica city headshots/ica-city-02-image.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,
         "orientation": "portrait"
       },
       {
-        "src": "assets/images/projects/ica city headshots/ica-city-03-image.jpg",
+        "src": "/assets/images/projects/ica city headshots/ica-city-03-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/ica city headshots/ica-city-04-image.jpg",
+        "src": "/assets/images/projects/ica city headshots/ica-city-04-image.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,
@@ -305,7 +305,7 @@ window.PROJECTS = [
       "event documentation"
     ],
     "cover": {
-      "src": "assets/images/projects/moia grad/moia-grad-01-cover.jpg",
+      "src": "/assets/images/projects/moia grad/moia-grad-01-cover.jpg",
       "width": 1800,
       "height": 1200,
       "aspect": 1.5,
@@ -313,7 +313,7 @@ window.PROJECTS = [
     },
     "images": [
       {
-        "src": "assets/images/projects/moia grad/moia-grad-01-cover.jpg",
+        "src": "/assets/images/projects/moia grad/moia-grad-01-cover.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
@@ -321,21 +321,21 @@ window.PROJECTS = [
         "alt": "A smiling graduate holds a folder at the Immigrants Lead Boston ceremony"
       },
       {
-        "src": "assets/images/projects/moia grad/moia-grad-02-image.jpg",
+        "src": "/assets/images/projects/moia grad/moia-grad-02-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/moia grad/moia-grad-03-image.jpg",
+        "src": "/assets/images/projects/moia grad/moia-grad-03-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/moia grad/moia-grad-04-image.jpg",
+        "src": "/assets/images/projects/moia grad/moia-grad-04-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
@@ -448,7 +448,7 @@ window.PROJECTS = [
       "portraiture"
     ],
     "cover": {
-      "src": "assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
+      "src": "/assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
       "width": 1800,
       "height": 1200,
       "aspect": 1.5,
@@ -456,7 +456,7 @@ window.PROJECTS = [
     },
     "images": [
       {
-        "src": "assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
+        "src": "/assets/images/projects/glow up for grad/glow-up-for-grad-01-cover.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
@@ -464,21 +464,21 @@ window.PROJECTS = [
         "alt": "A student styles a mannequin’s hair in a salon"
       },
       {
-        "src": "assets/images/projects/glow up for grad/glow-up-for-grad-02-image.jpg",
+        "src": "/assets/images/projects/glow up for grad/glow-up-for-grad-02-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/glow up for grad/glow-up-for-grad-03-image.jpg",
+        "src": "/assets/images/projects/glow up for grad/glow-up-for-grad-03-image.jpg",
         "width": 1800,
         "height": 1200,
         "aspect": 1.5,
         "orientation": "landscape"
       },
       {
-        "src": "assets/images/projects/glow up for grad/glow-up-for-grad-04-image.jpg",
+        "src": "/assets/images/projects/glow up for grad/glow-up-for-grad-04-image.jpg",
         "width": 1200,
         "height": 1800,
         "aspect": 0.6667,

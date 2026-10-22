@@ -1,12 +1,14 @@
 # Palette constellation
 
-The public explorer is served at https://mindofaxd.com/constellation/. The portfolio links directly to this route. Cloudflare static assets canonicalize `/constellation` to `/constellation/` so relative images and fonts resolve correctly.
+The public explorer is the integrated chapter at https://mindofaxd.com/constellation. The Worker redirects `/constellation/` and `/constellation/index.html` to this route. `compose-chapters.mjs` reads the saved snapshot below, scopes its IDs/styles/scripts, and places its content in the shared horizontal rail. Its assets remain under `/constellation/assets/`.
 
 `site/constellation/index.html` and `site/constellation/assets/` are the published snapshot from the adjacent `perceptual-palette-drift` project. Its generator, templates, and palette data remain the source of truth. To prepare a future explorer update, rebuild there, then run `node site/sync-constellation.mjs` here (optionally passing the source project path), followed by `node site/build.mjs`. The sync copies only the generated HTML and public image/font assets, skips `.DS_Store`, and adds the portfolio's shared ambient background. It does not copy research reports, audits, metadata, PDFs, or raw originals.
 
 Preserve the portfolio's wheel refinements when replacing this snapshot: opening a matching photograph pins the current color, and closing the preview keeps all three matches available. Touch/mouse previews return focus to the wheel without outlining the thumbnail; keyboard previews restore focus to the opened thumbnail. Clear the selection using the center's Clear color button, tapping the selected slice again, or tapping empty space inside or outside the wheel. The wheel shuffles all 150 photograph palettes and its six shapes on each visit, blending palettes every 3.2 seconds and shapes every 4.4 seconds. Selection, pause, and reduced-motion behavior still stop the animation.
 
 These refinements now live in the source templates as well. The wheel invitation describes individual-color discovery; the map and photograph modal compare complete palettes. The short “About this project” section records Andre's motivation and potential design uses, with the measurement limitations in an expandable note. The research PDF is intentionally withheld.
+
+Wheel selection keeps the slice geometry fixed: a subtle solid outline and dimmed neighboring colors highlight the selected slice without moving it under the pointer. Its hit area is the filled SVG path. Matching photographs replace the helper copy in a fixed-height area beside the wheel, keeping all slices accessible and the map in the same position when colors are selected or cleared.
 
 The third “Closest palettes” print tucks behind the upper pair. The upper cards keep their stacking order during hover and keyboard focus so their photo IDs, years, comparison values, and numbered links remain available.
 

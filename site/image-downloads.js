@@ -59,6 +59,7 @@
 
   function findImage(target) {
     if (!(target instanceof Element)) return null;
+    if (!dialog.closest('.project-chapter') && target.closest('.project-chapter')) return null;
     return target.closest('img') || target.closest('.deck-print,.collab-print,.gallery-expand,.image-button,.palette-card,.detail-print')?.querySelector('img');
   }
 

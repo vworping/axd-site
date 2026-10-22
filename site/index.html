@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#bec9d7">
   <meta name="description" content="Andre Weiss — photographer, researcher, and creative collaborator. People, process, and a different way of seeing.">
-  <meta property="og:title" content="Palace.">
+  <meta property="og:title" content="Palace">
   <meta property="og:description" content="Photography, research, and creative collaboration. A selection of work by Andre Weiss.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mindofaxd.com/">
@@ -18,17 +18,17 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="assets/images/share-logo.png?v=13">
   <meta name="twitter:image:alt" content="AXD logo with multicolored brackets on a dark blue background">
-  <title>Palace.</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" href="assets/images/favicon-axd.png">
-  <link rel="apple-touch-icon" href="assets/images/favicon-axd.png">
-  <link rel="preload" href="assets/fonts/archivo-black.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" as="image" href="assets/images/hero/_DSC6532.webp" imagesrcset="assets/images/hero/_DSC6532-small.webp 427w, assets/images/hero/_DSC6532-medium.webp 640w, assets/images/hero/_DSC6532.webp 800w" imagesizes="(min-width: 2000px) min(40vw, 80vh), (max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=11">
-  <link rel="stylesheet" href="layout.css?v=27">
+  <title>Palace</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/assets/images/favicon-axd.png">
+  <link rel="apple-touch-icon" href="/assets/images/favicon-axd.png">
+  <link rel="preload" href="/assets/fonts/archivo-black.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" as="image" href="/assets/images/hero/_DSC6532.webp" imagesrcset="/assets/images/hero/_DSC6532-small.webp 427w, /assets/images/hero/_DSC6532-medium.webp 640w, /assets/images/hero/_DSC6532.webp 800w" imagesizes="(min-width: 2000px) min(40vw, 80vh), (max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px" fetchpriority="high">
+  <link rel="stylesheet" href="/styles.css?v=11">
+  <link rel="stylesheet" href="/layout.css?v=27">
   <script>
     // Project back links target a chapter; only home arrivals get the intro.
-    const opensAtHome = !location.hash || location.hash === '#top';
+    const opensAtHome = ['/', '/index.html'].includes(location.pathname) && (!location.hash || location.hash === '#top');
     // Never leave the page behind an opening screen if a later script fails.
     if (opensAtHome && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.classList.add('intro-pending');
@@ -40,16 +40,22 @@
       }, 6500);
     }
   </script>
-  <script src="assets/data/projects.js?v=24" defer></script>
-  <script src="assets/data/photographs.js" defer></script>
-  <script src="dialog-motion.js?v=11" defer></script>
-  <script src="section-navigation.js?v=10" defer></script>
-  <script src="logo-motion.js?v=9" defer></script>
-  <script src="photo-deck.js?v=8" defer></script>
-  <script src="name-motion.js?v=19" defer></script>
-  <script src="story-shelf.js?v=15" defer></script>
-  <script src="script.js?v=24" defer></script>
-  <script src="image-downloads.js?v=8" defer></script>
+  <script src="/assets/data/projects.js?v=24" defer></script>
+  <script src="/assets/data/photographs.js" defer></script>
+  <script src="/dialog-motion.js?v=11" defer></script>
+  <link rel="stylesheet" href="/constellation-chapter.css">
+  <link rel="stylesheet" href="/pet-chapter.css">
+  <link rel="stylesheet" href="/chapters.css">
+  <script src="/section-navigation.js" defer></script>
+  <script src="/constellation-chapter.js" defer></script>
+  <script src="/pet-chapter.js" defer></script>
+  <script src="/chapter-experience.js" defer></script>
+  <script src="/logo-motion.js?v=9" defer></script>
+  <script src="/photo-deck.js?v=8" defer></script>
+  <script src="/name-motion.js?v=19" defer></script>
+  <script src="/story-shelf.js?v=15" defer></script>
+  <script src="/script.js?v=24" defer></script>
+  <script src="/image-downloads.js?v=8" defer></script>
 </head>
 <body>
   <div class="intro-overlay" id="intro-overlay">
@@ -59,27 +65,29 @@
     </div>
     <button class="intro-skip" id="intro-skip" type="button">Skip intro <svg class="intro-skip-arrow" viewBox="0 0 650 650" aria-hidden="true" focusable="false"><path d="M103 73 47 129 462 543H40V618H557L589 587V68H514V484Z"/></svg></button>
   </div>
-  <a class="skip-link" href="#work">Skip to selected work</a>
+  <a class="skip-link" href="/constellation">Skip to selected work</a>
   <div class="hero-shell" id="top">
     <header class="site-header">
-      <a class="brand axd-mark" id="brand" href="#top" aria-label="Mind of AXD — home">
+      <a class="brand axd-mark" id="brand" href="/" aria-label="Palace — home">
         <span class="mark-word">AXD<span class="brand-dot">.</span></span>
         <svg class="mark-brackets" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><linearGradient id="brand-bracket-left" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#eccebd"/><stop offset="12.5%" stop-color="#453c3c"/><stop offset="25.0%" stop-color="#1f2c3b"/><stop offset="37.5%" stop-color="#ae837a"/><stop offset="50.0%" stop-color="#51101e"/><stop offset="62.5%" stop-color="#ae837a"/><stop offset="75.0%" stop-color="#1f2c3b"/><stop offset="87.5%" stop-color="#453c3c"/><stop offset="100.0%" stop-color="#eccebd"/></linearGradient><linearGradient id="brand-bracket-right" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#eccebd"/><stop offset="12.5%" stop-color="#453c3c"/><stop offset="25.0%" stop-color="#1f2c3b"/><stop offset="37.5%" stop-color="#ae837a"/><stop offset="50.0%" stop-color="#51101e"/><stop offset="62.5%" stop-color="#ae837a"/><stop offset="75.0%" stop-color="#1f2c3b"/><stop offset="87.5%" stop-color="#453c3c"/><stop offset="100.0%" stop-color="#eccebd"/></linearGradient></defs><g fill="none" stroke-width="8" stroke-linejoin="miter"><path d="M 20 6 L 7 6 L 7 54 L 20 54" stroke="url(#brand-bracket-left)"/><path d="M 140 6 L 153 6 L 153 54 L 140 54" stroke="url(#brand-bracket-right)"/></g></svg>
       </a>
       <nav aria-label="Main navigation">
-        <a href="#work">Work</a>
-        <a href="#about">About &amp; Say Hello <span aria-hidden="true">↗</span></a>
+        <a href="/constellation">Constellation</a>
+        <a href="/PET">PET</a>
+        <a href="/work">Collaborations</a>
+        <a href="/about">About <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
 
     <main class="section-track" id="section-track" aria-label="Portfolio sections">
-      <section class="hero" data-section="top" data-section-label="Photography" aria-labelledby="hero-title">
+      <section class="hero" data-section="top" data-route="/" data-title="Palace" data-section-label="Photography" aria-labelledby="hero-title">
         <div class="hero-composition">
           <h1 id="hero-title"><span>ANDRE</span><span>WEISS<span class="name-period">.</span></span></h1>
           <figure class="photo-deck">
             <div class="deck-stage">
               <button class="deck-print deck-print--front" id="photo-next" type="button" aria-label="Show next photograph" aria-describedby="deck-hint" disabled>
-                <img id="deck-image" src="assets/images/hero/_DSC6532.webp" srcset="assets/images/hero/_DSC6532-small.webp 427w, assets/images/hero/_DSC6532-medium.webp 640w, assets/images/hero/_DSC6532.webp 800w" sizes="(min-width: 2000px) min(40vw, 80vh), (max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px" alt="An upside-down close-up portrait with a strand of light across the face." width="800" height="1200" fetchpriority="high">
+                <img id="deck-image" src="/assets/images/hero/_DSC6532.webp" srcset="/assets/images/hero/_DSC6532-small.webp 427w, /assets/images/hero/_DSC6532-medium.webp 640w, /assets/images/hero/_DSC6532.webp 800w" sizes="(min-width: 2000px) min(40vw, 80vh), (max-width: 700px) 70vw, (max-width: 1400px) 36vw, 480px" alt="An upside-down close-up portrait with a strand of light across the face." width="800" height="1200" fetchpriority="high">
                 <span class="print-footer"><span class="print-number" aria-hidden="true">AXD / <span id="print-number">001</span></span><span class="frame-palette" data-frame-palette role="img" aria-label="Five colors extracted from this photograph"></span></span>
               </button>
             </div>
@@ -91,28 +99,28 @@
         </div>
       </section>
 
-      <section class="work-section section-pad" id="work" data-section="work" data-section-label="Selected work" aria-labelledby="work-title">
+      <section class="project-chapter constellation-chapter is-spotlit" id="constellation" data-section="constellation" data-route="/constellation" data-title="Palace: Constellation" data-section-label="Constellation" aria-labelledby="c-constellation-title">
+        <!-- CONSTELLATION_CHAPTER -->
+      </section>
+
+      <section class="project-chapter pet-chapter" id="PET" data-section="PET" data-route="/PET" data-title="Palace: PET" data-section-label="PET" aria-labelledby="p-pet-title">
+        <!-- PET_CHAPTER -->
+      </section>
+
+      <section class="work-section section-pad" id="work" data-section="work" data-route="/work" data-title="Palace: Collaborations" data-section-label="Collaborations" aria-labelledby="work-title">
         <div class="section-heading"><h2 id="work-title">In good company.</h2></div>
         <!-- Story cards are rendered from assets/data/projects.js by story-shelf.js. -->
         <div class="collab-sheet" id="story-shelf" aria-label="Project previews"></div>
         <noscript><p>Enable JavaScript to browse the project stories, or <a href="/constellation/">explore the constellation</a>.</p></noscript>
-        <div class="project-notes">
-          <div class="constellation-note">
-            <h3><a href="/constellation/">There’s more in the constellation. <span aria-hidden="true">↗</span></a></h3>
-            <p>I trace the colors that connect my photographs.</p>
-          </div>
-          <a class="pet-note" href="pet.html">
-            <span><strong>Building [pet.] <span aria-hidden="true">↗</span></strong><span>A wearable introduction. Notes from the build.</span></span>
-          </a>
-        </div>
+
       </section>
 
-      <section class="connect-section section-pad" id="about" data-section="about" data-section-label="About & Say Hello" aria-labelledby="about-title">
+      <section class="connect-section section-pad" id="about" data-section="about" data-route="/about" data-title="Palace: About" data-section-label="About & Say Hello" aria-labelledby="about-title">
         <div class="connect-layout">
           <figure class="portrait-card">
             <div class="portrait-window">
               <!-- Portrait derivatives and source mapping: docs/image-sources.json. -->
-              <img id="about-portrait" src="assets/images/about/_DSF0655.webp" srcset="assets/images/about/_DSF0655-small.webp 427w, assets/images/about/_DSF0655.webp 800w" sizes="(max-width: 700px) 34vw, 35vw" alt="Andre Weiss in a red racing jacket, photographed in falling snow" width="800" height="1200" loading="lazy" decoding="async">
+              <img id="about-portrait" src="/assets/images/about/_DSF0655.webp" srcset="/assets/images/about/_DSF0655-small.webp 427w, /assets/images/about/_DSF0655.webp 800w" sizes="(max-width: 700px) 34vw, 35vw" alt="Andre Weiss in a red racing jacket, photographed in falling snow" width="800" height="1200" loading="lazy" decoding="async">
             </div>
           </figure>
           <div class="connect-copy">
@@ -135,7 +143,7 @@
     <nav class="section-navigation" aria-label="Browse sections" hidden>
       <button id="section-prev" type="button" aria-label="Previous section" disabled><span class="round-arrow" aria-hidden="true">←</span><span id="section-prev-label">Back</span></button>
       <span id="section-current" aria-live="polite">Photography</span>
-      <button id="section-next" type="button" aria-label="Next section: Selected work"><span id="section-next-label">Explore the work</span><span class="round-arrow" aria-hidden="true">→</span></button>
+      <button id="section-next" type="button" aria-label="Next section: Constellation"><span id="section-next-label">Explore Constellation</span><span class="round-arrow" aria-hidden="true">→</span></button>
     </nav>
   </div>
 

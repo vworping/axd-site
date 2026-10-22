@@ -39,6 +39,9 @@ h1 { font: 900 clamp(2.5rem, 4.5vw, 4.25rem)/.98 var(--display); letter-spacing:
 .lead { font-size: clamp(1.25rem, 2.2vw, 1.8rem); letter-spacing: -.04em; line-height: 1.2; max-width: 380px; }
 .intro-copy > p:not(.eyebrow):not(.lead) { max-width: 355px; margin-top: 18px; font-size: .9375rem; line-height: 1.7; }
 .intro-links { display: flex; flex-wrap: wrap; gap: 0 24px; }
+.intro-discovery { position: relative; height: 160px; margin-top: 18px; }
+.discovery-copy > p { max-width: 35ch; font-size: .9375rem; line-height: 1.65; }
+.intro-discovery:has(.palette-peek:not([hidden])) .discovery-copy { visibility: hidden; }
 .explore-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 18px; border-bottom: 1px solid var(--muted); font-size: .8125rem; }
 h2 { font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.14; letter-spacing: -.04em; font-weight: 400; }
 .preview-print { display: block; padding: 0; width: 100%; background: transparent; }
@@ -239,31 +242,32 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 @media (prefers-reduced-motion: reduce) { .drifting { animation: none; transform: rotate(-2deg); } }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
-.palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; height: clamp(350px, 34vw, 425px); justify-self: end; margin-left: -110px; }
+.palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; justify-self: end; margin-left: -110px; }
+.palette-stage { position: relative; width: 100%; height: clamp(350px, 34vw, 425px); }
 /* Reuse the hero photo cue as an overlay, without changing the wheel's layout. */
 .palette-hint { position: absolute; z-index: 3; bottom: 8%; right: 11%; display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .45em; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; transform: rotate(-4deg); pointer-events: none; }
 .palette-hint svg { display: block; width: 3.57em; height: 2.5em; margin: 0 2px 0 0; overflow: visible; transform: translateX(-1.25em) rotate(4deg) scaleY(-1); }
 .palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .palette-selection:not([hidden]) ~ .palette-hint { visibility: hidden; }
 #palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
-#palette-orbit path { stroke: none; cursor: pointer; outline: none; transition: opacity .2s, transform .24s ease, filter .24s; }
-#palette-orbit path[data-muted="true"] { opacity: .26; }
-#palette-orbit path[data-selected="true"] { opacity: 1; stroke: var(--paper); stroke-width: 1.8; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; filter: drop-shadow(0 4px 4px #19232725); }
+#palette-orbit path { stroke: none; cursor: pointer; outline: none; pointer-events: fill; transition: opacity .2s; }
+#palette-orbit path[data-muted="true"] { opacity: .5; }
+#palette-orbit path[data-selected="true"], #palette-orbit path:hover { opacity: 1; stroke: #25303b90; stroke-width: 2; paint-order: stroke fill; vector-effect: non-scaling-stroke; }
 .palette-selection { position: absolute; left: 50%; top: calc(50% - 12.5px); transform: translate(-50%, -50%); display: grid; gap: 6px; width: 145px; min-height: 64px; padding: 8px 0; background: transparent; color: inherit; text-align: center; }
 .palette-selection[hidden] { display: none; }
 .selected-color-index { font-size: .5rem; letter-spacing: .1em; color: var(--muted); }
 #selected-color-hex { font-size: 1rem; font-weight: 400; font-variant-numeric: tabular-nums; letter-spacing: .015em; }
 .selected-color-relation { font-size: .625rem; color: var(--muted); line-height: 1.35; }
-#palette-orbit path:focus-visible { stroke: var(--paper); stroke-width: 1.8; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.palette-peek { position: absolute; z-index: 2; left: 50%; bottom: -9px; transform: translateX(-50%); width: min(330px, 88%); }
+#palette-orbit path:focus-visible { stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.palette-peek { position: absolute; z-index: 2; inset: 0 auto auto 0; width: min(360px, 100%); height: 160px; padding: 8px 4px 0; pointer-events: none; }
 .palette-peek[hidden] { display: none; }
 .palette-peek-photos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; align-items: end; justify-items: center; }
-.palette-mini { width: min(100%, calc(110px * var(--mini-ratio) + 10px)); min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; }
+.palette-mini { width: min(100%, calc(110px * var(--mini-ratio) + 10px)); min-width: 0; padding: 5px 5px 0; background: var(--paper); transform: rotate(-5deg); box-shadow: 0 7px 15px -7px #19232766; transition: transform .18s; pointer-events: auto; }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
 .palette-mini:nth-child(3) { transform: rotate(-2deg); }
 .palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
 .palette-mini-image { display: block; overflow: hidden; }
-.palette-mini-image img { display: block; width: 100%; height: auto; object-fit: contain; object-position: center; }
+.palette-mini-image img { display: block; width: auto; height: auto; max-width: 100%; max-height: 104px; margin-inline: auto; object-fit: contain; object-position: center; }
 .palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
 .palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
 .palette-mini, .palette-selection { -webkit-tap-highlight-color: transparent; }
@@ -338,8 +342,8 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 }
 @media (max-width: 600px) {
   .constellation-hero { min-height: 0; gap: 8px; }
-  .palette-sculpture { width: 100%; max-width: 430px; margin-left: 0; height: clamp(310px, 86vw, 365px); justify-self: center; }
-  .palette-peek { bottom: -3px; }
+  .palette-sculpture { width: 100%; max-width: 430px; margin-left: 0; justify-self: center; }
+  .palette-stage { height: clamp(310px, 86vw, 365px); }
   .palette-mini { width: min(100%, calc(100px * var(--mini-ratio) + 10px)); }
   .palette-selection { width: 118px; }
   #selected-color-hex { font-size: .875rem; }
@@ -390,20 +394,26 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
           <p class="eyebrow" id="collection-count"></p>
           <h1 id="constellation-title">Palette<br>constellation.</h1>
           <p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>
-          <p>Open a photograph to explore its closest palettes.</p>
           <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
+          <div class="intro-discovery">
+          <div class="discovery-copy">
+          <p>Open a photograph to explore its closest palettes.</p>
+          </div>
+          <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
+            <div class="palette-peek-photos" id="palette-photos"></div>
+          </div>
+          </div>
         </div>
         <div class="palette-sculpture">
-          <svg id="palette-orbit" tabindex="-1" viewBox="0 0 400 400" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
+          <div class="palette-stage">
+          <svg id="palette-orbit" tabindex="-1" viewBox="20 20 360 360" preserveAspectRatio="none" role="group" aria-label="Morphing photograph palettes. Hover or tap a color to inspect it."></svg>
           <button type="button" class="palette-selection" id="palette-selection" aria-label="Clear color selection" hidden>
             <span class="selected-color-index" id="selected-color-index"></span>
             <strong id="selected-color-hex"></strong>
             <span class="selected-color-relation">Clear color ×</span>
           </button>
-          <div class="palette-peek" id="palette-tag" role="group" aria-label="Photographs with similar colors" hidden>
-            <div class="palette-peek-photos" id="palette-photos"></div>
-          </div>
           <div class="palette-hint" aria-hidden="true"><span>Click me</span><svg viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M55 4C53 18 42 29 19 36M19 36L26 27M19 36L30 37"/></svg></div>
+          </div>
         </div>
       </section>
       <section class="explorer-section" id="explorer" aria-labelledby="explorer-title">
@@ -863,7 +873,7 @@ new ResizeObserver(() => draw()).observe(stage);
 
 // One continuous ribbon, moving between geometric and organic silhouettes.
 (() => {
-  const art = $('palette-orbit'), sculpture = art.parentElement, tag = $('palette-tag');
+  const art = $('palette-orbit'), wheelStage = art.parentElement, interaction = art.closest('.constellation-hero'), tag = $('palette-tag');
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -922,9 +932,8 @@ new ResizeObserver(() => draw()).observe(stage);
       const selected = active === i;
       path.setAttribute('data-selected', String(selected));
       path.setAttribute('data-muted', String(active >= 0 && !selected));
-      const middle = (angle + end) / 2;
-      const offset = selected ? 12 : 0;
-      path.setAttribute('style', `transform: translate(${(Math.cos(middle) * offset).toFixed(2)}px, ${(Math.sin(middle) * offset).toFixed(2)}px)`);
+      // Keep the visible slice and its hit area fixed while inspecting it.
+      // Moving it on hover exposed adjacent slices beneath the same pointer.
       if (selected) {
         $('selected-color-index').textContent = `COLOR ${String(i + 1).padStart(2, '0')}`;
         $('selected-color-hex').textContent = hex.toUpperCase();
@@ -1005,20 +1014,20 @@ new ResizeObserver(() => draw()).observe(stage);
   });
   // Closing an overlay can emit pointerenter without a deliberate new hover.
   // Resume inspection only after the pointer moves, or a color is clicked/focused.
-  sculpture.addEventListener('pointermove', event => {
+  interaction.addEventListener('pointermove', event => {
     if (!suppressHover || previewOpen || event.pointerType === 'touch' || !(event.movementX || event.movementY)) return;
     suppressHover = false;
     const index = paths.indexOf(event.target);
     if (index >= 0 && !pinned) select(index);
   });
-  sculpture.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !sculpture.contains(document.activeElement)) clear(); });
-  sculpture.addEventListener('focusout', event => { if (!pinned && !sculpture.contains(event.relatedTarget)) clear(); });
-  sculpture.addEventListener('keydown', event => { if (event.key === 'Escape') clear(); });
+  interaction.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch' && !pinned && !interaction.contains(document.activeElement)) clear(); });
+  interaction.addEventListener('focusout', event => { if (!pinned && !interaction.contains(event.relatedTarget)) clear(); });
+  interaction.addEventListener('keydown', event => { if (event.key === 'Escape') clear(); });
   // The wheel's center and surrounding gaps are also valid dismissal targets.
   document.addEventListener('pointerdown', event => {
     if (active >= 0 && !event.target.closest('#palette-orbit path, .palette-mini, #palette-selection')) clear();
   });
-  document.addEventListener('focusin', event => { if (active >= 0 && !sculpture.contains(event.target)) clear(); });
+  document.addEventListener('focusin', event => { if (active >= 0 && !interaction.contains(event.target)) clear(); });
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; sync(); });
   document.addEventListener('visibilitychange', sync);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(art);
@@ -1026,7 +1035,7 @@ new ResizeObserver(() => draw()).observe(stage);
     const { width, height } = entries[0].contentRect;
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();
-  }).observe(sculpture);
+  }).observe(wheelStage);
   sync();
 })();
 
