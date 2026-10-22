@@ -1012,6 +1012,7 @@ function paletteCuePath(rim, normal, tail) {
     pinned = active >= 0;
     previewOpen = true;
     previewOnMobile = matchMedia('(max-width: 700px)').matches;
+    focusMobilePalette();
     sync();
     // Touch/mouse previews return to the wheel without leaving a focus box on
     // the photo. Keyboard previews return to their thumbnail for continued browsing.
@@ -1030,7 +1031,23 @@ function paletteCuePath(rim, normal, tail) {
     if (running()) frame = requestAnimationFrame(tick);
   }
   function clear() { if (previewOpen) return; active = -1; pinned = false; sync(); }
-  function select(index, pin = false) { if (previewOpen) return; suppressHover = false; active = index; pinned = pin; sync(); }
+  function focusMobilePalette() {
+    if (!matchMedia('(max-width: 700px)').matches) return;
+    const reveal = !interaction.classList.contains('mobile-color-browsing');
+    interaction.classList.add('mobile-color-browsing');
+    // Reuse the title's space for matches. Keep the photos and this compact
+    // layout through clearing a color and opening or closing a photograph.
+    if (reveal && scroller) {
+      const top = interaction.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop;
+      scroller.scrollTo({ top: Math.max(0, top - 8), behavior: 'instant' });
+    }
+  }
+  function select(index, pin = false) {
+    if (previewOpen) return;
+    suppressHover = false; active = index; pinned = pin;
+    if (pin) focusMobilePalette();
+    sync();
+  }
   $('palette-selection').addEventListener('click', () => {
     art.focus({ preventScroll: true });
     clear();
@@ -1058,7 +1075,6 @@ function paletteCuePath(rim, normal, tail) {
   $('focus-dialog').addEventListener('close', () => {
     if (!previewOpen) return;
     previewOpen = false;
-    if (previewOnMobile) interaction.classList.add('mobile-preview-complete');
     suppressHover = true;
     sync();
   });
@@ -1094,6 +1110,9 @@ function paletteCuePath(rim, normal, tail) {
   // browser chrome and the bottom rail, rather than assuming a tall phone.
   const scroller = interaction.closest('[data-section]');
   if (scroller) {
+    document.addEventListener('axd:chapter', event => {
+      if (event.detail.id !== scroller.dataset.section) interaction.classList.remove('mobile-color-browsing');
+    });
     let fitFrame = 0;
     const fitMobile = () => {
       cancelAnimationFrame(fitFrame);

@@ -104,22 +104,25 @@
   .v2-decisions { gap: 22px; }
 }
 @media (max-width: 700px) {
-  .horizontal-layout .site-header { gap: 14px; }
-  .site-header nav { gap: 0 13px; flex-wrap: wrap; max-width: 260px; font-size: .6875rem; }
-  .site-header nav a { min-height: 32px; }
+  .horizontal-layout .site-header { gap: 12px; min-height: 80px; padding-block: 12px; }
+  .site-header nav { display: grid; grid-template-columns: max-content max-content; gap: 0 16px; align-content: center; justify-items: start; max-width: none; font-size: .75rem; }
+  .site-header nav a { min-height: 20px; line-height: 1.15; }
+  .site-header nav a::after { bottom: 0; }
   .horizontal-layout .project-chapter { padding: 8px var(--gutter) 20px; }
   .horizontal-layout .constellation-chapter { padding-bottom: 12px; }
   .project-chapter :is(#c-constellation-title, #p-pet-title) { font-size: clamp(3rem, 12vw, 4.5rem); }
   .constellation-chapter .constellation-hero { grid-template-columns: 1fr; padding-block: 0 24px; gap: 0; container-type: inline-size; }
   .constellation-chapter .constellation-hero > .intro-copy { display: contents; }
-  .constellation-chapter .palette-sculpture { grid-row: 6; width: min(100%, 360px); margin: 12px auto 0; }
+  .constellation-chapter .palette-sculpture { grid-row: 6; width: min(100%, 360px); margin: 6px auto 0; }
   .constellation-chapter .intro-links { grid-row: 3; margin-bottom: 6px; }
   .constellation-chapter .explore-link { min-height: 36px; padding-block: 6px; }
-  .constellation-chapter .intro-discovery { grid-row: 5; height: 140px; margin-block: 4px 0; }
+  .constellation-chapter .intro-discovery { grid-row: 5; height: 140px; margin-block: 32px 0; }
   .constellation-chapter .palette-peek { height: 140px; padding-block: 4px; }
   .constellation-chapter .palette-mini { width: min(100%, calc(100px * var(--mini-ratio) + 12px)); }
   .constellation-chapter .palette-mini-image img { max-height: 100px; }
-  .constellation-chapter .mobile-preview-complete .intro-discovery { display: none; }
+  .constellation-chapter.is-spotlit .intro-copy > :is(.eyebrow, #c-constellation-title, .intro-links),
+  .constellation-chapter .mobile-color-browsing .intro-copy > :is(.eyebrow, #c-constellation-title, .intro-links) { display: none; }
+  .constellation-chapter.is-spotlit .spotlight-exit { position: static; grid-row: 1; justify-self: end; min-height: 32px; margin-bottom: 8px; }
   .constellation-chapter .palette-stage { height: var(--mobile-palette-height, calc(min(90cqw, 320px) + 20px)); aspect-ratio: auto; }
   .constellation-chapter #c-palette-orbit { height: calc(100% - 45px); }
   .constellation-chapter #c-constellation-title { font-size: 12cqw; margin-block: 4px 2px; }
