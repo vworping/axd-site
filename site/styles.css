@@ -75,6 +75,20 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
   background: transparent;
   font-size: .875rem;
 }
+.intro-skip::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 18px;
+  right: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .2s;
+}
+.intro-skip:hover::after,
+.intro-skip:focus-visible::after { transform: scaleX(1); }
 .intro-skip .intro-skip-arrow { width: 1em; height: 1em; margin-left: 15px; fill: currentColor; vertical-align: -.15em; }
 @media (max-width: 700px), (max-height: 600px) and (pointer: coarse) {
   .intro-skip { bottom: max(8px, env(safe-area-inset-bottom)); }

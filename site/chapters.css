@@ -41,7 +41,9 @@
 .constellation-chapter.is-spotlit .project-story { filter: blur(10px); opacity: .16; transition: none; }
 .constellation-chapter.is-spotlit .intro-copy > .lead { position: relative; z-index: 1; }
 .constellation-chapter .spotlight-exit { position: absolute; top: -8px; right: 0; z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 0; background: transparent; font-size: .75rem; }
-.constellation-chapter .spotlight-exit:hover { text-decoration: underline; text-underline-offset: 5px; }
+.constellation-chapter .spotlight-exit::after { content: ''; position: absolute; bottom: 8px; left: 0; right: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .2s; }
+.constellation-chapter .spotlight-exit:hover::after,
+.constellation-chapter .spotlight-exit:focus-visible::after { transform: scaleX(1); }
 .constellation-chapter .spotlight-exit[hidden] { display: none; }
 .constellation-spotlight > .site-header { filter: blur(4px); opacity: .35; transition: none; }
 .constellation-spotlight > .site-header:focus-within { filter: none; opacity: 1; }
