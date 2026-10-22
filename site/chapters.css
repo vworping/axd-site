@@ -122,7 +122,7 @@
   .constellation-chapter .palette-mini-image img { max-height: 100px; }
   .constellation-chapter .palette-stage { height: auto; aspect-ratio: 1.15; }
   .constellation-chapter #c-palette-orbit { height: calc(100% - 35px); }
-  .constellation-chapter .palette-hint > span { left: auto; right: -10px; bottom: 15%; transform: none; }
+  .constellation-chapter .palette-hint > span { left: auto; right: -10px; bottom: 25%; transform: none; }
   .constellation-chapter #c-constellation-title { font-size: 12cqw; margin-block: 4px 2px; }
   .constellation-chapter .intro-copy > .lead { grid-row: 4; max-width: none; font-size: 1.25rem; }
   .constellation-chapter .project-story { margin-top: 20px; padding-block: 24px 8px; }

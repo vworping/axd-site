@@ -983,7 +983,7 @@ function paletteCuePath(rim, normal, tail) {
       selection.style.top = `${cy / (3 * area) / 400 * wheelHeight}px`;
       // Keep the label and tail fixed. Only the shaft length follows the
       // changing rim, with a 20px outward gap and no orbit or loop.
-      const arrowAngle = mobileCue.matches ? .62 : 1.08;
+      const arrowAngle = mobileCue.matches ? .35 : 1.08;
       const edge = point(arrowAngle, false);
       const rim = [edge[0] / 400 * wheelWidth, edge[1] / 400 * wheelHeight];
       const before = point(arrowAngle - .01, false), after = point(arrowAngle + .01, false);
