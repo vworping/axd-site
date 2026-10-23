@@ -30,6 +30,39 @@
   let activeProject;
   let imageIndex = 0;
   let returnFocus;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let motionPaused = false;
+  let photoRequest = 0;
+  let photoReveal;
+
+  document.addEventListener('axd:motion', event => {
+    motionPaused = event.detail.paused;
+    dialog.classList.toggle('motion-paused', motionPaused);
+    if (motionPaused) photoReveal?.cancel();
+  });
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) photoReveal?.cancel();
+  });
+
+  function sizeGallery() {
+    if (!activeProject || !dialog.open) return;
+    const gallery = dialog.querySelector('.dialog-gallery');
+    const frame = $('gallery-expand');
+    const stage = frame.querySelector('.gallery-image-stage');
+    const inset = parseFloat(getComputedStyle(stage).getPropertyValue('--photo-inset')) + 1;
+    const strip = parseFloat(getComputedStyle(frame, '::before').height);
+    const shortLandscape = matchMedia('(orientation: landscape) and (max-height: 600px) and (max-width: 1100px)').matches;
+    const availableHeight = innerWidth <= 700 && !shortLandscape
+      ? Math.min(innerHeight * .53, 520)
+      : gallery.clientHeight - gallery.querySelector('.gallery-controls').offsetHeight - $('gallery-thumbnails').offsetHeight;
+    const photo = activeProject.images[imageIndex];
+    const ratio = photo.width / photo.height;
+    const width = Math.max(1, Math.min(gallery.clientWidth - inset * 2, (availableHeight - strip - inset * 2) * ratio));
+    frame.style.width = `${width + inset * 2}px`;
+    frame.style.height = `${width / ratio + inset * 2 + strip}px`;
+  }
+  new ResizeObserver(sizeGallery).observe(dialog.querySelector('.dialog-gallery'));
+  window.addEventListener('resize', sizeGallery);
 
   const projectLinks = [...document.querySelectorAll('[data-project]')];
 
@@ -55,6 +88,13 @@
     image.alt = alt;
     image.width = photo.width;
     image.height = photo.height;
+    sizeGallery();
+    const request = ++photoRequest;
+    photoReveal?.cancel();
+    image.decode().catch(() => {}).then(() => {
+      if (request !== photoRequest || !dialog.open || reducedMotion.matches || motionPaused) return;
+      photoReveal = image.animate([{ opacity: .2 }, { opacity: 1 }], { duration: 240, easing: 'ease-out' });
+    });
     if (imageDialog.open) updateExpanded();
     $('gallery-count').textContent = count;
     $('expanded-count').textContent = count;
@@ -74,6 +114,7 @@
   }
 
   function openProject(project, trigger) {
+    dialog.classList.remove('is-gallery-ready');
     activeProject = project;
     imageIndex = 0;
     returnFocus = trigger;
@@ -122,6 +163,10 @@
     }));
     updateGallery();
     window.AXDDialogs.open(dialog);
+    sizeGallery();
+    // Commit the first fitted dimensions before enabling transitions between photos.
+    $('gallery-expand').getBoundingClientRect();
+    dialog.classList.add('is-gallery-ready');
     dialog.scrollTop = 0;
   }
 

@@ -11,7 +11,7 @@ const routes = {
   '/': 'index.html',
   '/constellation': 'index.html',
   '/PET': 'index.html',
-  '/work': 'index.html',
+  '/collaborations': 'index.html',
   '/about': 'index.html',
   '/pet-preview/': 'pet-preview/index.html',
   '/pet-preview/index.html': 'pet-preview/index.html',
@@ -95,7 +95,7 @@ test('direct chapter requests fetch the shared document and receive their own me
 });
 
 test('legacy and trailing-slash project links preserve query strings', async () => {
-  for (const [from, to] of [['/pet', '/PET'], ['/pet.html', '/PET'], ['/PET/', '/PET'], ['/constellation/', '/constellation'], ['/constellation/index.html', '/constellation'], ['/about/', '/about']]) {
+  for (const [from, to] of [['/pet', '/PET'], ['/pet.html', '/PET'], ['/PET/', '/PET'], ['/constellation/', '/constellation'], ['/constellation/index.html', '/constellation'], ['/about/', '/about'], ['/work', '/collaborations'], ['/work/', '/collaborations'], ['/work/index.html', '/collaborations'], ['/collaborations/', '/collaborations'], ['/collaborations/index.html', '/collaborations']]) {
     const response = await worker.fetch(new Request(`https://mindofaxd.com${from}?ref=application`), {});
     assert.equal(response.status, 308);
     assert.equal(response.headers.get('Location'), `https://mindofaxd.com${to}?ref=application`);
@@ -115,4 +115,14 @@ test('composed chapters have unique IDs, resolved labels, and executable assets'
   assert.ok(html.includes('Working toward V2.'));
   assert.ok(!html.includes('<!-- CONSTELLATION_CHAPTER -->'));
   assert.ok(!html.includes('<!-- PET_CHAPTER -->'));
+});
+
+test('collaborations is the canonical navigation and sitemap route', async () => {
+  const html = await readFile(new URL('dist/index.html', import.meta.url), 'utf8');
+  const sitemap = await readFile(new URL('dist/sitemap.xml', import.meta.url), 'utf8');
+  assert.ok(html.includes('href="/collaborations">Collaborations</a>'));
+  assert.ok(html.includes('data-route="/collaborations"'));
+  assert.ok(!html.includes('href="/work"'));
+  assert.ok(sitemap.includes('<loc>https://mindofaxd.com/collaborations</loc>'));
+  assert.ok(!sitemap.includes('<loc>https://mindofaxd.com/work</loc>'));
 });

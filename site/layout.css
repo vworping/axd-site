@@ -126,11 +126,11 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .collab-card.is-active .collab-print[data-slot="3"] { transform: translate(-50%,-50%) translate(17cqw, 12cqh) rotate(9deg) scale(.78); }
 .collab-paper { display: contents; }
 .collab-action { position: absolute; bottom: 7px; left: 9px; right: 9px; text-align: right; font-size: .6875rem; letter-spacing: .015em; }
-.story-select { display: flex; flex-direction: column; justify-content: flex-start; width: 100%; gap: 12px; padding: 12px 0 0; text-align: left; background: transparent; border-top: 1px solid var(--line); color: var(--muted); }
+.story-select { display: flex; flex-direction: column; justify-content: flex-start; width: 100%; gap: 12px; padding: 12px 0 0; text-align: left; background: transparent; border-top: 1px solid var(--line); color: #344151; }
 .story-title { display: block; font-size: clamp(1.05rem, 1.65vw, 1.75rem); line-height: 1.12; letter-spacing: -.045em; }
 .is-active .story-select { color: var(--ink); border-color: var(--ink); }
 .is-active .story-title { font-size: clamp(1.3rem, 2.1vw, 2.1rem); }
-.collab-meta { display: flex; justify-content: space-between; gap: 8px; width: 100%; font-size: .625rem; line-height: 1.35; text-transform: uppercase; color: var(--muted); }
+.collab-meta { display: flex; justify-content: space-between; gap: 8px; width: 100%; font-size: .625rem; line-height: 1.35; text-transform: uppercase; color: #445161; }
 .collab-meta span:last-child { flex-shrink: 0; }
 .work-section .constellation-note { display: grid; grid-template-columns: 1fr 1.2fr; gap: 35px; margin: 0; padding: 18px 0 0; align-items: center; }
 .work-section .constellation-note h3 { font-size: clamp(1.25rem, 1.9vw, 2rem); line-height: 1.15; }
@@ -341,7 +341,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .project-dialog .dialog-story h2 { color: #27313f; }
 .project-dialog .dialog-summary { color: #27313f; }
 .dialog-palette-wrap { border-color: #9aa7b5; color: #4f5e70; }
-.project-dialog .dialog-story #dialog-body p { color: #4f5e70; }
+.project-dialog .dialog-story #dialog-body p { color: #27313f; }
 .project-dialog .project-facts > div { border-color: #9aa7b5; }
 .project-dialog .project-facts dt { color: #4f5e70; }
 .project-dialog .project-facts dd { color: #27313f; }
@@ -691,11 +691,11 @@ html[data-input="pointer"] :focus { outline: none !important; }
    rather than a guessed phone height. The photo stage gets the remaining room. */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
  .horizontal-layout .section-track > .hero { container-type: size; overflow: hidden; }
- .horizontal-layout .hero-composition { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); padding: 12px 0 8px; }
+ .horizontal-layout .hero-composition { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); row-gap: 16px; padding: 12px 0 8px; }
  .horizontal-layout .hero h1 { font-size: min(25.5vw, 28cqh); width: 100%; text-align: center; }
  /* Balance the negative trailing letter spacing so the visible letters center. */
  .horizontal-layout .hero h1 > span { padding-inline-end: .095em; }
- .horizontal-layout .hero-composition .photo-deck { display: grid; grid-template-rows: minmax(0, 1fr) auto; width: min(96%, 390px); height: calc(100% + 18px); min-height: 0; margin: -18px auto 0; transform: none; }
+ .horizontal-layout .hero-composition .photo-deck { display: grid; grid-template-rows: minmax(0, 1fr) auto; width: min(96%, 390px); height: 100%; min-height: 0; margin: 0 auto; transform: none; }
  .horizontal-layout .hero-composition .deck-stage { width: 100%; height: 100%; min-height: 0; aspect-ratio: auto; }
  .horizontal-layout .photo-deck #deck-hint { position: static; flex-direction: column-reverse; align-items: flex-start; width: max-content; margin: 0 0 0 4%; padding: 0; gap: 0; transform: translateY(-8px); font-size: .75rem; }
  .horizontal-layout .photo-deck #deck-hint > span { transform: none; }
@@ -853,14 +853,43 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .section-navigation .round-arrow { flex-basis: 36px; width: 36px; height: 36px; }
 }
 /* Leave room above the desktop prints for their cue and beside them for the period. */
+@media (min-width: 701px) and (min-height: 601px), (min-width: 1101px) {
+ .horizontal-layout .hero-composition { container-type: inline-size; column-gap: clamp(16px, 2vw, 32px); }
+ .horizontal-layout .hero h1 { font-size: min(18.6vw, 15.8cqw); }
+ .horizontal-layout .hero-composition .photo-deck { width: 100%; margin: 0; transform: none; }
+}
+@media (min-width: 1101px) {
+ .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 65fr) minmax(0, 35fr); }
+ .horizontal-layout .hero h1 { font-size: min(18.6vw, 18cqw); }
+}
+@media (min-width: 2000px) {
+ .horizontal-layout .hero-composition { container-type: size; }
+ .horizontal-layout .hero h1 { font-size: min(18.6vw, 18cqw, 44cqh); }
+ .horizontal-layout .hero-composition .photo-deck { width: min(100%, calc(100cqh - 80px)); }
+}
 @media (min-width: 1101px) and (max-width: 1999px) {
  .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 65fr) minmax(0, 35fr); }
  .horizontal-layout .hero-composition .photo-deck {
   width: min(100%, calc((100dvh - 330px) * .91));
   margin: 0;
   justify-self: end;
-  transform: translateX(10px);
+  transform: none;
  }
+}
+
+/* Match Constellation's frame easing while fitting each photo without a tall mat. */
+.project-dialog .gallery-expand {
+ flex: 0 0 auto;
+ max-width: 100%;
+ min-height: 0;
+ margin-inline: auto;
+}
+.project-dialog.is-gallery-ready .gallery-expand {
+ transition: width 440ms cubic-bezier(.22,1,.36,1), height 440ms cubic-bezier(.22,1,.36,1);
+}
+.project-dialog.motion-paused .gallery-expand { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+ .project-dialog.is-gallery-ready .gallery-expand { transition: none; }
 }
 
 @media (min-width: 701px) and (min-height: 601px) {
@@ -892,6 +921,13 @@ html[data-input="pointer"] :focus { outline: none !important; }
 }
 .connect-footer .motion-controls { justify-content: flex-end; gap: 18px; }
 .connect-footer .motion-controls button { font-size: .6875rem; }
+
+/* Keep the email and three social tap targets comfortable on narrow phones. */
+@media (max-width: 420px) {
+ .horizontal-layout .connect-email, .horizontal-layout .connect-socials { grid-column: 1 / -1; }
+ .horizontal-layout .connect-socials { justify-content: flex-start; }
+ .horizontal-layout .connect-socials a { justify-items: center; }
+}
 
 /* Keep the rail geometry fixed while its boundary controls snap shut. */
 .section-navigation button[data-snapshot="hidden"] { visibility: hidden; opacity: 0; pointer-events: none; }

@@ -8,8 +8,11 @@ body { padding: 0; background: transparent; --paper: #f8f7f3; }
 .preview-foot > span { display: none; }
 .controls { margin-top: 8px; }
 .portfolio-embedded .controls [data-action="motion"] { display: none; }
-.controls button { min-height: 44px; border: 2px solid currentColor; background: transparent; color: #27313f; font-weight: 700; }
+.controls button { min-height: 44px; border: 2px solid #27313f; background: #f8f7f3; color: #27313f; font-weight: 700; }
+.controls [data-demo="next"] { border-color: #27313f; background: #27313f; color: #f8f7f3; }
+.controls button:not(:disabled):hover { background: #e2e7ed; filter: none; }
+.controls [data-demo="next"]:not(:disabled):hover { background: #3b4d62; }
 /* Keep focus feedback inside the embedded preview's bounds. */
 .controls button:focus { outline: none; }
-.controls button:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
-.controls button:disabled { opacity: .5; }
+.controls button:focus-visible { outline: 2px solid currentColor; outline-offset: -5px; text-decoration: underline; text-underline-offset: 4px; }
+.controls button:disabled { background: #dce1e6; color: #445161; border-color: #647181; opacity: 1; }

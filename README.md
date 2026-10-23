@@ -6,7 +6,7 @@
 
 ![AXD logo](site/assets/images/share-logo.png?v=13)
 
-A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Five sideways chapters connect Photography, Constellation, PET, Collaborations, and About & Say Hello. Constellation and PET scroll vertically inside the shared rail, over one continuous gradient. Direct links open the same integrated experience at `/constellation`, `/PET`, `/work`, and `/about`.
+A photography portfolio built around a stack of prints, measured color palettes, selected collaborations, and a personal introduction. Five sideways chapters connect Photography, Constellation, PET, Collaborations, and About & Say Hello. Constellation and PET scroll vertically inside the shared rail, over one continuous gradient. Direct links open the same integrated experience at `/constellation`, `/PET`, `/collaborations`, and `/about`.
 
 ## What's inside
 
@@ -61,11 +61,11 @@ node site/preview.mjs
 
 Open **http://127.0.0.1:6767/**. If that port is occupied, use `PORT=6770 node site/preview.mjs`. This local server runs the same routing and security handler as production. Rebuild and reload after editing.
 
-Direct links: `/constellation`, `/PET`, `/work`, and `/about`. Old `/pet`, `/pet.html`, and `/constellation/` links redirect to their canonical chapters. Browser titles follow the current chapter: Palace, Palace: Constellation, Palace: PET, Palace: Collaborations, and Palace: About.
+Direct links: `/constellation`, `/PET`, `/collaborations`, and `/about`. Old `/work`, `/pet`, `/pet.html`, and `/constellation/` links redirect to their canonical chapters. Browser titles follow the current chapter: Palace, Palace: Constellation, Palace: PET, Palace: Collaborations, and Palace: About.
 
 `site/compose-chapters.mjs` composes the Constellation snapshot and PET source into the main page, namespaces their IDs and styles, and emits chapter scripts/styles in `site/dist/`. Edit source files, not generated output. Shared chapter styling lives in `site/chapters.css`; the spotlight and gradient depth live in `site/chapter-experience.js`. The spotlight starts in the markup, before Constellation enters view, and clears after a photo opens, vertical scrolling, Exit spotlight, or Escape. It never gates the map. Vertical scrolling stays within a chapter; horizontal gestures, left/right arrow keys, and navigation controls change chapters.
 
-PET’s “Working toward V2” section records the open LCD/e-ink, NFC business-card, and multi-person Hello design questions. The OS preview remains the current prototype.
+PET’s “Working toward V2” section records peer testing of card links and simultaneous hellos, a demo at an Accenture networking event, and the resulting LCD/e-ink, NFC card design, and group Hello questions. The OS preview remains the current prototype.
 
 ## Build and publish
 

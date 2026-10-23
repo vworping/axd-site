@@ -75,7 +75,7 @@
 .pet-chapter .v2-study { border-top: 1px solid var(--line); padding-block: 28px 8px; text-align: center; }
 .v2-heading { display: grid; gap: 10px; justify-items: center; }
 .pet-chapter .v2-heading h2 { font-size: clamp(2.2rem, 3.5vw, 3.25rem); letter-spacing: -.055em; line-height: 1.07; }
-.pet-chapter .v2-heading > p:last-child { font-size: 1rem; line-height: 1.6; color: var(--muted); }
+.pet-chapter .v2-heading > p:last-child { max-width: 65ch; font-size: 1rem; line-height: 1.6; color: var(--muted); }
 .v2-decisions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 28px; max-width: 1120px; margin: 24px auto 0; }
 .v2-decisions article { display: grid; grid-template-rows: subgrid; grid-row: span 3; border-top: 1px solid var(--line); padding-top: 16px; justify-items: center; }
 .decision-number { display: block; font-size: .625rem; letter-spacing: .065em; }

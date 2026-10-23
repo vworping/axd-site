@@ -4,7 +4,7 @@
 
 ## Interactive OS
 
-`site/pet-preview/` is a public snapshot of PET's `design/pet-badge-concept.html`, `pet-os.css`, `pet-os.js`, and required `design/assets`, updated October 8, 2026. The preview is the same browser OS used during development, including the animated greeting, settings, Hello simulation, and Constellation inspection. It does not create live introductions or write NFC cards. The QR is a labeled placeholder.
+`site/pet-preview/` is a public snapshot of PET's `design/pet-badge-concept.html`, `pet-os.css`, `pet-os.js`, and required `design/assets`, refreshed October 23, 2026. The preview is the same browser OS used during development, including the animated home greeting, orbital Hello composition, settings, Hello simulation, and Constellation inspection. It does not create live introductions or write NFC cards. Its labeled demo QR opens the PET project page.
 
 The portfolio adapter (`portfolio.css` and `portfolio.js`) removes redundant preview framing, reports the content height to the parent, shares the single page-level motion control (the standalone preview retains its own button). The OS script comes directly from PET, including its optional host motion event and support for nested photo-saving controls. Local source paths are removed from the public Constellation data. Font licenses accompany the preview fonts. The simulation subtitle sits under the portfolio's OS heading; the inline event buttons remain below the screen.
 
@@ -41,3 +41,5 @@ October 8 update: verified one visible page-level motion toggle, pause/resume, a
 October 12 Hello redesign: synchronized the shared Hello layout from PET. All navigation, process steps, instructions, and actions use the OS fonts. Introduction has a larger green bracket greeting; the phone form uses a distinct static heading. NFC retains preparation, clear, review, and save with professional labels. Device status uses a full-width single line. The preview now has one guided demo button and Reset, with the existing page motion toggle. Its clean demo QR opens the PET project page. Native layout and interaction checks and the portfolio security checks passed; no physical badge was flashed.
 
 October 13 preview update: removed the OS inspection Save / copy photo button and its image-export dialog, scripts, and styles. The sync script preserves this removal on future refreshes.
+
+October 23 preview update: synchronized the current `hello-orbit-15` design, including the On your phone panel, Show QR / Back to phone controls, and Save Hello / Hello Saved screens. Verified all 47 snapshot hashes and byte equality with the source CSS/JS, plus the guided demo through simulated NFC save. Portfolio action-button contrast remains in `portfolio.css`, which synchronization preserves. Enclosure dimensions and notes now appear as readable HTML captions and expanded-view descriptions.

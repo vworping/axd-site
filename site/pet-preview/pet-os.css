@@ -99,19 +99,40 @@
 .hello-large{line-height:.97222222}
 .hello-regular{font-weight:400;line-height:.98611111}
 .hello-bold{font-weight:700;line-height:.76388889}
-/* Hello shares the OS typefaces, palette, and animated bracket greeting. */
-.hello-step{font-size:1.7578125cqw;padding:.5859375cqw .9765625cqw;color:var(--muted);line-height:1.23}
-.hello-step.active{background:var(--green);color:var(--bg)}
-.hello-greeting{justify-content:flex-start;pointer-events:none;font-size:12.5cqw;letter-spacing:-.29296875cqw}
-.hello-greeting .greeting-brackets{margin-top:0}.hello-greeting .greeting-brackets:after{top:14.453125cqw}
-.hello-sheet{background:#f3eee4;color:#10232b;border-radius:.78125cqw}
-.hello-paper{color:#10232b}
+/* Static orbital Hello composition, shared with the 1024 x 600 firmware. */
+.hello-page .page{animation:none}
+.hello-page>.rule{display:none}
+.hello-step{font-size:1.7578125cqw;color:var(--muted);line-height:1.23;letter-spacing:.06em}
+.hello-step.active,.sage{color:var(--green)}
+.hello-static{color:var(--green)}
+.hello-sheet{background:linear-gradient(155deg,#1c211c,#111514 72%);border:1px solid #3c443a;border-radius:1.953125cqw}
 .hello-info{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.loading-track{background:#d4d3c9;overflow:hidden}
-.loading-track i{display:block;width:7.03125cqw;height:100%;background:#477e73;animation:hello-loading 1.4s ease-in-out infinite alternate}
+.hello-action{background:transparent;border:1px solid var(--green);border-radius:1.171875cqw;padding:0}
+.hello-action.primary{background:var(--green);color:var(--bg);border-radius:5cqw}
+.hello-clear{border:0;text-decoration:underline;text-underline-offset:.5cqw;color:var(--muted)}
+.hello-orbit{position:absolute;left:0;top:14.6484375cqw;width:62.5cqw;height:42.96875cqw;pointer-events:none;overflow:hidden}
+.hello-orbit svg{position:absolute;inset:0;width:100%;height:100%}
+.hello-orbit span{position:absolute;color:#4b5146;font:900 4.6875cqw/1 Archivo,sans-serif;opacity:.58;filter:blur(1.5px)}
+.orbit-hola{left:22.65625cqw;top:.2cqw;transform:rotate(9deg)}
+.orbit-bonjour{left:35.7421875cqw;top:5.46875cqw;transform:rotate(11deg)}
+.orbit-hallo{left:3.7109375cqw;top:36.03515625cqw;transform:rotate(10deg)}
+.orbit-ciao{left:45.1171875cqw;top:34.5703125cqw;transform:rotate(-14deg)}
+.hello-save-orb{display:grid;place-items:center;pointer-events:none;background:radial-gradient(ellipse,#bfd6b81f,transparent 68%)}
+.hello-save-orb>i{position:absolute;width:94%;height:83%;border:1px solid #bfd6b84d;border-radius:50%;transform:rotate(-24deg)}
+.hello-save-orb>i:nth-child(2){width:80%;height:95%;transform:rotate(24deg);border-color:#bfd6b888}
+.hello-save-orb>span{display:grid;place-items:center;width:10.15625cqw;height:10.15625cqw;border-radius:50%;background:linear-gradient(140deg,#dcecc5,#8da48c);box-shadow:0 0 3.125cqw #bfd6b840,inset 0 0 .3cqw #fff;color:var(--bg)}
+.hello-save-orb svg{width:5.46875cqw;height:5.46875cqw}
+.hello-signal{color:var(--green)}
+.hello-signal svg{width:100%;height:100%}
+.hello-connected{letter-spacing:.13em}
+.connected-dot{display:inline-block;width:.9765625cqw;height:.9765625cqw;background:var(--green);border-radius:50%;margin-right:1cqw}
+.hello-phone-step>span{display:grid;place-items:center;position:absolute;width:3.515625cqw;height:3.515625cqw;border:1px solid var(--green);border-radius:50%;font-size:1.7578125cqw}
+.hello-phone-step:not(:nth-last-child(2))>span:after{content:'';position:absolute;width:1px;height:2.34375cqw;background:#5a6556;top:3.515625cqw}
+.hello-phone-step strong{position:absolute;left:5.46875cqw;top:-.390625cqw;font-size:2.34375cqw;font-weight:400}
+.hello-phone-step p{position:absolute;left:5.46875cqw;top:2.34375cqw;font-size:1.7578125cqw;color:var(--muted);margin:0}
+.loading-track{background:var(--line);overflow:hidden}
+.loading-track i{display:block;width:7.03125cqw;height:100%;background:var(--green);animation:hello-loading 1.4s ease-in-out infinite alternate}
 @keyframes hello-loading{to{transform:translateX(21.09375cqw)}}
-.hello-action{justify-content:flex-start;padding-left:1.5625cqw;background:none}
-.hello-action.primary{background:var(--green);color:var(--bg)}
 .controls [data-demo="next"]{border-color:var(--green);color:var(--ink);background:#bfd6b81a}
 .hello-total{color:var(--green)}
 

@@ -12,7 +12,7 @@
   const routeOf = panel => panel.dataset.route;
   const fromURL = () => {
     const hash = location.hash === '#contact' ? '#about' : location.hash;
-    const alias = location.pathname.replace(/\/$/, '').replace(/^\/pet(?:\.html)?$/i, '/PET').replace('/constellation/index.html', '/constellation') || '/';
+    const alias = location.pathname.replace(/\/$/, '').replace(/^\/pet(?:\.html)?$/i, '/PET').replace('/constellation/index.html', '/constellation').replace(/^\/(?:work|collaborations)(?:\/index\.html)?$/, '/collaborations') || '/';
     return Math.max(0, panels.findIndex(panel => hash ? '#' + panel.dataset.section === hash : routeOf(panel) === alias));
   };
   const initialPosition = fromURL();

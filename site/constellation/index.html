@@ -87,7 +87,7 @@ select { padding-right: 8px; }
 .map-footer { border-top: 1px solid var(--line); padding: 14px 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; font-size: 10px; color: var(--muted); }
 .legend { display: flex; gap: 15px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 5px; }
-.legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+.legend-mark { width: 16px; height: 16px; flex: none; overflow: visible; }
 .method { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .8125rem; line-height: 1.6; }
 .method summary { display: flex; justify-content: space-between; align-items: center; min-height: 44px; list-style: none; }
 .method summary::-webkit-details-marker { display: none; }
@@ -388,7 +388,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         <span class="mark-word">AXD<span class="brand-dot">.</span></span>
         <svg class="mark-brackets" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><linearGradient id="brand-bracket-left" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#c24669"/><stop offset="12.5%" stop-color="#aa691e"/><stop offset="25.0%" stop-color="#387c62"/><stop offset="37.5%" stop-color="#4271c2"/><stop offset="50.0%" stop-color="#945ab8"/><stop offset="62.5%" stop-color="#4271c2"/><stop offset="75.0%" stop-color="#387c62"/><stop offset="87.5%" stop-color="#aa691e"/><stop offset="100.0%" stop-color="#c24669"/></linearGradient><linearGradient id="brand-bracket-right" gradientUnits="userSpaceOnUse" x1="0" y1="-30" x2="0" y2="110" spreadMethod="reflect"><stop offset="0.0%" stop-color="#c24669"/><stop offset="12.5%" stop-color="#aa691e"/><stop offset="25.0%" stop-color="#387c62"/><stop offset="37.5%" stop-color="#4271c2"/><stop offset="50.0%" stop-color="#945ab8"/><stop offset="62.5%" stop-color="#4271c2"/><stop offset="75.0%" stop-color="#387c62"/><stop offset="87.5%" stop-color="#aa691e"/><stop offset="100.0%" stop-color="#c24669"/></linearGradient></defs><g fill="none" stroke-width="8" stroke-linejoin="miter"><path d="M 20 6 L 7 6 L 7 54 L 20 54" stroke="url(#brand-bracket-left)"/><path d="M 140 6 L 153 6 L 153 54 L 140 54" stroke="url(#brand-bracket-right)"/></g></svg>
       </a>
-      <a class="back-link" href="/#work">↖ Back to the work</a>
+      <a class="back-link" href="/collaborations">↖ Back to collaborations</a>
     </header>
     <main>
       <section class="constellation-hero" aria-labelledby="constellation-title">
@@ -428,7 +428,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
             <section class="map-note" aria-labelledby="map-note-title">
               <h3 id="map-note-title">Reading the map</h3>
               <div class="map-note-scroll" id="map-explanation" tabindex="0" role="region" aria-label="About the selected map algorithm">
-                <p>Each dot is a photograph. Open one to see its three closest palettes.</p>
+                <p>Each marker is a photograph; its color and shape show the year. Open one to see its three closest palettes.</p>
                 <details class="map-topic">
                   <summary><span>Layout · <span id="algorithm-name">t-SNE</span></span><span class="topic-toggle" aria-hidden="true"></span></summary>
                   <p id="algorithm-description"></p>
@@ -461,7 +461,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
             <svg id="constellation" role="group" aria-label="Photograph palette map. Tab to a point and press Enter to explore."><g id="map-world"><g id="edges"></g><g id="points"></g></g><g id="point-labels" aria-hidden="true"></g></svg>
             <div class="map-actions"><button id="shuffle" type="button">Random ↗</button><div><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="reset" type="button">Reset</button><button id="zoom-in" type="button" aria-label="Zoom in">+</button></div></div>
           </div>
-          <div class="map-footer"><div class="legend" id="legend" aria-label="Point color by year"></div><span>Drag to pan</span></div>
+          <div class="map-footer"><div class="legend" id="legend" aria-label="Point color and shape by year"></div><span>Drag to pan</span></div>
         </section>
         </div>
 
@@ -482,7 +482,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
         </div>
       </section>
     </main>
-    <footer class="site-footer"><a class="back-link" href="/#work">← Back to the portfolio</a><span>PERCEPTUAL PALETTE DRIFT</span></footer>
+    <footer class="site-footer"><a class="back-link" href="/collaborations">← Back to the portfolio</a><span>PERCEPTUAL PALETTE DRIFT</span></footer>
   </div>
   <dialog id="focus-dialog" aria-labelledby="focus-title" tabindex="-1">
     <div class="dialog-bar"><span id="focus-title">A closer look</span><button id="close-focus" class="dismiss-button" type="button" aria-label="Close photograph preview" autofocus><span aria-hidden="true">×</span></button></div>
@@ -569,9 +569,19 @@ function placeMapLabels(items, width, height) {
 const $ = id => document.getElementById(id);
 const nodes = DATA.nodes;
 const byImage = new Map(nodes.map(node => [node.image, node]));
-const yearPalette = ['#916437', '#857745', '#526c50', '#8d4c43', '#746080', '#416983'];
+const yearPalette = ['#165dad', '#a64d00', '#08735c', '#912b85', '#5146b7', '#9b2637'];
+// A second visual cue keeps years distinguishable without relying on color alone.
+const yearSymbols = [
+  'M 4.8 0 A 4.8 4.8 0 1 0 -4.8 0 A 4.8 4.8 0 1 0 4.8 0',
+  'M -4.4 -4.4 H 4.4 V 4.4 H -4.4 Z',
+  'M 0 -5.8 L 5.4 4.6 H -5.4 Z',
+  'M 0 -6 L 5.5 0 L 0 6 L -5.5 0 Z',
+  'M -2 -5.5 H 2 V -2 H 5.5 V 2 H 2 V 5.5 H -2 V 2 H -5.5 V -2 H -2 Z',
+  'M -5 -3 L 0 -5.5 L 5 -3 V 3 L 0 5.5 L -5 3 Z',
+];
 const years = [...new Set(nodes.map(node => node.year))].sort();
 const yearColors = new Map(years.map((year, i) => [year, yearPalette[i % yearPalette.length]]));
+const yearShapes = new Map(years.map((year, i) => [year, yearSymbols[i % yearSymbols.length]]));
 const svg = $('constellation');
 const stage = $('stage');
 const world = $('map-world');
@@ -668,8 +678,9 @@ function applyView() {
   view.x = Math.max(-view.width * view.scale + 60, Math.min(view.width - 60, view.x));
   view.y = Math.max(-view.height * view.scale + 60, Math.min(view.height - 60, view.y));
   world.setAttribute('transform', `translate(${view.x} ${view.y}) scale(${view.scale})`);
-  pointElements.forEach(group => {
-    group.querySelector('.node').setAttribute('r', 4.4 / view.scale);
+  pointElements.forEach((group, image) => {
+    const point = positions.get(image);
+    group.querySelector('.node').setAttribute('transform', `translate(${point.x} ${point.y}) scale(${1 / view.scale})`);
     group.querySelector('.hit-node').setAttribute('r', 11 / view.scale);
   });
   highlight(activeImage);
@@ -704,7 +715,7 @@ function draw() {
     const y = (view.height - bottom + pad) / 2 - (p.y - centerY) * scale;
     positions.set(node.image, { x, y });
     const group = svgEl('g', { class: 'point-target', role: 'button', tabindex: node.image === keyboardImage ? 0 : -1, 'aria-label': `Photograph ${node.id}, ${node.year}. Enter to explore; arrow keys to browse.`, 'data-image': node.image });
-    group.append(svgEl('circle', { class: 'hit-node', cx: x, cy: y, r: 11 }), svgEl('circle', { class: 'node', cx: x, cy: y, r: 4.4, fill: yearColors.get(node.year) }));
+    group.append(svgEl('circle', { class: 'hit-node', cx: x, cy: y, r: 11 }), svgEl('path', { class: 'node', d: yearShapes.get(node.year), transform: `translate(${x} ${y})`, fill: yearColors.get(node.year) }));
     group.addEventListener('pointerenter', () => { if (!drag && !dialog.open) inspect(node.image); });
     group.addEventListener('focus', () => {
       keyboardImage = node.image;
@@ -865,7 +876,7 @@ svg.addEventListener('keydown', event => {
   if (event.key === '-') { event.preventDefault(); zoom(1 / 1.4); }
   if (event.key === 'Escape') { highlight(null); resetView(); }
 });
-$('legend').innerHTML = years.map(year => `<span class="legend-item"><span class="legend-dot" style="background:${yearColors.get(year)}"></span>${year}</span>`).join('');
+$('legend').innerHTML = years.map(year => `<span class="legend-item"><svg class="legend-mark" viewBox="-8 -8 16 16" aria-hidden="true"><path d="${yearShapes.get(year)}" fill="${yearColors.get(year)}"/></svg>${year}</span>`).join('');
 $('collection-count').textContent = `${nodes.length} photographs · ${years[0]}—${years[years.length - 1]}`;
 updatePreview(previewImage);
 new ResizeObserver(() => draw()).observe(stage);

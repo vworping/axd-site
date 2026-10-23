@@ -33,6 +33,8 @@ Project images live under `site/assets/images/projects/`. Keep each set of respo
 
 Use real width and height values so the site preserves image proportions. `previewSrc` can override the shelf image path. The gallery can hold more than four photos; the shelf uses up to four entries from `preview.order`.
 
+Project galleries fit their frames to those image dimensions and animate width and height with the same 440 ms easing as Constellation. The resize and photo fade respect Pause motion and reduced motion. Gallery sizing lives in `site/script.js`; its frame styling is in `site/layout.css`.
+
 ## Hero and About
 
 - **Hero photos and palettes:** `site/assets/data/photographs.js`. Array order determines the visible 001–005 numbers. Responsive WebP files live under `site/assets/images/hero/`, named after their originals. The same palette drives each print and the AXD brackets; `docs/palette-provenance.json` records the measured source.

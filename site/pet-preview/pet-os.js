@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s),ui=$('.os');
-const m={page:'home',settingsReturn:'home',spread:0,wifi:false,brightness:100,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,hello:false,joined:false,form:false,received:false,opening:false,cardStage:'idle',connections:0,network:'Studio',savedNetwork:'',enterprise:false};
+const m={page:'home',settingsReturn:'home',spread:0,wifi:false,brightness:100,motion:!matchMedia('(prefers-reduced-motion: reduce)').matches,hello:false,joined:false,form:false,received:false,opening:false,cardStage:'idle',qr:false,connections:0,network:'Studio',savedNetwork:'',enterprise:false};
 const P=window.PET_CONSTELLATION.spreads;let openingTimer,greetingTimer;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pos=(x,y,w,h)=>`left:${x/10.24}cqw;top:${y/10.24}cqw;width:${w/10.24}cqw;${h?`height:${h/10.24}cqw;`:''}`;
@@ -9,8 +9,11 @@ const txt=(s,x,y,w,size=24,cls='',color='')=>`<div class="el txt ${cls}" style="
 const title=(s,x,y,w,size=72,cls='')=>`<h1 class="el display ${cls}" style="${pos(x,y,w)}font-size:${size/10.24}cqw">${s}</h1>`;
 const box=(x,y,w,h,cls='panel',extra='')=>`<div aria-hidden="true" class="el ${cls}" style="${pos(x,y,w,h)}${extra}"></div>`;
 const btn=(s,x,y,w,h,action,fill=false,size=24,cls='')=>`<button aria-label="${s?esc(s.replace(/<[^>]*>/g,'')):'Explore Palette Constellation'}" class="el button ${fill?'primary':''} ${cls}" data-action="${action}" style="${pos(x,y,w,h)}font-size:${size/10.24}cqw">${s}</button>`;
-const helloGreeting=()=>`<div class="el greeting-link hello-greeting" style="${pos(32,168,592,160)}" aria-label="Hello"><span class="greeting-brackets">[<span class="greeting-word">hello</span>]</span></div>`;
-const qr=()=>`<div class="el hello-sheet" style="${pos(656,168,336,336)}">${m.opening?txt('Opening link',24,76,288,32,'display hello-info')+`<div class="el loading-track" style="${pos(24,252,288,4)}"><i></i></div>`:`<img class="el" style="${pos(0,0,336,336)}" src="assets/preview-qr.svg?v=clean-qr-13" alt="Demo QR code linking to the PET project page">`}</div>`+txt(m.opening?'OPENING YOUR LINK':'Demo QR opens the PET page.',656,536,336,18,'hello-info muted');
+const helloOrbit=()=>`<div class="hello-orbit" aria-hidden="true"><svg viewBox="0 0 640 440"><defs><linearGradient id="orbit-line"><stop stop-color="#bfd6b8" stop-opacity="0"/><stop offset=".35" stop-color="#d7e6bc"/><stop offset="1" stop-color="#bfd6b8" stop-opacity="0"/></linearGradient></defs><g transform="rotate(18 300 215)" fill="none" stroke="url(#orbit-line)"><ellipse cx="300" cy="215" rx="315" ry="185"/></g></svg><span class="orbit-hola">[hola]</span><span class="orbit-bonjour">[bonjour]</span><span class="orbit-hallo">[hallo]</span><span class="orbit-ciao">[ciao]</span></div>`;
+const helloSignal=()=>`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M15 12a28 28 0 0 0 0 40M23 20a17 17 0 0 0 0 24M49 12a28 28 0 0 1 0 40M41 20a17 17 0 0 1 0 24"/><circle cx="32" cy="32" r="4" fill="currentColor" stroke="none"/></svg>`;
+const helloOrb=()=>`<div class="el hello-save-orb" style="${pos(668,170,300,164)}" aria-hidden="true"><i></i><i></i><span>${helloSignal()}</span></div>`;
+const qr=()=>box(656,164,336,396,'hello-sheet')+(m.opening?`<div class="el hello-signal" style="${pos(794,216,60,60)}">${helloSignal()}</div>`+title('Opening link',680,308,288,32)+`<div class="el loading-track" style="${pos(680,420,288,4)}"><i></i></div>`+txt('OPENING YOUR LINK',680,476,288,18,'hello-info muted'):txt('SCAN TO SAY HELLO',680,182,288,18,'hello-info','var(--green)')+`<img class="el hello-qr" style="${pos(680,220,288,288)}" src="assets/preview-qr.svg?v=clean-qr-13" alt="Demo QR code linking to the PET project page">`+(m.form?btn('Back to phone',680,516,288,36,'hide-qr',false,24,'hello-action'):txt('Open your phone camera.',680,526,288,18,'hello-info muted')));
+const helloPhone=()=>box(644,164,348,396,'hello-sheet')+txt('<i class="connected-dot"></i> CONNECTED',668,184,300,18,'hello-connected','var(--green)')+title('ON YOUR PHONE',668,222,300,32)+txt('Write your hello.',668,265,300,24,'muted')+['Name','Topic','Send'].map((t,i)=>`<div class="el hello-phone-step" style="${pos(670,316+60*i,298,56)}"><span>0${i+1}</span><strong>${t}</strong><p>${['Introduce yourself.','Start a conversation.','Get ready to connect.'][i]}</p></div>`).join('')+btn('Show QR  ›',668,506,300,40,'show-qr',false,24,'hello-action');
 const header=()=>{
  const names={home:'',pet:'BUILDING / PET',atla:'BUILDING / ATLA',palette:'COLOR STUDIES',hello:'A SMALL HELLO',settings:'SETTINGS',wifi:'WI-FI',password:'JOIN NETWORK',network:'NETWORK DETAILS'};
  return btn(m.page==='home'?'[pet.]':'← Back',32,16,104,44,m.page==='home'?'home':'back',false,18)+(m.page==='home'?'':btn('Home',144,16,84,44,'home',false,18))+txt(names[m.page],252,29,440,18,'micro muted')+txt(m.opening?'Opening link':m.hello?(m.joined?'Phone linked':'Phone link'):(m.wifi?'Wi-Fi on':'Wi-Fi off'),704,29,160,18,'muted header-status')+btn('Settings',880,16,112,44,'settings',false,18)+box(32,76,960,1,'rule');
@@ -36,21 +39,23 @@ function page(){
   h+=`<div class="el main-photo" style="${pos(48,228,mainWidth,mainHeight)}--spread-accent:${s.accent}">${paletteCard(s.source,0)}</div><div class="el palette-deck" style="${pos(matchX,228,976-matchX,mainHeight)}--spread-accent:${s.accent}" aria-label="Closest palette photographs">${s.neighbors.map((p,i)=>paletteCard(p,i+1)).join('')}</div>`;
  }else if(m.page==='hello'){
   const step=m.received?2:m.opening?0:!m.hello||m.form?1:0;
-  ['INTRODUCTION','SAY HELLO','CONNECT'].forEach((name,i)=>{h+=`<div class="el hello-step ${i===step?'active':''}" style="${pos(32+i*328,96,304,36)}" ${i===step?'aria-current="step"':''}>0${i+1} / ${name}</div>`+box(32+i*328,140,304,2,'rule',`background:${i===step?'var(--green)':'var(--line)'}`);});
-
+  h+=helloOrbit();
+  ['INTRODUCTION','SAY HELLO','CONNECT'].forEach((name,i)=>{h+=`<div class="el hello-step ${i===step?'active':''}" style="${pos(32+i*328,102,304,24)}" ${i===step?'aria-current="step"':''}>0${i+1} / ${name}</div>`+box(32+i*328,134,304,i===step?3:2,'rule',`background:${i===step?'var(--green)':'var(--line)'}`);});
   if(m.received){
    const review=m.cardStage==='review',saved=m.cardStage==='saved';
-   h+=txt('NICE TO MEET YOU',32,178,592,18,'hello-info','var(--green)')+title('Maya Chen',32,214,592,72,'guest-greeting')+box(32,352,592,1,'rule')+txt('CONVERSATION STARTER',32,374,592,18,'hello-info muted')+txt('Color and human connection',32,414,592,28,'hello-topic')+box(656,168,336,340,'hello-sheet')+title(saved?'Card updated.':'NFC card',680,196,288,32,'hello-paper')+txt(saved?'Ready to share.':review?'Confirm the card below.':'Save this introduction.',680,258,288,18,'hello-info hello-paper');
-   const messages={idle:'Prepare a tag to save this introduction, or select Done.',armed:'Hold a blank NFC tag on PET.',review:'Tag found. Select Save to card to confirm.',saved:'Updated. This card is ready to give.',clearing:'Remove any card, then tap a writable tag to erase its link.',cleared:'Tag cleared. Ready for a new introduction.'};
-   h+=box(32,524,960,1,'rule')+txt(messages[m.cardStage],32,544,960,18,'hello-info card-message',saved?'var(--green)':'var(--muted)');
-   if(['idle','cleared'].includes(m.cardStage))h+=btn('Prepare tag',680,364,164,48,'card-arm',false,24,'hello-action hello-outline')+btn('Clear tag',856,364,112,48,'card-clear',false,18,'hello-action hello-paper');
-   if(review)h+=txt('Card 22222222',680,376,288,18,'hello-info hello-paper');
-   h+=btn(review?'Save to card':'Done',680,428,288,56,review?'card-save':'accept',true,24,'hello-action');
+   h+=txt('NICE TO MEET YOU',32,228,576,18,'hello-info','var(--green)')+title('Maya Chen',32,266,576,72,'guest-greeting')+box(32,378,576,1,'rule')+txt('CONVERSATION STARTER',32,398,576,18,'hello-info','var(--green)')+txt('Color and human connection',32,432,576,28,'hello-topic')+box(644,164,348,396,'hello-sheet')+helloOrb()+title(saved?'HELLO SAVED':'SAVE HELLO',676,346,284,32)+txt(saved?'Ready to share.':review?'Confirm the card below.':'Save this introduction.',676,391,284,24,'hello-info muted');
+   const messages={armed:'Hold a blank NFC tag on PET.',review:'Tag found. Select Save to card to confirm.',saved:'Updated. This card is ready to give.',clearing:'Remove any card, then tap a writable tag to erase its link.',cleared:'Tag cleared. Ready for a new introduction.'};
+   if(m.cardStage!=='idle')h+=txt(messages[m.cardStage],32,572,960,18,'hello-info card-message',saved?'var(--green)':'var(--muted)');
+   if(['idle','cleared'].includes(m.cardStage))h+=btn('Prepare tag  ›',676,440,182,44,'card-arm',false,18,'hello-action')+btn('Clear tag',866,440,102,44,'card-clear',false,18,'hello-action hello-clear');
+   else if(review)h+=txt('Card 22222222',676,450,284,18,'hello-info','var(--green)');
+   else h+=txt(saved?'Introduction saved.':m.cardStage==='clearing'?'Tap a tag to clear it.':'Hold a tag near PET.',676,450,284,18,'hello-info','var(--green)');
+   h+=btn(review?'Save to card':'Done',676,500,284,48,review?'card-save':'accept',true,24,'hello-action');
   }else if(!m.hello&&!m.opening){
-   h+=title('Try again.',32,190,592,72)+txt('This introduction has ended.',32,336,592,28,'hello-info')+txt('Open a new link when you are ready.',32,408,592,24,'hello-info muted')+box(656,168,336,336,'hello-sheet')+title('New hello',680,208,288,32,'hello-paper')+btn('Start again',680,420,288,56,'hello',true,24,'hello-action');
+   h+=title('Try again.',32,250,592,72)+txt('This introduction has ended.',32,382,592,28,'hello-info')+txt('Open a new link when you are ready.',32,430,576,24,'muted')+box(656,220,336,324,'hello-sheet')+title('New hello',680,264,288,32)+txt('A fresh conversation.',680,320,288,24,'hello-info muted')+btn('Start again',680,456,288,56,'hello',true,24,'hello-action');
   }else{
    const form=m.form&&!m.opening;
-   h+=(form?title('Your turn.',32,188,592,72)+box(32,300,592,1,'rule')+txt('NAME',32,328,592,18,'hello-info muted')+txt('Introduce yourself on your phone.',32,364,592,28,'hello-info')+box(32,418,592,1,'rule')+txt('TOPIC',32,440,592,18,'hello-info muted')+txt("What would you like to talk about?",32,476,592,28,'hello-info'):helloGreeting()+txt('Scan to start a conversation.',32,400,592,28,'hello-info')+txt('No app or sign-in needed.',32,452,592,18,'hello-info muted'))+qr();
+   h+=form?title('Your <span class="sage">turn.</span>',32,244,576,72)+txt('NAME',32,364,576,18,'hello-info muted')+txt('Introduce yourself on your phone.',32,396,576,28,'hello-info')+box(32,446,576,1,'rule')+txt('TOPIC',32,466,576,18,'hello-info muted')+txt('What would you like to talk about?',32,498,576,28,'hello-info'):title('[hello]',48,252,576,144,'hello-static')+txt('Start a conversation.',32,422,592,36,'hello-info')+txt('No app or sign-in needed.',32,478,592,18,'hello-info muted');
+   h+=form&&!m.qr?helloPhone():qr();
   }
  }else if(m.page==='settings'){
   h=title('Settings',32,110,950)+btn('Wi-Fi <span aria-hidden="true">›</span>',32,228,320,92,'wifi',false,24,'settings-control')+btn(`Motion <span>${m.motion?'On':'Off'}</span>`,32,336,320,92,'motion',m.motion,24,'settings-control')+btn('Sleep',32,444,320,92,'sleep',false,24,'settings-control')+txt('Brightness',424,290,360,36)+txt(`<output>${m.brightness}%</output>`,828,296,148,28,'brightness-value','var(--green)')+`<input id="brightness" class="el range" aria-label="Brightness" style="${pos(424,360,552,48)}--level:${m.brightness}%" type="range" min="0" max="100" value="${m.brightness}"><i id="brightness-handle" class="el brightness-handle" style="${pos(424+552*m.brightness/100-40,368,32,32)}" aria-hidden="true"></i>`+title(m.connections,720,450,256,72,'hello-count hello-total')+txt('Hellos',720,530,256,24,'hello-count');
@@ -127,12 +132,12 @@ function startGreeting(){
  },210);
 }
 function display(){ $('.dim').style.opacity=(100-m.brightness)/128;$('.screen').classList.toggle('still',!m.motion);document.querySelector('.controls [data-action="motion"]').textContent=m.motion?'Pause motion':'Resume motion'; }
-function render(){clearInterval(greetingTimer);paletteDialog=null;ui.innerHTML=header()+`<main class="page" aria-label="${m.page}">${page()}</main>`;
+function render(){clearInterval(greetingTimer);paletteDialog=null;ui.classList.toggle('hello-page',m.page==='hello');ui.innerHTML=header()+`<main class="page" aria-label="${m.page}">${page()}</main>`;
  const next=$('[data-demo="next"]');next.disabled=m.page==='hello'&&(m.opening||m.received&&m.cardStage==='review');next.textContent=m.page!=='hello'?'Try Hello':m.opening?'Preparing link…':m.received?(['armed','clearing'].includes(m.cardStage)?'Tap NFC tag':m.cardStage==='review'?'Review tag above':'Restart Hello'):!m.hello?'New hello':m.form?'Send introduction':'Scan QR';
  $('[data-demo="reset"]').disabled=m.page==='home';display();startGreeting();}
 function go(p){m.page=p;render();}
-function reset(){clearTimeout(openingTimer);m.hello=m.joined=m.form=m.received=m.opening=false;m.cardStage='idle';}
-function back(){const p=m.page;if(p==='hello'||p==='done')reset();go(p==='settings'?m.settingsReturn:p==='wifi'?'settings':['password','network'].includes(p)?'wifi':'home');}
+function reset(){clearTimeout(openingTimer);m.hello=m.joined=m.form=m.received=m.opening=false;m.cardStage='idle';m.qr=false;}
+function back(){const p=m.page;if(p==='hello'&&m.qr){m.qr=false;render();return;}if(p==='hello'||p==='done')reset();go(p==='settings'?m.settingsReturn:p==='wifi'?'settings':['password','network'].includes(p)?'wifi':'home');}
 document.addEventListener('click',e=>{
  if(e.target.closest('[data-save-image],dialog'))return;
  const b=e.target.closest('button');if(!b)return;const a=b.dataset.action,d=b.dataset.demo;if(b.dataset.network){m.network=b.dataset.network;m.enterprise=m.network==='eduroam';}
@@ -140,7 +145,7 @@ document.addEventListener('click',e=>{
  if(d==='next'){
   if(m.page==='hello'&&m.received&&['armed','clearing'].includes(m.cardStage)){m.cardStage=m.cardStage==='armed'?'review':'cleared';render();return;}
   if(m.page!=='hello'||m.received||!m.hello&&!m.opening){reset();m.opening=true;go('hello');openingTimer=setTimeout(()=>{if(m.page==='hello'&&m.opening){m.opening=false;m.hello=true;render();}},1800);}
-  else if(!m.opening){if(m.form){m.received=true;m.cardStage='idle';}else{m.joined=true;m.form=true;}render();}
+  else if(!m.opening){if(m.form){m.received=true;m.cardStage='idle';}else{m.joined=true;m.form=true;m.qr=false;}render();}
   return;
  }
  if(d&&m.page==='hello'){
@@ -153,6 +158,8 @@ document.addEventListener('click',e=>{
   if(d==='disconnect'){m.joined=false;m.form=false;}
   if(d==='expire')reset();render();return;
  }
+ if(a==='show-qr'&&m.hello){m.qr=true;render();return;}
+ if(a==='hide-qr'){m.qr=false;render();return;}
  if(a==='card-arm'&&m.received){m.cardStage='armed';render();return;}
  if(a==='card-clear'&&m.received){m.cardStage='clearing';render();return;}
  if(a==='card-save'&&m.received&&m.cardStage==='review'){m.cardStage='saved';render();return;}
