@@ -169,7 +169,7 @@
   .constellation-chapter.is-spotlit .palette-mini-image img { max-height: var(--landscape-photo-height); }
   .constellation-chapter.is-spotlit .palette-sculpture { grid-row: auto; width: min(100%, 100cqh); justify-self: center; margin: 0; }
   .constellation-chapter.is-spotlit .palette-stage { height: auto; aspect-ratio: 1; }
-  .constellation-chapter.is-spotlit #c-palette-orbit { height: calc(100% - 25px); }
+  .constellation-chapter.is-spotlit #c-palette-orbit { height: calc(100% - 25px); --palette-scale: 1.25; --palette-cue-angle: .55; }
   .constellation-chapter.is-spotlit .palette-hint > span { left: auto; right: -40px; bottom: 12%; transform: none; }
   .constellation-chapter.is-spotlit .palette-selection { gap: 2px; width: 100px; min-height: 0; padding: 0; }
   .constellation-chapter.is-spotlit .selected-color-index { font-size: clamp(.375rem, 4cqh, .5rem); }

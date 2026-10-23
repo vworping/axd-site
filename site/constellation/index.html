@@ -892,7 +892,7 @@ function paletteCuePath(rim, normal, tail) {
   const selection = $('palette-selection'), hint = wheelStage.querySelector('.palette-hint');
   const hintLabel = hint.querySelector('span'), hintArrow = hint.querySelector('svg'), hintPath = hint.querySelector('path');
   const mobileCue = matchMedia('(max-width: 700px)');
-  let wheelWidth = 0, wheelHeight = 0, arrowTail = [0, 0];
+  let wheelWidth = 0, wheelHeight = 0, wheelScale = 1, arrowAngle = 1.08, arrowTail = [0, 0];
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -936,7 +936,7 @@ function paletteCuePath(rim, normal, tail) {
     const form = forms[formIndex], nextForm = forms[(formIndex + 1) % forms.length];
     const point = (theta, inner) => {
       const outer = mix(radius(theta, form, time), radius(theta, nextForm, time), morph);
-      const r = inner ? 73 + (outer - 143) * .17 : outer;
+      const r = (inner ? 73 + (outer - 143) * .17 : outer) * wheelScale;
       return [200 + r * Math.cos(theta) * (1 + stretch * .08), 200 + r * Math.sin(theta) * (1 - stretch * .06)];
     };
     let angle = -.9 + time * .16;
@@ -983,7 +983,6 @@ function paletteCuePath(rim, normal, tail) {
       selection.style.top = `${cy / (3 * area) / 400 * wheelHeight}px`;
       // Keep the label and tail fixed. Only the shaft length follows the
       // changing rim, with a 20px outward gap and no orbit or loop.
-      const arrowAngle = mobileCue.matches ? .35 : 1.08;
       const edge = point(arrowAngle, false);
       const rim = [edge[0] / 400 * wheelWidth, edge[1] / 400 * wheelHeight];
       const before = point(arrowAngle - .01, false), after = point(arrowAngle + .01, false);
@@ -1101,6 +1100,9 @@ function paletteCuePath(rim, normal, tail) {
   new ResizeObserver(entries => {
     const { width, height } = entries[0].contentRect;
     wheelWidth = width; wheelHeight = height;
+    const style = getComputedStyle(art);
+    wheelScale = parseFloat(style.getPropertyValue('--palette-scale')) || 1;
+    arrowAngle = parseFloat(style.getPropertyValue('--palette-cue-angle')) || (mobileCue.matches ? .35 : 1.08);
     const label = hintLabel.getBoundingClientRect(), stage = wheelStage.getBoundingClientRect();
     arrowTail = [label.left + label.width / 2 - stage.left + 8, label.top - stage.top - 10];
     hintArrow.setAttribute('viewBox', `0 0 ${width} ${stage.height}`);
