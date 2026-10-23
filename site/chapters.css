@@ -146,6 +146,36 @@
   .constellation-chapter .palette-mini { width: min(100%, calc(82px * var(--mini-ratio) + 12px)); }
   .constellation-chapter .palette-mini-image img { max-height: 82px; }
 }
+/* Use the short landscape viewport only while the phone's spotlight is open. */
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+  .constellation-chapter.is-spotlit { container-type: size; }
+  .constellation-chapter.is-spotlit .constellation-hero {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    height: 100cqh;
+    padding-block: 0;
+  }
+  .constellation-chapter.is-spotlit .intro-copy { display: block; }
+  .constellation-chapter.is-spotlit .intro-copy > :not(.lead):not(.intro-discovery) { display: none; }
+  .constellation-chapter.is-spotlit .intro-copy > .lead { margin: 0; font-size: 1.125rem; }
+  .constellation-chapter.is-spotlit .intro-discovery {
+    --landscape-photo-height: clamp(54px, calc(100cqh - 124px), 130px);
+    height: calc(var(--landscape-photo-height) + 50px);
+    margin: 18px 0 0;
+  }
+  .constellation-chapter.is-spotlit .palette-peek { height: 100%; padding-block: 4px; }
+  .constellation-chapter.is-spotlit .palette-mini { width: min(100%, calc(var(--landscape-photo-height) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter.is-spotlit .palette-mini-image img { max-height: var(--landscape-photo-height); }
+  .constellation-chapter.is-spotlit .palette-sculpture { grid-row: auto; width: min(100%, 100cqh); justify-self: center; margin: 0; }
+  .constellation-chapter.is-spotlit .palette-stage { height: auto; aspect-ratio: 1; }
+  .constellation-chapter.is-spotlit #c-palette-orbit { height: calc(100% - 25px); }
+  .constellation-chapter.is-spotlit .palette-hint > span { left: auto; right: -40px; bottom: 12%; transform: none; }
+  .constellation-chapter.is-spotlit .palette-selection { gap: 2px; width: 100px; min-height: 0; padding: 0; }
+  .constellation-chapter.is-spotlit .selected-color-index { font-size: clamp(.375rem, 4cqh, .5rem); }
+  .constellation-chapter.is-spotlit #c-selected-color-hex { font-size: clamp(.625rem, 7cqh, 1rem); }
+  .constellation-chapter.is-spotlit .selected-color-relation { font-size: clamp(.4375rem, 4.5cqh, .625rem); }
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-shell::before { animation: none; }
   .horizontal-layout .project-chapter { scroll-behavior: auto; }
