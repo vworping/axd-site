@@ -976,3 +976,39 @@ html[data-input="pointer"] :focus { outline: none !important; }
  background-size: 100% 100%;
  background-position: 0 0;
 }
+
+/* The mobile cue grows out of the wording; the desktop SVG stays unchanged. */
+#deck-hint .deck-cue-mobile, .horizontal-layout .photo-deck #deck-hint[hidden] { display: none; }
+@media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .horizontal-layout .hero-composition { row-gap: 0; padding-block: 8px 6px; }
+ .horizontal-layout .hero h1 { font-size: min(23vw, 19cqh); }
+ .horizontal-layout .hero-composition .photo-deck { grid-template-rows: minmax(0, 1fr) 30px; }
+ .horizontal-layout .photo-deck #deck-hint { position: relative; inset: auto; display: block; align-self: end; justify-self: center; width: max-content; margin: 0 44px 0 0; font-size: .75rem; }
+ .horizontal-layout .photo-deck #deck-hint .deck-cue-desktop { display: none; }
+ .horizontal-layout .photo-deck #deck-hint .deck-cue-mobile { display: block; position: absolute; left: 55%; bottom: calc(100% - 2px); width: 58px; height: 44px; margin: 0; transform: none; }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+ .horizontal-layout .hero-composition { width: min(100%, 240cqh); margin-inline: auto; grid-template-columns: max-content minmax(0, 1fr); gap: 0; }
+ .horizontal-layout .hero h1 { font-size: min(15vw, 36cqh); margin-inline: 0; }
+ .horizontal-layout .hero-composition .photo-deck { width: min(100%, 90cqh); justify-self: start; margin: 0; grid-template-rows: minmax(0, 1fr) 24px; }
+ .horizontal-layout .photo-deck #deck-hint { font-size: .6875rem; }
+ .horizontal-layout .photo-deck #deck-hint .deck-cue-mobile { width: 48px; height: 36px; }
+ /* Fit the complete About composition between the existing header and rail. */
+ .horizontal-layout .connect-section { container-type: size; padding-block: 6px; gap: 4px; }
+ .horizontal-layout .connect-layout { flex: 1 1 0; min-height: 0; grid-template-columns: minmax(0, .65fr) minmax(0, 1.6fr); gap: 24px; }
+ .horizontal-layout .portrait-card { height: 100%; max-width: none; }
+ .horizontal-layout .portrait-window { padding: 7px; }
+ .horizontal-layout .portrait-window img { width: auto; max-height: calc(100cqh - 42px); }
+ .horizontal-layout .connect-copy h2 { font-size: clamp(1.5rem, 11cqh, 2.5rem); }
+ .horizontal-layout .connect-copy > p { margin-top: 4px; font-size: clamp(.75rem, 4.6cqh, .9375rem); line-height: 1.35; }
+ .horizontal-layout .background-button { margin-top: 4px; padding-block: 4px; min-height: 32px; font-size: .75rem; }
+ .horizontal-layout .connect-contact { margin-top: 6px; gap: 2px 12px; grid-template-columns: minmax(0, 1fr) auto; }
+ .horizontal-layout .connect-hello { font-size: clamp(1.4rem, 9cqh, 2.25rem); }
+ .horizontal-layout .connect-email { grid-column: 1; font-size: .75rem; }
+ .horizontal-layout .connect-socials { grid-column: 2; gap: 2px; }
+ .horizontal-layout .connect-socials a { width: 36px; height: 36px; }
+ .horizontal-layout .connect-socials svg { width: 20px; height: 20px; }
+ .horizontal-layout .connect-footer { flex-direction: row; align-items: center; gap: 18px; padding: 0; font-size: .5625rem; }
+ .horizontal-layout .connect-footer .motion-controls { gap: 14px; }
+ .horizontal-layout .connect-footer .motion-controls button { min-height: 24px; padding-block: 2px; font-size: .625rem; }
+}

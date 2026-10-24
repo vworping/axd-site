@@ -63,3 +63,30 @@ test('the cue advances toward its tip without folding back when the rim turns', 
     }
   }
 });
+
+const mobileHelper = source.match(/function mobilePaletteCuePath\(rim, tail\) \{[\s\S]*?\n\}/)[0];
+const mobileCue = runInNewContext(`(${mobileHelper})`);
+
+test('mobile cue leaves the wording downward and keeps advancing to the rim', () => {
+  const tail = [220, 20];
+  for (const rim of [[165, 65], [185, 90], [205, 120]]) {
+    const v = coordinates(mobileCue(rim, tail));
+    assert.ok(v.every(Number.isFinite));
+    assert.deepEqual(v.slice(0, 2), tail);
+    near(v[2], tail[0]);
+    assert.ok(v[3] > tail[1], 'The initial tangent points down, not left');
+    assert.ok(v[3] < v[5] && v[5] < v[7], 'The curve never hooks back upward');
+    near(v[6], rim[0] + 8);
+    near(v[7], rim[1] - 10);
+  }
+});
+
+test('mobile arrowhead is symmetric around the final curve tangent', () => {
+  const v = coordinates(mobileCue([175, 100], [220, 20]));
+  const second = v.slice(4, 6), tip = v.slice(6, 8), a = v.slice(8, 10), b = v.slice(12, 14);
+  near(Math.hypot(a[0] - tip[0], a[1] - tip[1]), Math.hypot(b[0] - tip[0], b[1] - tip[1]));
+  const axis = tip.map((value, i) => value - second[i]);
+  const center = tip.map((value, i) => (a[i] + b[i]) / 2 - value);
+  near(axis[0] * center[1] - axis[1] * center[0], 0);
+  assert.ok(axis[0] * center[0] + axis[1] * center[1] < 0);
+});
