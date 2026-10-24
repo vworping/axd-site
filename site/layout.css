@@ -197,7 +197,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* Small visual shutter snap; shared behavior lives in dialog-motion.js. */
 .work-section .constellation-note { border-bottom: 0; }
 .connect-socials { gap: 10px; margin-left: -9px; }
-.connect-socials a { display: grid; place-items: center; width: 44px; height: 44px; color: #eeede9; border-radius: 50%; transition: background .2s; }
+.connect-socials a { display: grid; place-items: center; width: 44px; height: 44px; color: #eeede9; border-radius: 0; transition: background .2s; }
 .connect-socials a:hover { background: #ffffff15; }
 .connect-socials svg { width: 23px; height: 23px; }
 .photo-deck #deck-hint { align-items: center; gap: 2px; transform: rotate(-5deg); }
@@ -278,11 +278,11 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .project-dialog .gallery-expand > img { height: 100%; width: 100%; padding: 18px; object-fit: contain; background: var(--project-wash); }
 .gallery-expand-label { position: absolute; z-index: 2; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 11px; padding: 9px 12px; background: #eeede9; color: #27313f; font-size: .625rem; letter-spacing: .08em; text-transform: uppercase; }
 .gallery-expand-label span { color: var(--project-accent); font-size: 1rem; line-height: .7; }
-.project-dialog .gallery-controls { justify-content: space-between; padding: 15px 0 10px; color: #d9dee5; border-top: 1px solid #56606d; }
+.project-dialog .gallery-controls { justify-content: space-between; padding: 24px 0 14px; color: #d9dee5; border: 0; }
 .gallery-step { display: inline-flex !important; align-items: center; justify-content: center; gap: 10px; width: auto !important; height: auto !important; min-height: 38px; padding: 7px 11px; border: 1px solid #718095 !important; border-radius: 999px; background: transparent !important; color: inherit; font-size: .625rem !important; letter-spacing: .1em; line-height: 1; text-transform: uppercase; }
 .gallery-step:hover, .gallery-step:focus-visible { border-color: var(--project-accent) !important; background: var(--project-accent) !important; color: #27313f; }
 .gallery-count { min-width: 60px; text-align: center; font-size: .75rem; letter-spacing: .08em; }
-.project-dialog .gallery-thumbnails { justify-content: center; gap: 9px; padding-top: 7px; }
+.project-dialog .gallery-thumbnails { justify-content: center; gap: 9px; padding-top: 12px; }
 .project-dialog .gallery-thumbnails button { width: 68px; height: 68px; border-color: #667386; background: #344151; opacity: .6; }
 .project-dialog .gallery-thumbnails button[aria-pressed="true"] { border-color: var(--project-accent); opacity: 1; }
 .project-dialog .gallery-thumbnails img { object-fit: cover; }
@@ -471,9 +471,9 @@ html[data-input="pointer"] :focus { outline: none !important; }
  }
  .horizontal-layout .connect-email { margin-top: 0; font-size: .9rem; }
  .horizontal-layout .connect-socials { margin: 0; gap: 4px; }
- /* Align the visible icons with the arrow while retaining 44px tap targets. */
+ /* Keep each icon centered within its square 44px tap target. */
  .horizontal-layout .connect-hello > span { letter-spacing: 0; }
- .horizontal-layout .connect-socials a { justify-items: end; }
+ .horizontal-layout .connect-socials a { justify-items: center; }
  .horizontal-layout .connect-footer { padding-top: 10px; }
 }
 
@@ -722,9 +722,9 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .project-dialog .gallery-expand { flex: 1 1 0; height: auto; min-height: 0; grid-template-rows: 6px minmax(0, 1fr); }
  .project-dialog .gallery-expand::before { height: 6px; }
  .project-dialog .gallery-expand > .gallery-image-stage { --photo-inset: 8px; }
- .project-dialog .gallery-controls { flex: 0 0 auto; padding: 6px 0; }
+ .project-dialog .gallery-controls { flex: 0 0 auto; padding: 12px 0 8px; }
  .project-dialog .gallery-step { min-height: 34px; padding: 6px 10px; }
- .project-dialog .gallery-thumbnails { flex: 0 0 auto; gap: 8px; padding: 0; }
+ .project-dialog .gallery-thumbnails { flex: 0 0 auto; gap: 8px; padding: 6px 0 0; }
  .project-dialog .gallery-thumbnails button { width: 40px; height: 40px; }
  .project-dialog .dialog-story { height: 100%; min-height: 0; padding: 4px 6px 20px 0; overflow-y: auto; overscroll-behavior: contain; }
  .project-dialog .dialog-story h2 { font-size: clamp(1.7rem, 3.7vw, 2.5rem); margin: 10px 0 16px; line-height: 1.04; }
@@ -926,7 +926,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
 @media (max-width: 420px) {
  .horizontal-layout .connect-email, .horizontal-layout .connect-socials { grid-column: 1 / -1; }
  .horizontal-layout .connect-socials { justify-content: flex-start; }
- .horizontal-layout .connect-socials a { justify-items: center; }
 }
 
 /* Keep the rail geometry fixed while its boundary controls snap shut. */

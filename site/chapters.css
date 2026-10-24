@@ -24,6 +24,19 @@
 .constellation-chapter .palette-sculpture { width: 100%; max-width: 500px; justify-self: start; margin: 0; }
 .constellation-chapter .palette-stage { height: clamp(420px, 42vw, 500px); }
 .constellation-chapter #c-palette-orbit { height: calc(100% - 25px); }
+/* Let the wheel use a large display while retaining room for its cue and rail. */
+@media (min-width: 1200px) and (min-height: 700px) {
+  .horizontal-layout .constellation-chapter { padding-inline: max(var(--gutter), calc((100vw - 1600px) / 2)); }
+  .constellation-chapter > section { max-width: 1600px; }
+  .constellation-chapter .palette-sculpture { width: min(100%, calc(100dvh - 200px)); max-width: 760px; justify-self: center; }
+  .constellation-chapter .palette-stage { height: auto; aspect-ratio: 1; }
+}
+@media (min-width: 1440px) and (min-height: 800px) {
+  .constellation-chapter .intro-discovery, .constellation-chapter .palette-peek { height: 250px; }
+  .constellation-chapter .palette-peek { width: min(560px, 100%); }
+  .constellation-chapter .palette-mini { width: min(100%, calc(184px * var(--mini-ratio) + 12px)); }
+  .constellation-chapter .palette-mini-image img { max-height: 184px; }
+}
 .constellation-chapter .intro-copy > .lead { font-size: clamp(1.2rem, 2vw, 1.65rem); line-height: 1.35; max-width: none; text-align: left; }
 .constellation-chapter .intro-links { justify-content: flex-start; gap: 8px 24px; margin: 0 0 18px; }
 .constellation-chapter .explore-link { margin: 0; min-height: 40px; padding-block: 8px; line-height: 1.35; }
@@ -121,8 +134,8 @@
   .constellation-chapter .palette-mini { width: min(100%, calc(100px * var(--mini-ratio) + 12px)); }
   .constellation-chapter .palette-mini-image img { max-height: 100px; }
   .constellation-chapter .palette-stage { height: auto; aspect-ratio: 1.15; }
-  .constellation-chapter #c-palette-orbit { height: calc(100% - 35px); }
-  .constellation-chapter .palette-hint > span { left: auto; right: -10px; bottom: 25%; transform: none; }
+  .constellation-chapter #c-palette-orbit { height: calc(100% - 48px); --palette-cue-angle: .95; }
+  .constellation-chapter .palette-hint > span { left: auto; right: 8px; bottom: 8px; transform: none; }
   .constellation-chapter #c-constellation-title { font-size: 12cqw; margin-block: 4px 2px; }
   .constellation-chapter .intro-copy > .lead { grid-row: 4; max-width: none; font-size: 1.25rem; }
   .constellation-chapter .project-story { margin-top: 20px; padding-block: 24px 8px; }
@@ -145,6 +158,25 @@
   .constellation-chapter .intro-discovery, .constellation-chapter .palette-peek { height: 120px; }
   .constellation-chapter .palette-mini { width: min(100%, calc(82px * var(--mini-ratio) + 12px)); }
   .constellation-chapter .palette-mini-image img { max-height: 82px; }
+}
+/* Fit the opening invitation inside the space between the header and rail.
+   After Continue, the complete chapter returns to its natural scrolling layout. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .constellation-chapter.is-spotlit { container-type: size; }
+  .constellation-chapter.is-spotlit .constellation-hero {
+    height: 100cqh;
+    grid-template-rows: auto minmax(100px, .42fr) minmax(0, 1fr);
+    gap: 12px;
+    padding-block: 36px 0;
+  }
+  .constellation-chapter.is-spotlit .intro-copy > :not(.lead):not(.intro-discovery) { display: none; }
+  .constellation-chapter.is-spotlit .intro-copy > .lead { grid-row: 1; margin: 0; font-size: 1.125rem; }
+  .constellation-chapter.is-spotlit .intro-discovery { grid-row: 2; height: 100%; margin: 0; }
+  .constellation-chapter.is-spotlit .palette-peek { height: 100%; }
+  .constellation-chapter.is-spotlit .palette-mini { width: min(100%, calc(clamp(60px, 15cqh, 120px) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter.is-spotlit .palette-mini-image img { max-height: clamp(60px, 15cqh, 120px); }
+  .constellation-chapter.is-spotlit .palette-sculpture { grid-row: 3; width: min(100%, 400px); height: 100%; min-height: 0; margin: 0 auto; container-type: size; }
+  .constellation-chapter.is-spotlit .palette-stage { width: min(100%, 100cqh); height: 100%; aspect-ratio: auto; margin-inline: auto; }
 }
 /* Use the short landscape viewport only while the phone's spotlight is open. */
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
@@ -169,8 +201,8 @@
   .constellation-chapter.is-spotlit .palette-mini-image img { max-height: var(--landscape-photo-height); }
   .constellation-chapter.is-spotlit .palette-sculpture { grid-row: auto; width: min(100%, 100cqh); justify-self: center; margin: 0; }
   .constellation-chapter.is-spotlit .palette-stage { height: auto; aspect-ratio: 1; }
-  .constellation-chapter.is-spotlit #c-palette-orbit { height: calc(100% - 25px); --palette-scale: 1.25; --palette-cue-angle: .55; }
-  .constellation-chapter.is-spotlit .palette-hint > span { left: auto; right: -40px; bottom: 12%; transform: none; }
+  .constellation-chapter.is-spotlit #c-palette-orbit { height: calc(100% - 38px); --palette-scale: 1.05; --palette-cue-angle: .95; }
+  .constellation-chapter.is-spotlit .palette-hint > span { left: auto; right: 8px; bottom: 2px; transform: none; }
   .constellation-chapter.is-spotlit .palette-selection { gap: 2px; width: 100px; min-height: 0; padding: 0; }
   .constellation-chapter.is-spotlit .selected-color-index { font-size: clamp(.375rem, 4cqh, .5rem); }
   .constellation-chapter.is-spotlit #c-selected-color-hex { font-size: clamp(.625rem, 7cqh, 1rem); }
