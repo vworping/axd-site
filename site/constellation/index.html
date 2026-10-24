@@ -241,13 +241,13 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 /* A single color sculpture replaces the explanatory palette strips. */
 .constellation-hero { min-height: 400px; }
 .palette-sculpture { position: relative; width: calc(100% + 110px); max-width: 670px; justify-self: end; margin-left: -110px; }
-.palette-stage { position: relative; width: 100%; height: clamp(350px, 34vw, 425px); }
+.palette-stage { position: relative; display: flow-root; width: 100%; height: clamp(350px, 34vw, 425px); }
 /* Reuse the hero photo cue as an overlay, without changing the wheel's layout. */
 .palette-hint { position: absolute; z-index: 3; inset: 0; font-size: clamp(.75rem, 1.1vw, .9375rem); line-height: 1.2; white-space: nowrap; pointer-events: none; }
-.palette-hint > span { position: absolute; left: 72%; bottom: 8px; transform: translateX(-50%); }
+.palette-hint > span { position: absolute; right: 8px; top: clamp(8px, 14%, 92px); }
 .palette-hint svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; overflow: visible; }
 .palette-hint path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-#palette-orbit { outline: none; display: block; width: 100%; height: calc(100% - 25px); overflow: visible; }
+#palette-orbit { outline: none; display: block; width: calc(100% - 24px); height: calc(100% - 36px); margin-top: 36px; overflow: visible; }
 #palette-orbit .palette-slice { stroke: none; pointer-events: none; transition: opacity .2s; }
 #palette-orbit .palette-slice[data-muted="true"] { opacity: .5; }
 #palette-orbit .palette-slice[data-selected="true"] { opacity: 1; stroke: #25303b90; stroke-width: 2; paint-order: stroke fill; vector-effect: non-scaling-stroke; }
@@ -883,7 +883,7 @@ new ResizeObserver(() => draw()).observe(stage);
 
 // A simple, fixed-tail cue with a straight, symmetric arrowhead.
 function paletteCuePath(rim, normal, tail) {
-  const tip = rim.map((value, i) => value + normal[i] * 20);
+  const tip = rim.map((value, i) => value + normal[i] * 32);
   const distance = Math.hypot(tip[0] - tail[0], tip[1] - tail[1]);
   const back = distance ? tail.map((value, i) => (value - tip[i]) / distance) : normal;
   const neckLength = Math.min(8, distance * .22);
@@ -902,8 +902,8 @@ function paletteCuePath(rim, normal, tail) {
   const art = $('palette-orbit'), wheelStage = art.parentElement, interaction = art.closest('.constellation-hero'), tag = $('palette-tag');
   const selection = $('palette-selection'), hint = wheelStage.querySelector('.palette-hint');
   const hintLabel = hint.querySelector('span'), hintArrow = hint.querySelector('svg'), hintPath = hint.querySelector('path');
-  const mobileCue = matchMedia('(max-width: 700px)');
-  let wheelWidth = 0, wheelHeight = 0, wheelScale = 1, arrowAngle = 1.08, arrowTail = [0, 0];
+  const arrowAngle = -.6;
+  let wheelWidth = 0, wheelHeight = 0, wheelScale = 1, wheelOffset = [0, 0], arrowTail = [0, 0];
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -990,12 +990,12 @@ function paletteCuePath(rim, normal, tail) {
         const cross = x * nextY - nextX * y;
         area += cross; cx += (x + nextX) * cross; cy += (y + nextY) * cross;
       });
-      selection.style.left = `${cx / (3 * area) / 400 * wheelWidth}px`;
-      selection.style.top = `${cy / (3 * area) / 400 * wheelHeight}px`;
+      selection.style.left = `${wheelOffset[0] + cx / (3 * area) / 400 * wheelWidth}px`;
+      selection.style.top = `${wheelOffset[1] + cy / (3 * area) / 400 * wheelHeight}px`;
       // Keep the label and tail fixed. Only the shaft length follows the
-      // changing rim, with a 20px outward gap and no orbit or loop.
+      // changing upper-right rim, with a 32px outward gap and no orbit or loop.
       const edge = point(arrowAngle, false);
-      const rim = [edge[0] / 400 * wheelWidth, edge[1] / 400 * wheelHeight];
+      const rim = [wheelOffset[0] + edge[0] / 400 * wheelWidth, wheelOffset[1] + edge[1] / 400 * wheelHeight];
       const before = point(arrowAngle - .01, false), after = point(arrowAngle + .01, false);
       const tangent = [(after[0] - before[0]) * wheelWidth, (after[1] - before[1]) * wheelHeight];
       const magnitude = Math.hypot(...tangent), normal = [tangent[1] / magnitude, -tangent[0] / magnitude];
@@ -1108,18 +1108,23 @@ function paletteCuePath(rim, normal, tail) {
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; sync(); });
   document.addEventListener('visibilitychange', sync);
   new IntersectionObserver(entries => { visible = entries[0].isIntersecting; sync(); }).observe(art);
-  new ResizeObserver(entries => {
-    const { width, height } = entries[0].contentRect;
+  function measureWheel() {
+    const bounds = art.getBoundingClientRect(), { width, height } = bounds;
     wheelWidth = width; wheelHeight = height;
     const style = getComputedStyle(art);
     wheelScale = parseFloat(style.getPropertyValue('--palette-scale')) || 1;
-    arrowAngle = parseFloat(style.getPropertyValue('--palette-cue-angle')) || (mobileCue.matches ? .35 : 1.08);
     const label = hintLabel.getBoundingClientRect(), stage = wheelStage.getBoundingClientRect();
-    arrowTail = [label.left + label.width / 2 - stage.left + 8, label.top - stage.top - 10];
-    hintArrow.setAttribute('viewBox', `0 0 ${width} ${stage.height}`);
+    wheelOffset = [bounds.left - stage.left, bounds.top - stage.top];
+    arrowTail = [label.right - stage.left - 12, label.bottom - stage.top + 12];
+    hintArrow.setAttribute('viewBox', `0 0 ${stage.width} ${stage.height}`);
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();
-  }).observe(art);
+  }
+  const cueResize = new ResizeObserver(measureWheel);
+  cueResize.observe(art);
+  cueResize.observe(hintLabel);
+  // A centered wheel can keep its size while the available margin changes.
+  window.addEventListener('resize', measureWheel, { passive: true });
   // Keep wheel proportions tied to width. Short screens scroll naturally;
   // selecting a color, dismissing spotlight, or browser chrome cannot squash it.
   const scroller = interaction.closest('[data-section]');

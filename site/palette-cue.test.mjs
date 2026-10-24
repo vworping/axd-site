@@ -13,11 +13,11 @@ test('arrowhead wings mirror one another around the straight incoming shaft', ()
   for (let angle = 0; angle < Math.PI * 2; angle += .17) {
     for (const reach of [10, 40, 100]) {
       const normal = [Math.cos(angle), Math.sin(angle)], rim = [125, 160];
-      const tail = [rim[0] + normal[0] * (20 + reach) + 7, rim[1] + normal[1] * (20 + reach)];
+      const tail = [rim[0] + normal[0] * (32 + reach) + 7, rim[1] + normal[1] * (32 + reach)];
       const v = coordinates(cue(rim, normal, tail));
       assert.ok(v.every(Number.isFinite));
       const neck = v.slice(6, 8), tip = v.slice(8, 10), a = v.slice(10, 12), b = v.slice(14, 16);
-      near(Math.hypot(tip[0] - rim[0], tip[1] - rim[1]), 20);
+      near(Math.hypot(tip[0] - rim[0], tip[1] - rim[1]), 32);
       near(Math.hypot(a[0] - tip[0], a[1] - tip[1]), Math.hypot(b[0] - tip[0], b[1] - tip[1]));
       const axis = [tip[0] - neck[0], tip[1] - neck[1]];
       const center = [(a[0] + b[0]) / 2 - tip[0], (a[1] + b[1]) / 2 - tip[1]];
@@ -34,6 +34,20 @@ test('changing the wheel edge adjusts the cue without moving its tail', () => {
   assert.deepEqual(first.slice(0, 2), tail);
   assert.deepEqual(second.slice(0, 2), tail);
   assert.notDeepEqual(first.slice(8, 10), second.slice(8, 10));
+});
+
+test('turning the cue preserves its curve and arrowhead proportions', () => {
+  const rim = [120, 100], normal = [.8, -.6], tail = [240, 25];
+  const original = coordinates(cue(rim, normal, tail));
+  for (const angle of [-Math.PI / 2, Math.PI / 2, Math.PI, .6]) {
+    const rotate = ([x, y]) => [x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle)];
+    const turned = coordinates(cue(rotate(rim), rotate(normal), rotate(tail)));
+    for (let i = 0; i < original.length; i += 2) {
+      const expected = rotate(original.slice(i, i + 2));
+      near(turned[i], expected[0]);
+      near(turned[i + 1], expected[1]);
+    }
+  }
 });
 
 test('the cue advances toward its tip without folding back when the rim turns', () => {
