@@ -8,7 +8,7 @@
 
   // Include the padding and rotated print in the fit, not just the image.
   function fitPrint(width, height, ratio, side, top, bottom) {
-    const travel = width * .035;
+    const travel = Math.min(width, height) * .035;
     const sine = Math.sin(9 * Math.PI / 180);
     const horizontal = side * 2 + 2;
     const vertical = top + bottom + 2;

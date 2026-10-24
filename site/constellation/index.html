@@ -394,7 +394,7 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
       <section class="constellation-hero" aria-labelledby="constellation-title">
         <div class="intro-copy">
           <p class="eyebrow" id="collection-count"></p>
-          <h1 id="constellation-title">Palette<br>constellation.</h1>
+          <h1 id="constellation-title">Palette <br>constellation.</h1>
           <div class="intro-links"><a class="explore-link" href="#explorer">Explore the map ↓</a><a class="explore-link" href="#about-project">About this project ↓</a></div>
           <p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>
           <div class="intro-discovery">
@@ -1115,7 +1115,9 @@ function paletteCuePath(rim, normal, tail) {
     wheelScale = parseFloat(style.getPropertyValue('--palette-scale')) || 1;
     const label = hintLabel.getBoundingClientRect(), stage = wheelStage.getBoundingClientRect();
     wheelOffset = [bounds.left - stage.left, bounds.top - stage.top];
-    arrowTail = [label.right - stage.left - 12, label.bottom - stage.top + 12];
+    // Attach the stroke just beneath the wording, including after rotation
+    // and font loading, instead of floating below the label's right edge.
+    arrowTail = [label.left + label.width / 2 - stage.left, label.bottom - stage.top + 3];
     hintArrow.setAttribute('viewBox', `0 0 ${stage.width} ${stage.height}`);
     stretch = Math.max(-1, Math.min(1, (width / Math.max(1, height) - 1) * 2));
     paint();

@@ -16,7 +16,26 @@
   $('year').textContent = new Date().getFullYear();
 
   const background = $('background-dialog');
-  $('background-open').addEventListener('click', () => window.AXDDialogs.open(background));
+  const timeline = $('background-timeline');
+  const backgroundScrollCue = $('background-scroll-cue');
+  function syncBackgroundScroll() {
+    const hasMore = timeline.scrollHeight - timeline.clientHeight - timeline.scrollTop > 4;
+    if (!hasMore && document.activeElement === backgroundScrollCue) timeline.focus({ preventScroll: true });
+    backgroundScrollCue.hidden = !hasMore;
+  }
+  $('background-open').addEventListener('click', () => {
+    window.AXDDialogs.open(background);
+    timeline.scrollTop = 0;
+    syncBackgroundScroll();
+  });
+  backgroundScrollCue.addEventListener('click', () => timeline.scrollBy({
+    top: timeline.clientHeight * .7,
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+  }));
+  timeline.addEventListener('scroll', syncBackgroundScroll, { passive: true });
+  const backgroundResize = new ResizeObserver(syncBackgroundScroll);
+  backgroundResize.observe(timeline);
+  backgroundResize.observe(background);
   $('background-dismiss').addEventListener('click', () => background.close());
   background.addEventListener('close', () => $('background-open').focus({ preventScroll: true }));
   background.addEventListener('click', (event) => {

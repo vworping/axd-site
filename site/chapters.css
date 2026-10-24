@@ -215,3 +215,42 @@
 
 /* Navigation may jump directly to any chapter; touch still snaps to a page. */
 .horizontal-layout .section-track > * { scroll-snap-stop: normal; }
+
+/* Mobile previews should read as photographs, with the wheel beside or below. */
+@media (max-width: 700px) {
+  .constellation-chapter .intro-discovery { --peek-photo-height: clamp(120px, 36vw, 210px); height: calc(var(--peek-photo-height) + 44px); margin-top: 18px; }
+  .constellation-chapter .palette-peek { width: 100%; height: 100%; padding-inline: 4px; }
+  .constellation-chapter .palette-peek-photos { gap: 12px; }
+  .constellation-chapter .palette-mini { width: min(100%, calc(var(--peek-photo-height) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter .palette-mini-image img { max-height: var(--peek-photo-height); }
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .constellation-chapter.is-spotlit .constellation-hero { grid-template-rows: auto minmax(140px, .85fr) minmax(0, 1fr); gap: 8px; padding-top: 28px; }
+  .constellation-chapter.is-spotlit .intro-discovery { --peek-photo-height: clamp(96px, 25cqh, 200px); height: 100%; margin: 0; }
+  .constellation-chapter.is-spotlit .palette-mini { width: min(100%, calc(var(--peek-photo-height) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter.is-spotlit .palette-mini-image img { max-height: var(--peek-photo-height); }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
+  .horizontal-layout .constellation-chapter { padding-top: 4px; }
+  .constellation-chapter .constellation-hero { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .constellation-chapter .constellation-hero > .intro-copy { display: block; }
+  .constellation-chapter #c-constellation-title { font-size: clamp(1.5rem, 3.5vw, 2rem); margin-block: 4px; }
+  .constellation-chapter #c-constellation-title br { display: none; }
+  .constellation-chapter .intro-copy > .eyebrow { display: none; }
+  .constellation-chapter .intro-copy > .lead { font-size: 1rem; }
+  .constellation-chapter .intro-links { gap: 8px 20px; margin-block: 0 4px; }
+  .constellation-chapter .explore-link { min-height: 28px; padding-block: 4px; font-size: .75rem; }
+  .constellation-chapter .intro-discovery { --peek-photo-height: clamp(64px, calc(100dvh - 260px), 160px); height: calc(var(--peek-photo-height) + 34px); margin-top: 8px; }
+  .constellation-chapter .palette-peek { width: 100%; height: 100%; padding-block: 4px; }
+  .constellation-chapter .palette-mini { width: min(100%, calc(var(--peek-photo-height) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter .palette-mini-image img { max-height: var(--peek-photo-height); }
+  .constellation-chapter .palette-mini-caption { padding-block: 4px; }
+  .constellation-chapter .palette-sculpture { grid-row: auto; width: 100%; margin: 0; }
+  .constellation-chapter .palette-stage { width: min(100%, calc(100dvh - 124px)); height: auto; aspect-ratio: 1; margin-inline: auto; }
+  .constellation-chapter .palette-hint > span { top: 0; right: 0; }
+  .constellation-chapter.is-spotlit .constellation-hero { gap: 20px; padding-top: 28px; }
+  .constellation-chapter.is-spotlit .intro-discovery { --peek-photo-height: clamp(64px, calc(100cqh - 104px), 180px); height: calc(var(--peek-photo-height) + 40px); margin-top: 12px; }
+  .constellation-chapter.is-spotlit .palette-mini { width: min(100%, calc(var(--peek-photo-height) * var(--mini-ratio) + 12px)); }
+  .constellation-chapter.is-spotlit .palette-mini-image img { max-height: var(--peek-photo-height); }
+  .constellation-chapter.is-spotlit .palette-stage { width: min(100%, calc(100cqh - 28px)); }
+}
