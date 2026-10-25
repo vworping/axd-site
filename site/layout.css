@@ -130,9 +130,13 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .dismiss-button:hover { background: #0000000d; }
 .image-dialog > .dismiss-button { position: absolute; right: 25px; top: 15px; }
 .image-dialog[data-single] { background: linear-gradient(115deg, #bec9d7, #dcc4bb); color: var(--ink); }
+/* The close target and portrait share one responsive column. Its right edge
+   follows the photograph even when viewport height limits the image width. */
+.image-dialog[data-single][open] { display: grid; grid-template-columns: min(100%, calc((100dvh - 84px) * 2 / 3)); grid-template-rows: 44px auto; justify-content: center; align-content: center; gap: 8px; padding: 16px; }
+.image-dialog[data-single] > img { grid-column: 1; grid-row: 2; width: 100%; height: auto; aspect-ratio: 2 / 3; }
 .image-dialog[data-single]::backdrop { background: #27313f66; }
 .image-dialog[data-single] .image-dismiss-side { color: var(--ink); }
-.image-dialog[data-single] > .dismiss-button { border: 1px solid transparent; z-index: 4; }
+.image-dialog[data-single] > .dismiss-button { position: static; grid-column: 1; grid-row: 1; justify-self: end; border: 1px solid transparent; z-index: 4; }
 .image-dialog[data-single] > .dismiss-button:hover { border-color: currentColor; }
 .image-dialog[data-single] > .gallery-controls { display: none; }
 
