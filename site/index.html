@@ -47,6 +47,7 @@
   <link rel="stylesheet" href="/pet-chapter.css">
   <link rel="stylesheet" href="/chapters.css">
   <script src="/section-navigation.js" defer></script>
+  <script src="/cue-path.js" defer></script>
   <script src="/constellation-chapter.js" defer></script>
   <script src="/pet-chapter.js" defer></script>
   <script src="/chapter-experience.js" defer></script>
@@ -91,7 +92,7 @@
                 <span class="print-footer"><span class="print-number" aria-hidden="true">AXD / <span id="print-number">001</span></span><span class="frame-palette" data-frame-palette role="img" aria-label="Five colors extracted from this photograph"></span></span>
               </button>
             </div>
-          <figcaption id="deck-hint" hidden><span>Flip through</span><svg class="deck-cue-desktop" viewBox="0 0 60 42" aria-hidden="true" focusable="false"><path d="M55 4C53 18 42 29 19 36M19 36L26 27M19 36L30 37"/></svg><svg class="deck-cue-mobile" viewBox="0 0 80 60" aria-hidden="true" focusable="false"><path d="M12 56C12 34 52 35 65 8M65 8L63 19M65 8L54 11"/></svg></figcaption>
+          <figcaption id="deck-hint" hidden><span>Flip through</span><svg data-curve-cue viewBox="0 0 80 72" aria-hidden="true" focusable="false"><path/></svg></figcaption>
           </figure>
         </div>
         <div class="hero-bottom">
@@ -129,7 +130,6 @@
             <button class="background-button" id="background-open" type="button" aria-haspopup="dialog">A little more background <span aria-hidden="true">+</span></button>
             <div class="connect-contact">
               <a class="connect-hello" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=axdreweiss%40gmail.com" target="_blank" rel="noopener noreferrer" aria-label="Say hello by email (opens Gmail in a new tab)">SAY HELLO<span aria-hidden="true">↗</span></a>
-              <a class="connect-email" href="mailto:axdreweiss@gmail.com">axdreweiss@gmail.com</a>
               <div class="connect-socials">
                 <a href="https://github.com/vworping" target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" title="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.123-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0 1 12 6.097c1.02.005 2.045.138 3.003.405 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.242 2.873.119 3.176.769.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.696.825.578C20.565 22.092 24 17.592 24 12.297 24 5.67 18.627.297 12 .297Z"/></svg></a>
                 <a href="https://www.instagram.com/axdreweiss/" target="_blank" rel="noopener noreferrer" aria-label="Instagram (opens in a new tab)" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.7" r="1.15" fill="currentColor"/></svg></a>
@@ -138,7 +138,7 @@
             </div>
           </div>
         </div>
-        <div class="connect-footer"><span>© <span id="year">2026</span> ANDRE WEISS</span><div class="motion-controls"><button id="replay-intro" type="button" hidden>Replay intro ↻</button><button id="motion-toggle" type="button" aria-pressed="false" hidden>Pause motion</button></div></div>
+        <div class="connect-footer"><span>© <span id="year">2026</span> ANDRE WEISS</span><div class="motion-controls"><button id="replay-intro" type="button" hidden>Replay intro <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M15.5 7A6 6 0 1 0 16 12M15.5 2.5V7H11"/></svg></button><button id="motion-toggle" type="button" aria-pressed="false" hidden><span class="motion-label">Pause motion</span><svg viewBox="0 0 20 20" aria-hidden="true"><path class="motion-icon" d="M7 4V16M13 4V16"/></svg></button></div></div>
       </section>
     </main>
     <nav class="section-navigation" aria-label="Browse sections" hidden>

@@ -81,8 +81,8 @@
     toggle.hidden = false;
     toggle.disabled = reduced.matches;
     toggle.setAttribute('aria-pressed', String(paused));
-    toggle.textContent = paused ? 'Resume motion' : 'Pause motion';
-    if (reduced.matches) toggle.textContent = 'Reduced motion on';
+    toggle.querySelector('.motion-label').textContent = reduced.matches ? 'Reduced motion on' : paused ? 'Resume motion' : 'Pause motion';
+    toggle.querySelector('.motion-icon').setAttribute('d', paused && !reduced.matches ? 'M6 3L16 10L6 17Z' : 'M7 4V16M13 4V16');
     replay.hidden = false;
     replay.disabled = reduced.matches || paused;
     document.dispatchEvent(new CustomEvent('axd:motion', { detail: { paused } }));

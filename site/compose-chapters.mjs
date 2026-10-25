@@ -66,7 +66,7 @@ function localEvents(js) {
 export async function composeChapters(shell, output) {
   const constellation = await read('constellation/index.html');
   let cHTML = constellation.match(/<main>([\s\S]*?)<\/main>/)[1] + '\n' +
-    constellation.slice(constellation.indexOf('<dialog'), constellation.indexOf('<script>const DATA'));
+    constellation.slice(constellation.indexOf('<dialog'), constellation.indexOf('<script>const DATA')).replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '');
   cHTML = cHTML.replace('<h1 id="constellation-title">Palette<br>constellation.</h1>', '<h2 id="constellation-title">Palette<br>constellation.</h2>')
     .replace('<p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>', '<p class="lead">Select a color. See where it takes you.</p>')
     .replace('<div class="palette-sculpture">', '<button class="back-link spotlight-exit" id="spotlight-exit" type="button" aria-label="Continue exploring"><span>Continue</span><span aria-hidden="true">↘</span></button><div class="palette-sculpture">');

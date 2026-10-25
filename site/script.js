@@ -19,7 +19,9 @@
   const timeline = $('background-timeline');
   const backgroundScrollCue = $('background-scroll-cue');
   function syncBackgroundScroll() {
-    const hasMore = timeline.scrollHeight - timeline.clientHeight - timeline.scrollTop > 4;
+    const lastEntry = timeline.lastElementChild?.querySelector('dd');
+    const remaining = lastEntry ? lastEntry.getBoundingClientRect().bottom - timeline.getBoundingClientRect().bottom : 0;
+    const hasMore = background.open && remaining > 8;
     if (!hasMore && document.activeElement === backgroundScrollCue) timeline.focus({ preventScroll: true });
     backgroundScrollCue.hidden = !hasMore;
   }

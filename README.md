@@ -13,7 +13,7 @@ A photography portfolio built around a stack of prints, measured color palettes,
 - Five hero photographs with palettes from **Perceptual Palette Drift**.
 - A bracketed hero tagline that rolls through eleven role pairings while the About name keeps its spelling animation. Brackets fit each phrase closely; narrow screens use two readable lines.
 - Project previews, complete stories, photo galleries, and expanded images.
-- [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board. A responsive **Click me** cue reuses the hero’s arrow as an overlay, adding no page space; tapping a color pins it while opening its photo previews.
+- [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board. A responsive **Choose one** cue shares the hero’s curved arrow and keeps its proportions at every screen size; tapping a color pins it while opening its photo previews.
 - [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
 - A palette-to-brackets intro, spelling name animation, shutter transitions, and ambient page gradients, with reduced-motion and pause support.
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
@@ -71,7 +71,7 @@ PET’s “Working toward V2” section records peer testing of card links and s
 
 ```sh
 node site/build.mjs
-node --test site/security.test.mjs site/chapter-experience.test.mjs
+node --test site/security.test.mjs site/chapter-experience.test.mjs site/palette-cue.test.mjs
 git diff --check
 ```
 
