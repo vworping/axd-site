@@ -129,7 +129,11 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .dismiss-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; background: transparent; font-size: 1.8rem; line-height: 1; }
 .dismiss-button:hover { background: #0000000d; }
 .image-dialog > .dismiss-button { position: absolute; right: 25px; top: 15px; }
-.image-dialog[data-single] > .dismiss-button { border: 1px solid currentColor; z-index: 4; }
+.image-dialog[data-single] { background: linear-gradient(115deg, #bec9d7, #dcc4bb); color: var(--ink); }
+.image-dialog[data-single]::backdrop { background: #27313f66; }
+.image-dialog[data-single] .image-dismiss-side { color: var(--ink); }
+.image-dialog[data-single] > .dismiss-button { border: 1px solid transparent; z-index: 4; }
+.image-dialog[data-single] > .dismiss-button:hover { border-color: currentColor; }
 .image-dialog[data-single] > .gallery-controls { display: none; }
 
 /* A looping hand-drawn cue reads as a page turn instead of a directional arrow. */

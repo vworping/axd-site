@@ -235,9 +235,14 @@
     imageReturnFocus = $('portrait-open');
     window.AXDDialogs.open(imageDialog);
   });
-  $('image-dismiss').addEventListener('click', () => imageDialog.close());
+  const closeExpanded = () => window.AXDDialogs.close(imageDialog);
+  $('image-dismiss').addEventListener('click', closeExpanded);
+  imageDialog.addEventListener('cancel', event => {
+    event.preventDefault();
+    closeExpanded();
+  });
   document.querySelectorAll('.image-dismiss-side').forEach((side) => {
-    side.addEventListener('click', () => imageDialog.close());
+    side.addEventListener('click', closeExpanded);
   });
   $('expanded-image').addEventListener('click', (event) => {
     const image = event.currentTarget;
@@ -248,7 +253,7 @@
     const height = image.naturalHeight * scale;
     const left = box.left + (box.width - width) / 2;
     const top = box.top + (box.height - height) / 2;
-    if (event.clientX < left || event.clientX > left + width || event.clientY < top || event.clientY > top + height) imageDialog.close();
+    if (event.clientX < left || event.clientX > left + width || event.clientY < top || event.clientY > top + height) closeExpanded();
   });
   imageDialog.addEventListener('close', () => imageReturnFocus?.focus({ preventScroll: true }));
   for (const modal of [dialog, imageDialog]) {
@@ -264,7 +269,10 @@
     modal.addEventListener('click', (event) => {
       if (event.target !== modal) return;
       const rect = modal.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) modal.close();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+        if (modal === imageDialog) closeExpanded();
+        else modal.close();
+      }
     });
   }
   addSwipe($('gallery-expand'), (direction) => updateGallery(direction));
