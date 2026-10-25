@@ -18,10 +18,15 @@
   const background = $('background-dialog');
   const timeline = $('background-timeline');
   const backgroundScrollCue = $('background-scroll-cue');
+  const backgroundScrollFooter = backgroundScrollCue.parentElement;
   function syncBackgroundScroll() {
-    const lastEntry = timeline.lastElementChild?.querySelector('dd');
-    const remaining = lastEntry ? lastEntry.getBoundingClientRect().bottom - timeline.getBoundingClientRect().bottom : 0;
-    const hasMore = background.open && remaining > 8;
+    if (!background.open) return;
+    // Test against the viewport without the cue's reserved space. This stays
+    // independent of scroll position and cannot create its own overflow.
+    const available = timeline.clientHeight + backgroundScrollFooter.offsetHeight;
+    backgroundScrollFooter.hidden = timeline.scrollHeight <= available + 2;
+    const remaining = timeline.scrollHeight - timeline.clientHeight - timeline.scrollTop;
+    const hasMore = !backgroundScrollFooter.hidden && remaining > 2;
     if (!hasMore && document.activeElement === backgroundScrollCue) timeline.focus({ preventScroll: true });
     backgroundScrollCue.hidden = !hasMore;
   }
@@ -38,6 +43,8 @@
   const backgroundResize = new ResizeObserver(syncBackgroundScroll);
   backgroundResize.observe(timeline);
   backgroundResize.observe(background);
+  // Font loading can change the rows without changing the scroll viewport.
+  if (document.fonts) document.fonts.ready.then(syncBackgroundScroll);
   $('background-dismiss').addEventListener('click', () => background.close());
   background.addEventListener('close', () => $('background-open').focus({ preventScroll: true }));
   background.addEventListener('click', (event) => {

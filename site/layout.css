@@ -1,5 +1,6 @@
 /* Keep Safari text sizing stable on rotation; browser zoom remains available. */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* About has one set of responsive rules at the end of this file. */
 /* Three compact chapters: photographs, collaborations, and an introduction. */
 .site-header nav { flex-wrap: nowrap; }
 .photo-deck #deck-hint { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; top: -26px; right: 8%; left: auto; bottom: auto; font-size: .875rem; transform: rotate(5deg); }
@@ -8,97 +9,12 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 #deck-hint svg { display: block; width: 58px; height: 38px; margin-left: 22px; overflow: visible; }
 #deck-hint path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
-/* One portrait and one invitation share the final screen. */
-.horizontal-layout .connect-section { display: flex; flex-direction: column; gap: clamp(18px, 3dvh, 30px); padding: clamp(22px, 3dvh, 34px) var(--gutter); background: #27313f; color: #eeede9; }
-.connect-layout { display: grid; grid-template-columns: minmax(180px, .82fr) minmax(0, 1.4fr); align-items: center; gap: 7vw; flex: 1; min-height: 0; }
-.portrait-card { display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: center; height: auto; max-height: none; min-height: 0; }
-.portrait-window { position: relative; width: fit-content; height: auto; max-width: 100%; min-height: 0; padding: 14px; border: 1px solid #67778a; background: #344151; }
-.portrait-window::before, .portrait-window::after { content: ''; position: absolute; width: 28px; height: 28px; pointer-events: none; }
-.portrait-window::before { top: -5px; left: -5px; border-top: 2px solid #c4ced8; border-left: 2px solid #c4ced8; }
-.portrait-window::after { right: -5px; bottom: -5px; border-right: 2px solid #c4ced8; border-bottom: 2px solid #c4ced8; }
-.portrait-window img { width: auto; height: auto; max-width: 100%; max-height: min(64dvh, 600px); object-fit: contain; }
-.connect-copy h2 { font-size: clamp(2.8rem, 5.2vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1; }
-.connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
-.greeting-prefix { white-space: nowrap; }
-#about-title .name-morph { flex: 0 1 4.5em; width: 4.5em; max-width: 100%; height: 1.3em; font-size: inherit; place-items: center start; padding-inline: 2px; }
-#about-title .name-label { display: flex; align-items: center; gap: .025em; font-family: var(--body); font-weight: 400; font-size: .95em; letter-spacing: -.065em; transform-origin: left center; }
-#about-title .name-word { display: block; flex: none; overflow: hidden; white-space: nowrap; padding-inline: .04em; }
-#about-title .name-bracket { flex: none; }
-.connect-copy > p { max-width: 570px; font-size: clamp(1rem, 1.8vw, 1.5rem); letter-spacing: -.02em; line-height: 1.5; color: #d9dee5; margin-top: 24px; }
-.background-button { display: flex; align-items: center; justify-content: space-between; gap: 25px; max-width: 325px; width: 100%; min-height: 44px; padding: 12px 0; margin-top: 20px; background: transparent; border-bottom: 1px solid #647284; text-align: left; font-size: .875rem; }
-.background-button > span { font-size: 1.5rem; font-weight: 400; }
-.background-button:hover { border-color: currentColor; }
-.connect-contact { margin-top: clamp(24px, 4dvh, 48px); }
-.connect-hello { display: inline-flex; align-items: center; gap: 25px; font: 900 clamp(2.3rem, 5.7vw, 6rem)/1 var(--display); letter-spacing: -.065em; }
-.connect-hello > span { font-family: var(--body); font-weight: 400; font-size: 1.05em; transition: transform .2s; }
-.connect-hello:hover > span { transform: translate(4px, -4px); }
-.connect-email { display: block; width: max-content; max-width: 100%; margin-top: 15px; font-size: 1rem; }
-.connect-socials { display: flex; gap: 24px; margin-top: 14px; font-size: .8125rem; color: #c2cbd5; }
-.connect-socials a:hover, .connect-email:hover { text-decoration: underline; text-underline-offset: 4px; }
-.connect-footer { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 20px; border-top: 1px solid #56606d; padding-top: 8px; font-size: .6875rem; }
-.connect-footer .motion-controls { gap: 22px; }
-.connect-footer .motion-controls button { font-size: .75rem; }
-.background-dialog { width: min(780px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: clamp(18px, 3vw, 34px); background: var(--paper); overflow: auto; }
-.background-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 15px; }
-.background-heading h2 { font-weight: 400; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1.1; letter-spacing: -.05em; }
-.background-timeline { margin: 0; }
-.background-timeline > div { display: grid; grid-template-columns: 105px 1fr; gap: 22px; border-top: 1px solid var(--line); padding: 16px 0; }
-.background-timeline dt { font-size: .6875rem; color: var(--muted); padding-top: 4px; }
-.background-timeline dd { margin: 0; }
-.background-timeline h3 { font-size: 1.125rem; font-weight: 400; line-height: 1.25; letter-spacing: -.025em; }
-.background-timeline p { font-size: .875rem; color: var(--muted); margin-top: 5px; line-height: 1.4; }
-
 @media(max-width:700px) {
  .horizontal-layout .site-header { min-height: 84px; padding: 10px 0; gap: 15px; }
  .site-header .brand { font-size: 1.85rem; }
  .site-header nav { gap: 13px; font-size: .75rem; }
  .photo-deck #deck-hint { top: -18px; right: 4%; font-size: .75rem; gap: 3px; }
  #deck-hint svg { width: 44px; height: 29px; margin-left: 25px; }
- .horizontal-layout .connect-section { padding: 18px var(--gutter); gap: 18px; }
- .connect-layout { grid-template-columns: minmax(100px, .68fr) minmax(0, 1.32fr); grid-template-rows: auto auto 44px minmax(0,1fr); gap: 10px 20px; align-items: start; }
- .connect-copy { display: contents; }
- .portrait-card { grid-column: 1; grid-row: 1 / 4; align-self: center; max-height: 255px; width: 100%; }
- .portrait-window { width: 100%; height: auto; padding: 9px; }
- .portrait-window img { width: 100%; max-height: none; }
- .connect-copy #about-title { flex-direction: column; align-items: flex-start; gap: .12em; }
- #about-title .name-morph { flex-basis: auto; }
- .connect-copy h2 { grid-column: 2; grid-row: 1; font-size: clamp(1.75rem, 8vw, 2.4rem); line-height: 1.05; }
- .connect-copy > p { grid-column: 2; grid-row: 2; margin-top: 0; font-size: .875rem; line-height: 1.45; }
- .background-button { grid-column: 2; grid-row: 3; margin: 0; font-size: .75rem; gap: 8px; padding: 6px 0; }
- .background-button > span { font-size: 1.25rem; }
- .connect-contact { grid-column: 1 / -1; grid-row: 4; align-self: center; margin-top: 10px; }
- .connect-hello { font-size: clamp(2.6rem, 12vw, 4rem); gap: 18px; }
- .connect-email { font-size: .9375rem; margin-top: 12px; }
- .connect-socials { margin-top: 12px; font-size: .75rem; }
- .connect-footer { gap: 5px; flex-wrap: wrap; font-size: .625rem; padding-top: 6px; }
- .connect-footer .motion-controls { gap: 16px; }
- .connect-footer .motion-controls button { font-size: .6875rem; min-height: 34px; padding: 6px 0; }
- .background-heading { align-items: flex-start; gap: 12px; }
- .background-heading .dismiss-button { font-size: .75rem; gap: 10px; padding: 0; }
- .background-timeline > div { grid-template-columns: 72px 1fr; gap: 13px; padding: 12px 0; }
- .background-timeline dt { font-size: .625rem; }
- .background-timeline h3 { font-size: .9375rem; }
- .background-timeline p { font-size: .75rem; }
-}
-@media(max-height:700px) and (min-width:701px) {
- .horizontal-layout .connect-section { padding-top: 18px; padding-bottom: 12px; gap: 12px; }
- .connect-copy h2 { font-size: 2.6rem; }
- .connect-copy > p { font-size: 1rem; margin-top: 16px; }
- .background-button { margin-top: 10px; }
- .connect-contact { margin-top: 18px; }
- .connect-hello { font-size: 2.8rem; }
- .connect-socials, .connect-email { margin-top: 9px; }
-}
-@media(max-height:700px) and (max-width:700px) {
- .horizontal-layout .connect-section { padding-top: 12px; padding-bottom: 10px; gap: 10px; }
- .connect-layout { gap: 8px 16px; }
- .connect-copy h2 { font-size: 1.75rem; }
- .connect-copy > p { font-size: .8125rem; line-height: 1.35; }
- .portrait-card { max-height: 210px; }
- .connect-contact { margin-top: 5px; }
- .connect-hello { font-size: 2.4rem; }
- .connect-socials, .connect-email { margin-top: 8px; }
- .background-timeline > div { padding-top: 9px; padding-bottom: 9px; }
 }
 
 
@@ -196,10 +112,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 /* Small visual shutter snap; shared behavior lives in dialog-motion.js. */
 .work-section .constellation-note { border-bottom: 0; }
-.connect-socials { gap: 10px; margin-left: -9px; }
-.connect-socials a { display: grid; place-items: center; width: 44px; height: 44px; color: #eeede9; border-radius: 0; transition: background .2s; }
-.connect-socials a:hover { background: #ffffff15; }
-.connect-socials svg { width: 23px; height: 23px; }
 .photo-deck #deck-hint { align-items: center; gap: 2px; transform: rotate(-5deg); }
 #deck-hint svg { margin-left: 0; }
 
@@ -224,7 +136,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 #deck-hint svg { width: 50px; height: 35px; margin: -1px 2px 0 0; transform: rotate(-4deg); }
 #deck-hint path { stroke-width: 2; }
 @media(max-width:700px) {
- .background-heading .dismiss-button { width: 34px; height: 34px; font-size: 1.5rem; }
  .photo-deck #deck-hint { top: -25px; right: 7%; }
  #deck-hint > span { transform: translateY(-3px); }
  #deck-hint svg { width: 42px; height: 30px; margin-right: 1px; }
@@ -406,77 +317,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  }
 }
 
-/* Mobile About: give the contact block a deliberate landing above the footer. */
-@media(max-width:700px) {
- .horizontal-layout .connect-section {
-  gap: 14px;
-  padding-top: clamp(24px, 4dvh, 34px);
-  padding-bottom: 16px;
- }
- .horizontal-layout .connect-layout {
-  grid-template-columns: clamp(118px, 34vw, 152px) minmax(0, 1fr);
-  grid-template-rows: auto auto 44px minmax(min-content, 1fr);
-  min-height: min-content;
-  gap: 24px 24px;
- }
- .horizontal-layout .portrait-card {
-  width: 100%;
-  height: auto;
-  max-width: 152px;
-  max-height: none;
-  justify-self: center;
-  grid-row: 1;
- }
- .horizontal-layout .portrait-window {
-  width: 100%;
-  height: auto;
-  aspect-ratio: auto;
-  margin-inline: auto;
- }
- .horizontal-layout .portrait-window img {
-  display: block;
-  width: 100%;
-  height: auto;
- }
- .horizontal-layout .connect-copy h2 {
-  font-size: clamp(2.5rem, 13.5vw, 4.1rem);
-  align-self: center;
- }
- .horizontal-layout .connect-copy > p {
-  grid-column: 1 / -1;
-  font-size: .9375rem;
-  line-height: 1.55;
- }
- .horizontal-layout .background-button {
-  font-size: .8125rem;
-  padding: 5px 0;
-  grid-column: 1 / -1;
-  max-width: none;
- }
- .horizontal-layout .connect-contact {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  align-self: end;
-  margin-top: 0;
-  padding-top: 24px;
-  padding-bottom: 4px;
- }
- .horizontal-layout .connect-hello {
-  grid-column: 1 / -1;
-  justify-content: space-between;
-  font-size: clamp(2.25rem, 11.5vw, 3.25rem);
-  gap: 14px;
- }
- .horizontal-layout .connect-email { margin-top: 0; font-size: .9rem; }
- .horizontal-layout .connect-socials { margin: 0; gap: 4px; }
- /* Keep each icon centered within its square 44px tap target. */
- .horizontal-layout .connect-hello > span { letter-spacing: 0; }
- .horizontal-layout .connect-socials a { justify-items: center; }
- .horizontal-layout .connect-footer { padding-top: 10px; }
-}
-
 /* Each paper loops inside an 8px by 12px pocket around its fixed anchor.
    Staggered phases keep the prints from moving together as one stack. */
 @keyframes story-print-drift {
@@ -497,16 +337,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  }
 }
 
-@media(max-width:700px) and (max-height:650px) {
- .horizontal-layout .connect-section { padding-top: 12px; padding-bottom: 8px; gap: 8px; }
- .horizontal-layout .connect-layout { grid-template-columns: 110px minmax(0, 1fr); gap: 12px 18px; }
- .horizontal-layout .portrait-card { max-width: 110px; }
- .horizontal-layout .connect-copy h2 { font-size: clamp(2.3rem, 12vw, 3.3rem); }
- .horizontal-layout .connect-copy > p { font-size: .8125rem; line-height: 1.35; }
- .horizontal-layout .connect-contact { padding-top: 14px; padding-bottom: 2px; gap: 8px; }
- .horizontal-layout .connect-hello { font-size: 2.25rem; }
- .horizontal-layout .connect-email, .horizontal-layout .connect-socials { margin-top: 0; }
-}
 
 /* Center the complete gallery in the usable dialog viewport, not against the
    height of a long article. The photograph itself has equal inset on all sides. */
@@ -667,21 +497,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .work-section .constellation-note { grid-template-columns: 1fr; gap: 6px; padding-top: 12px; }
  .work-section .constellation-note h3 { font-size: 1rem; }
  .work-section .constellation-note p { font-size: .75rem; }
- .horizontal-layout .connect-section { display: flex; gap: 20px; padding-block: 22px; }
- .horizontal-layout .connect-layout { display: grid; flex: 0 0 auto; grid-template-columns: minmax(140px, .65fr) minmax(0, 1.35fr); grid-template-rows: auto; gap: 28px; align-items: center; min-height: min-content; }
- .horizontal-layout .portrait-card { grid-column: 1; grid-row: 1; width: 100%; max-width: 210px; max-height: none; justify-self: center; }
- .horizontal-layout .portrait-window { width: fit-content; max-width: 100%; height: auto; padding: 10px; }
- .horizontal-layout .portrait-window img { display: block; width: auto; max-width: 100%; height: auto; max-height: min(60dvh, 260px); }
- .horizontal-layout .connect-copy { display: block; min-width: 0; }
- .horizontal-layout .connect-copy h2 { font-size: clamp(2rem, 4.5vw, 3rem); }
- .connect-copy #about-title { flex-direction: row; gap: .1em .22em; }
- .horizontal-layout .connect-copy > p { margin-top: 14px; font-size: .9375rem; line-height: 1.45; }
- .horizontal-layout .background-button { margin-top: 12px; max-width: none; font-size: .8125rem; }
- .horizontal-layout .connect-contact { display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-top: 18px; padding: 0; }
- .horizontal-layout .connect-hello { grid-column: 1 / -1; font-size: 2rem; }
- .horizontal-layout .connect-email { margin: 0; font-size: .8125rem; }
- .horizontal-layout .connect-socials { margin: 0; gap: 6px; }
- .horizontal-layout .connect-footer { flex: 0 0 auto; margin-top: 0; }
 }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) and (prefers-reduced-motion: no-preference) {
  .collab-card.is-active .collab-paper { animation-name: story-print-drift; }
@@ -785,14 +600,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  background-size: 140% 130%;
  background-position: calc(var(--chapter-progress, 0) * 32%) calc(var(--chapter-progress, 0) * 24%);
 }
-.horizontal-layout .work-section,
-.horizontal-layout .connect-section { background: transparent; color: var(--ink); }
-.connect-copy > p, .connect-socials { color: #424b58; }
-.connect-socials a { color: var(--ink); }
-.connect-socials a:hover { background: #27313f0d; }
-.connect-footer, .background-button { border-color: #27313f40; }
-.portrait-window { background: #ffffff24; border-color: #27313f40; }
-.portrait-window::before, .portrait-window::after { border-color: #59687b; }
+.horizontal-layout .work-section { background: transparent; color: var(--ink); }
 .story-select { border-top: 0; }
 
 /* Enlarge the period to finish at the same right edge as ANDRE. */
@@ -892,9 +700,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .project-dialog.is-gallery-ready .gallery-expand { transition: none; }
 }
 
-@media (min-width: 701px) and (min-height: 601px) {
- .horizontal-layout .portrait-window img { max-height: min(calc(100dvh - 320px), 600px); }
-}
 
 /* Preserve the expanding photo fans; fit complete titles to their own columns. */
 .story-select { container-type: inline-size; }
@@ -907,43 +712,8 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .story-title, .is-active .story-title { font-size: min(1rem, 9.6cqw); }
 }
 
-/* A compact colophon sits together at the lower-right edge of About. */
-.horizontal-layout .connect-footer {
- align-self: flex-end;
- flex-direction: column;
- align-items: flex-end;
- justify-content: flex-end;
- gap: 0;
- border: 0;
- padding-top: 0;
- text-align: right;
- color: #424b58;
-}
-.connect-footer .motion-controls { justify-content: flex-end; gap: 18px; }
-.connect-footer .motion-controls button { font-size: .6875rem; }
-
-/* Keep the email and three social tap targets comfortable on narrow phones. */
-@media (max-width: 420px) {
- .horizontal-layout .connect-email, .horizontal-layout .connect-socials { grid-column: 1 / -1; }
- .horizontal-layout .connect-socials { justify-content: flex-start; }
-}
-
 /* Keep the rail geometry fixed while its boundary controls snap shut. */
 .section-navigation button[data-snapshot="hidden"] { visibility: hidden; opacity: 0; pointer-events: none; }
-
-/* Keep the heading and scroll cue visible while the experience list scrolls. */
-.background-dialog { position: fixed; overflow: hidden; }
-.background-dialog[open] { display: flex; flex-direction: column; }
-.background-heading { flex: none; }
-.background-timeline { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 52px; }
-.background-scroll-cue {
- position: absolute; right: 18px; bottom: 18px; display: grid; place-items: center;
- width: 44px; height: 44px; padding: 10px; border: 1px solid currentColor;
- background: var(--paper); color: var(--ink);
-}
-.background-scroll-cue[hidden] { display: none; }
-.background-scroll-cue:hover { background: var(--ink); color: var(--paper); }
-.background-scroll-cue svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; }
 
 /* Give the photograph most of the mobile hero, including its paper caption. */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
@@ -963,8 +733,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .site-header { min-height: 52px; padding-block: 4px; }
  .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
  .horizontal-layout .hero h1 { font-size: min(14vw, 33cqh); }
- .background-dialog { padding-block: 16px; }
- .background-heading { padding-bottom: 10px; }
 }
 
 /* Move the cool and warm pools across the shared canvas as chapters travel. */
@@ -993,24 +761,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .hero-composition .photo-deck { width: min(100%, 90cqh); justify-self: start; margin: 0; grid-template-rows: minmax(0, 1fr) 24px; }
  .horizontal-layout .photo-deck #deck-hint { font-size: .6875rem; }
  .horizontal-layout .photo-deck #deck-hint .deck-cue-mobile { width: 48px; height: 36px; }
- /* Fit the complete About composition between the existing header and rail. */
- .horizontal-layout .connect-section { container-type: size; padding-block: 6px; gap: 4px; }
- .horizontal-layout .connect-layout { flex: 1 1 0; min-height: 0; grid-template-columns: minmax(0, .65fr) minmax(0, 1.6fr); gap: 24px; }
- .horizontal-layout .portrait-card { height: 100%; max-width: none; }
- .horizontal-layout .portrait-window { padding: 7px; }
- .horizontal-layout .portrait-window img { width: auto; max-height: calc(100cqh - 42px); }
- .horizontal-layout .connect-copy h2 { font-size: clamp(1.5rem, 11cqh, 2.5rem); }
- .horizontal-layout .connect-copy > p { margin-top: 4px; font-size: clamp(.75rem, 4.6cqh, .9375rem); line-height: 1.35; }
- .horizontal-layout .background-button { margin-top: 4px; padding-block: 4px; min-height: 32px; font-size: .75rem; }
- .horizontal-layout .connect-contact { margin-top: 6px; gap: 2px 12px; grid-template-columns: minmax(0, 1fr) auto; }
- .horizontal-layout .connect-hello { font-size: clamp(1.4rem, 9cqh, 2.25rem); }
- .horizontal-layout .connect-email { grid-column: 1; font-size: .75rem; }
- .horizontal-layout .connect-socials { grid-column: 2; gap: 2px; }
- .horizontal-layout .connect-socials a { width: 36px; height: 36px; }
- .horizontal-layout .connect-socials svg { width: 20px; height: 20px; }
- .horizontal-layout .connect-footer { flex-direction: row; align-items: center; gap: 18px; padding: 0; font-size: .5625rem; }
- .horizontal-layout .connect-footer .motion-controls { gap: 14px; }
- .horizontal-layout .connect-footer .motion-controls button { min-height: 24px; padding-block: 2px; font-size: .625rem; }
 }
 
 /* Shared pointer proportions: never stretch the arrow or position it over a print. */
@@ -1018,13 +768,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .horizontal-layout .photo-deck #deck-hint > span { transform: none; }
 .horizontal-layout .photo-deck #deck-hint svg { display: block; position: static; width: 64px; height: 57.6px; margin: 0; transform: none; }
 #deck-hint path { stroke-width: 2; vector-effect: non-scaling-stroke; }
-.connect-footer .motion-controls button { display: inline-flex; align-items: center; gap: 6px; }
 .motion-controls svg { flex: none; width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.horizontal-layout .connect-socials { grid-column: 1 / -1; justify-content: flex-start; gap: 10px; margin: 12px 0 0; }
-.connect-socials a { border: 1px solid transparent; }
-.connect-socials a:hover { border-color: #27313f40; }
-.background-timeline { padding-right: 0; }
-.background-dialog:has(.background-scroll-cue:not([hidden])) .background-timeline { padding-right: 52px; }
 
 @media (max-width: 700px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
  .horizontal-layout .hero-composition { row-gap: 12px; }
@@ -1032,7 +776,6 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .photo-deck #deck-hint { position: static; flex-direction: column-reverse; align-self: start; justify-self: center; gap: 0; width: max-content; font-size: .75rem; }
  .horizontal-layout .photo-deck #deck-hint svg { width: 52px; height: 47px; transform: rotate(180deg); }
  .horizontal-layout .hero h1 { font-size: min(23vw, 18cqh); }
- .horizontal-layout .connect-socials { margin-top: 0; }
 }
 @media (max-width: 700px) and (max-height: 700px) {
  .horizontal-layout .hero-composition { row-gap: 8px; }
@@ -1042,13 +785,138 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .horizontal-layout .hero h1 { font-size: min(15vw, 36cqh); }
  .horizontal-layout .work-section { padding-block: 24px; gap: 28px; grid-template-rows: auto minmax(220px, 1fr); }
  .collab-sheet { min-height: 220px; }
- .horizontal-layout .connect-section { padding-block: 20px; gap: 12px; }
- .horizontal-layout .connect-socials { grid-column: 1 / -1; }
 }
 
-@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
- .background-timeline > div { padding-block: 13px; }
-}
 @media (min-width: 701px) and (max-width: 1100px) and (min-height: 601px) {
  .horizontal-layout .hero-composition .photo-deck { width: min(100%, calc((100dvh - 360px) * .91)); justify-self: end; }
+}
+
+/* About: size the portrait against the usable chapter height. Let the content
+   scroll at its natural size when a short landscape viewport needs more room. */
+.horizontal-layout .connect-section {
+ container-type: size;
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ padding: clamp(20px, 3dvh, 32px) var(--gutter);
+ background: transparent;
+ color: var(--ink);
+}
+.connect-layout {
+ display: grid;
+ grid-template-columns: minmax(180px, .8fr) minmax(0, 1.4fr);
+ align-items: center;
+ gap: clamp(32px, 6vw, 96px);
+ flex: 1 0 auto;
+ min-height: min-content;
+ width: 100%;
+ max-width: 1440px;
+ margin-inline: auto;
+}
+.portrait-card { display: flex; justify-content: center; align-self: center; min-width: 0; }
+.portrait-window { position: relative; width: fit-content; max-width: 100%; padding: 12px; border: 1px solid #27313f40; background: #ffffff24; }
+.portrait-window::before, .portrait-window::after { content: ''; position: absolute; width: 28px; height: 28px; pointer-events: none; }
+.portrait-window::before { top: -5px; left: -5px; border-top: 2px solid #59687b; border-left: 2px solid #59687b; }
+.portrait-window::after { right: -5px; bottom: -5px; border-right: 2px solid #59687b; border-bottom: 2px solid #59687b; }
+.portrait-window img { width: auto; height: auto; max-width: 100%; max-height: clamp(220px, calc(100cqh - 90px), 600px); object-fit: contain; }
+.connect-copy { min-width: 0; }
+.connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
+.connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
+.greeting-prefix { white-space: nowrap; }
+#about-title .name-morph { flex: 0 1 4.5em; width: 4.5em; max-width: 100%; height: 1.3em; font-size: inherit; place-items: center start; padding-inline: 2px; }
+#about-title .name-label { display: flex; align-items: center; gap: .025em; font-family: var(--body); font-weight: 400; font-size: .95em; letter-spacing: -.065em; transform-origin: left center; }
+#about-title .name-word { display: block; flex: none; overflow: hidden; white-space: nowrap; padding-inline: .04em; }
+#about-title .name-bracket { flex: none; }
+.connect-copy > p { max-width: 38em; margin-top: 18px; font-size: clamp(1rem, 1.65vw, 1.4rem); letter-spacing: -.02em; line-height: 1.5; color: #424b58; }
+.background-button { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 44px; padding: 10px 0; margin-top: 24px; background: transparent; border-bottom: 1px solid #27313f40; text-align: left; font-size: .875rem; }
+.background-button > span { font-size: 1.5rem; line-height: 1; }
+.background-button:hover { border-color: currentColor; }
+.connect-contact { margin-top: 24px; }
+.connect-hello { display: inline-flex; align-items: center; gap: 25px; font: 900 clamp(2.3rem, 4.8vw, 5.5rem)/1 var(--display); letter-spacing: -.065em; }
+.connect-hello > span { font-family: var(--body); font-weight: 400; font-size: 1.05em; letter-spacing: 0; transition: transform .2s; }
+.connect-hello:hover > span { transform: translate(4px, -4px); }
+.connect-socials { display: flex; justify-content: flex-start; gap: 12px; margin: 16px 0 0; }
+.connect-socials a { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid #27313f60; color: var(--ink); transition: background .2s, border-color .2s; }
+.connect-socials a:hover { background: #27313f0d; border-color: currentColor; }
+.connect-socials svg { width: 23px; height: 23px; }
+.connect-footer {
+ display: flex;
+ flex: none;
+ flex-wrap: wrap;
+ align-items: center;
+ justify-content: flex-end;
+ align-self: stretch;
+ gap: 0 24px;
+ margin-top: auto;
+ text-align: right;
+ color: #424b58;
+ font-size: .6875rem;
+}
+.connect-footer > span { white-space: nowrap; }
+.connect-footer .motion-controls { flex: 0 0 auto; justify-content: flex-end; gap: 18px; }
+.connect-footer .motion-controls button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 0; font-size: .6875rem; white-space: nowrap; }
+.connect-footer .motion-controls button[hidden] { display: none; }
+
+@media (max-width: 700px) and (orientation: portrait) {
+ .horizontal-layout .connect-section { padding-block: clamp(12px, 2dvh, 20px); gap: 10px; }
+ .connect-layout {
+  --portrait-height: clamp(96px, calc(100cqh - 320px), 220px);
+  --about-row-gap: clamp(6px, 1.2cqh, 14px);
+  flex: 1 0 auto;
+  grid-template-columns: calc((var(--portrait-height) - 20px) * 2 / 3 + 20px) minmax(0, 1fr);
+  /* Equal flexible rows center the complete text/contact group below the
+     portrait without spreading its individual pieces apart. */
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+  gap: 0 24px;
+ }
+ .connect-copy { display: contents; }
+ .portrait-card { grid-column: 1; grid-row: 1; }
+ .portrait-window { width: 100%; padding: 9px; }
+ .portrait-window img { width: 100%; max-height: none; }
+ .connect-copy #about-title { grid-column: 2; grid-row: 1; align-self: center; flex-direction: column; align-items: flex-start; gap: .08em; font-size: clamp(2rem, min(12vw, 9.5cqh), 4rem); }
+ #about-title .name-morph { flex-basis: auto; }
+ .connect-copy > p { grid-column: 1 / -1; grid-row: 3; margin: calc(14px + var(--about-row-gap)) 0 0; font-size: .9375rem; line-height: 1.45; }
+ .background-button { grid-column: 1 / -1; grid-row: 4; margin: var(--about-row-gap) 0 0; padding-block: 6px; font-size: .8125rem; }
+ .connect-contact { grid-column: 1 / -1; grid-row: 5; align-self: start; margin: calc(10px + var(--about-row-gap)) 0 0; }
+ .connect-hello { display: flex; justify-content: space-between; gap: 14px; font-size: clamp(2rem, 10vw, 3.6rem); }
+ .connect-socials { margin-top: 12px; }
+ .connect-footer { flex-direction: column; align-items: flex-end; font-size: .625rem; }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+ .connect-layout { grid-template-columns: minmax(140px, .65fr) minmax(0, 1.6fr); gap: clamp(28px, 5vw, 64px); }
+ .portrait-window { padding: 10px; }
+ .portrait-window img { max-height: 300px; }
+ .connect-copy h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+ .connect-copy > p { margin-top: 14px; font-size: 1rem; }
+ .background-button { margin-top: 18px; }
+ .connect-contact { margin-top: 22px; }
+ .connect-hello { font-size: clamp(2rem, 4vw, 3rem); }
+}
+
+/* Overflow reserves a footer for the cue. Hiding the cue at the end of the list
+   preserves that space; scrolling never changes the text width or scroll range. */
+.background-dialog { position: fixed; width: min(780px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: clamp(18px, 3vw, 34px); overflow: hidden; background: var(--paper); }
+.background-dialog[open] { display: flex; flex-direction: column; }
+.background-heading { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 20px; }
+.background-heading h2 { font-weight: 400; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1.1; letter-spacing: -.05em; }
+.background-heading .dismiss-button { flex: none; }
+.background-timeline { min-height: 0; margin: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.background-timeline > div { display: grid; grid-template-columns: 105px minmax(0, 1fr); gap: 22px; border-top: 1px solid var(--line); padding: 16px 0; }
+.background-timeline dt { font-size: .6875rem; color: var(--muted); padding-top: 4px; }
+.background-timeline dd { margin: 0; }
+.background-timeline h3 { font-size: 1.125rem; font-weight: 400; line-height: 1.25; letter-spacing: -.025em; }
+.background-timeline p { font-size: .875rem; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+.background-scroll-footer { display: flex; flex: none; justify-content: flex-end; padding-top: 8px; }
+.background-scroll-footer[hidden] { display: none; }
+.background-scroll-cue { display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border: 1px solid currentColor; background: transparent; color: var(--ink); }
+.background-scroll-cue[hidden] { display: grid; visibility: hidden; pointer-events: none; }
+.background-scroll-cue:hover { background: var(--ink); color: var(--paper); }
+.background-scroll-cue svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; }
+@media (max-width: 700px) {
+ .background-heading { gap: 12px; padding-bottom: 16px; }
+ .background-timeline > div { grid-template-columns: 72px minmax(0, 1fr); gap: 13px; padding-block: 12px; }
+ .background-timeline dt { font-size: .625rem; }
+ .background-timeline h3 { font-size: .9375rem; }
+ .background-timeline p { font-size: .75rem; }
 }
