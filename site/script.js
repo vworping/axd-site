@@ -55,6 +55,7 @@
 
   const dialog = $('project-dialog');
   const imageDialog = $('image-dialog');
+  let imageReturnFocus;
   let activeProject;
   let imageIndex = 0;
   let returnFocus;
@@ -102,6 +103,7 @@
   }
 
   function updateGallery(direction = 0) {
+    if (imageDialog.open && imageDialog.hasAttribute('data-single')) return;
     if (!activeProject) return;
     imageIndex = wrap(imageIndex + direction, activeProject.images.length);
     const photo = activeProject.images[imageIndex];
@@ -216,7 +218,23 @@
   $('gallery-next').addEventListener('click', () => updateGallery(1));
   $('expanded-prev').addEventListener('click', () => updateGallery(-1));
   $('expanded-next').addEventListener('click', () => updateGallery(1));
-  $('gallery-expand').addEventListener('click', () => { window.AXDDialogs.open(imageDialog); updateExpanded(); });
+  $('gallery-expand').addEventListener('click', () => {
+    imageDialog.removeAttribute('data-single');
+    imageReturnFocus = $('gallery-expand');
+    updateExpanded();
+    window.AXDDialogs.open(imageDialog);
+  });
+  $('portrait-open').addEventListener('click', () => {
+    const portrait = $('about-portrait');
+    const image = $('expanded-image');
+    image.src = portrait.src;
+    image.alt = portrait.alt;
+    image.width = portrait.width;
+    image.height = portrait.height;
+    imageDialog.setAttribute('data-single', '');
+    imageReturnFocus = $('portrait-open');
+    window.AXDDialogs.open(imageDialog);
+  });
   $('image-dismiss').addEventListener('click', () => imageDialog.close());
   document.querySelectorAll('.image-dismiss-side').forEach((side) => {
     side.addEventListener('click', () => imageDialog.close());
@@ -232,7 +250,7 @@
     const top = box.top + (box.height - height) / 2;
     if (event.clientX < left || event.clientX > left + width || event.clientY < top || event.clientY > top + height) imageDialog.close();
   });
-  imageDialog.addEventListener('close', () => $('gallery-expand').focus({ preventScroll: true }));
+  imageDialog.addEventListener('close', () => imageReturnFocus?.focus({ preventScroll: true }));
   for (const modal of [dialog, imageDialog]) {
     modal.addEventListener('keydown', (event) => {
       // The topmost native dialog owns Escape and focus trapping.

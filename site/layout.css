@@ -129,6 +129,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .dismiss-button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; background: transparent; font-size: 1.8rem; line-height: 1; }
 .dismiss-button:hover { background: #0000000d; }
 .image-dialog > .dismiss-button { position: absolute; right: 25px; top: 15px; }
+.image-dialog[data-single] > .dismiss-button { border: 1px solid currentColor; z-index: 4; }
+.image-dialog[data-single] > .gallery-controls { display: none; }
 
 /* A looping hand-drawn cue reads as a page turn instead of a directional arrow. */
 .photo-deck #deck-hint { flex-direction: column; align-items: flex-end; gap: 0; right: 8%; top: -30px; transform: rotate(-4deg); }
@@ -819,6 +821,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .portrait-window::before { top: -5px; left: -5px; border-top: 2px solid #59687b; border-left: 2px solid #59687b; }
 .portrait-window::after { right: -5px; bottom: -5px; border-right: 2px solid #59687b; border-bottom: 2px solid #59687b; }
 .portrait-window img { width: auto; height: auto; max-width: 100%; max-height: clamp(220px, calc(100cqh - 90px), 600px); object-fit: contain; }
+.portrait-window { appearance: none; border-radius: 0; cursor: zoom-in; }
 .connect-copy { min-width: 0; }
 .connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
 .connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
