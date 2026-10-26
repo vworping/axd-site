@@ -896,10 +896,11 @@ html[data-input="pointer"] :focus { outline: none !important; }
 
 @media (orientation: landscape) and (max-height: 600px) {
  .horizontal-layout .connect-section { padding-block: 12px 10px; gap: 8px; }
- .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; gap: clamp(28px, 4vw, 48px); }
+ .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; align-content: start; gap: clamp(28px, 4vw, 48px); }
  .portrait-card { align-self: start; }
  .portrait-window { padding: 10px; }
  .portrait-window img { max-height: clamp(150px, calc(100cqh - 30px), 320px); }
+ .connect-copy { align-self: center; }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }
  .background-button { margin-top: 8px; }
