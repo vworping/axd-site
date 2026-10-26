@@ -793,16 +793,16 @@ html[data-input="pointer"] :focus { outline: none !important; }
 }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
  .horizontal-layout .hero h1 { font-size: min(15vw, 36cqh); }
- .horizontal-layout .work-section { padding-block: 24px; gap: 28px; grid-template-rows: auto minmax(220px, 1fr); }
- .collab-sheet { min-height: 220px; }
+ .horizontal-layout .work-section { padding-block: 12px; gap: 12px; }
+ .collab-sheet { min-height: 176px; }
+ .collab-prints { scale: .95; transform-origin: center top; }
 }
 
 @media (min-width: 701px) and (max-width: 1100px) and (min-height: 601px) {
  .horizontal-layout .hero-composition .photo-deck { width: min(100%, calc((100dvh - 360px) * .91)); justify-self: end; }
 }
 
-/* About: size the portrait against the usable chapter height. Let the content
-   scroll at its natural size when a short landscape viewport needs more room. */
+/* About: size the portrait against the usable chapter height. */
 .horizontal-layout .connect-section {
  container-type: size;
  display: flex;
@@ -895,14 +895,17 @@ html[data-input="pointer"] :focus { outline: none !important; }
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
- .connect-layout { grid-template-columns: minmax(140px, .65fr) minmax(0, 1.6fr); gap: clamp(28px, 5vw, 64px); }
+ .horizontal-layout .connect-section { padding-block: 12px 10px; gap: 8px; }
+ .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; gap: clamp(28px, 4vw, 48px); }
+ .portrait-card { align-self: start; }
  .portrait-window { padding: 10px; }
- .portrait-window img { max-height: 300px; }
- .connect-copy h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
- .connect-copy > p { margin-top: 14px; font-size: 1rem; }
- .background-button { margin-top: 18px; }
- .connect-contact { margin-top: 22px; }
- .connect-hello { font-size: clamp(2rem, 4vw, 3rem); }
+ .portrait-window img { max-height: clamp(120px, calc(100cqh - 74px), 280px); }
+ .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
+ .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }
+ .background-button { margin-top: 8px; }
+ .connect-contact { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 12px; }
+ .connect-hello { gap: 16px; font-size: clamp(1.75rem, 3.2vw, 2.4rem); min-height: 44px; }
+ .connect-socials { margin: 0; }
 }
 
 /* Overflow reserves a footer for the cue. Hiding the cue at the end of the list
