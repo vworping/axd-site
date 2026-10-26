@@ -41,7 +41,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .collab-card.is-active .collab-print[data-slot="2"] { transform: translate(-50%,-50%) translate(17cqw, -15cqh) rotate(11deg) scale(.84); }
 .collab-card.is-active .collab-print[data-slot="3"] { transform: translate(-50%,-50%) translate(17cqw, 12cqh) rotate(9deg) scale(.78); }
 .collab-paper { display: contents; }
-.collab-action { position: absolute; bottom: 7px; left: 9px; right: 9px; text-align: right; font-size: .6875rem; letter-spacing: .015em; }
+.collab-action { position: absolute; bottom: 7px; left: 6px; right: 6px; text-align: right; font-size: .6875rem; letter-spacing: .015em; white-space: nowrap; }
 .story-select { display: flex; flex-direction: column; justify-content: flex-start; width: 100%; gap: 12px; padding: 12px 0 0; text-align: left; background: transparent; border-top: 1px solid var(--line); color: #344151; }
 .story-title { display: block; font-size: clamp(1.05rem, 1.65vw, 1.75rem); line-height: 1.12; letter-spacing: -.045em; }
 .is-active .story-select { color: var(--ink); border-color: var(--ink); }
@@ -899,7 +899,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; gap: clamp(28px, 4vw, 48px); }
  .portrait-card { align-self: start; }
  .portrait-window { padding: 10px; }
- .portrait-window img { max-height: clamp(120px, calc(100cqh - 74px), 280px); }
+ .portrait-window img { max-height: clamp(150px, calc(100cqh - 30px), 320px); }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }
  .background-button { margin-top: 8px; }
