@@ -5,6 +5,7 @@
   const deck = stage?.closest('.photo-deck');
   const hint = document.getElementById('deck-hint');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const slots = ['front', 'middle', 'back', 'rear', 'base'];
   let index = 0;
   let busyUntil = 0;
   let preparing = false;
@@ -73,7 +74,10 @@
       parseFloat(style.paddingLeft), parseFloat(style.paddingRight),
       parseFloat(style.paddingTop), parseFloat(style.paddingBottom));
     stage.style.setProperty('--print-travel', `${size.travel}px`);
+    const widest = size.imageHeight * Math.max(...prints.map(print => Number(print.dataset.aspect))) + size.horizontal;
     prints.forEach((print) => {
+      // Narrow portraits align with the fan's outside edge behind wider prints.
+      print.style.setProperty('--print-spread', `${(widest - size.imageHeight * Number(print.dataset.aspect) - size.horizontal) / 2}px`);
       print.style.width = `${size.imageHeight * Number(print.dataset.aspect) + size.horizontal}px`;
       print.style.height = `${size.height}px`;
       print.style.setProperty('--print-height', `${size.height}px`);
@@ -112,7 +116,7 @@
     const travel = parseFloat(stage.style.getPropertyValue('--print-travel'));
     const center = [stageBounds.left - bounds.left + stageBounds.width / 2,
       stageBounds.top - bounds.top + stageBounds.height / 2];
-    const papers = [[-3, 0, 0], [7, 1, -.2], [-9, -.8, -.4]].map(([angle, tx, ty]) => {
+    const papers = [[-3, 0, 0], [7, 1, -.2], [-9, -.8, -.4], [4, .4, -.8], [-5, -.25, 1.4]].map(([angle, tx, ty]) => {
       const cosine = Math.cos(angle * Math.PI / 180), sine = Math.sin(angle * Math.PI / 180);
       return [[-1,-1], [1,-1], [1,1], [-1,1]].map(([x,y]) => {
         x *= width / 2; y *= height / 2;
@@ -171,8 +175,8 @@
   function render() {
     prints.forEach((print, i) => {
       const slot = (i - index + photos.length) % photos.length;
-      print.classList.remove('deck-print--front', 'deck-print--middle', 'deck-print--back', 'deck-print--away');
-      print.classList.add(`deck-print--${['front', 'middle', 'back'][slot] || 'away'}`);
+      print.classList.remove(...slots.map(name => `deck-print--${name}`));
+      print.classList.add(`deck-print--${slots[slot]}`);
       print.tabIndex = slot === 0 ? 0 : -1;
       print.setAttribute('aria-hidden', String(slot !== 0));
       print.setAttribute('aria-label', `Next photograph. ${photos[i].alt}`);
@@ -186,9 +190,9 @@
     if (preparing || performance.now() < busyUntil) return;
     preparing = true;
     const next = (index + direction + photos.length) % photos.length;
-    // Do not promote a blank or still-decoding photograph to the front.
-    const ready = await Promise.all([0,1,2].map(async slot => {
-      const image = prints[(next + slot) % photos.length].querySelector('img');
+    // Every physical print stays in the deck, including the two deepest cards.
+    const ready = await Promise.all(prints.map(async print => {
+      const image = print.querySelector('img');
       try { await image.decode(); return true; } catch { return false; }
     }));
     preparing = false;

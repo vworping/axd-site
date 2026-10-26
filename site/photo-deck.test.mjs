@@ -38,7 +38,7 @@ function preview({ width = 400, height = 350, reduced = false } = {}) {
   document.querySelector = () => stage;
   document.getElementById = () => hint;
   document.createElement = element;
-  const style = { paddingLeft: '6px', paddingRight: '6px', paddingTop: '6px', paddingBottom: '32px', transitionDuration: '.6s, .4s', transitionDelay: '0s', getPropertyValue: () => '' };
+  const style = { paddingLeft: '6px', paddingRight: '6px', paddingTop: '6px', paddingBottom: '32px', transitionDuration: '.6s', transitionDelay: '0s', getPropertyValue: () => '' };
   const window = { AXDCuePath: () => '', addEventListener(type, callback) { if (type === 'resize') resize = callback; } };
   runInNewContext(photoSource, { window });
   runInNewContext(source, {
@@ -66,7 +66,8 @@ test('all five photographs retain their identity, dimensions and cyclic order in
     assert.equal(new Set(original.map(item => item.height)).size, 1, 'Portrait and square prints share a height');
     for (let step = 0; step < 11; step++) {
       assert.equal(page.front(), original[step % 5].print);
-      assert.equal(page.stage.children.filter(print => !print.classList.contains('deck-print--away')).length, 3);
+      assert.equal(new Set(page.stage.children.map(print => print.className)).size, 5, 'All five prints have their own stack position');
+      assert.ok(page.stage.children.every(print => !print.classList.contains('deck-print--away')), 'No print is removed from the stack');
       original.forEach(({ print,image,src,width,height }) => {
         assert.equal(print.querySelector('img'), image);
         assert.equal(image.src, src);
@@ -139,4 +140,15 @@ test('the cue is anchored to layout and does not follow photograph flips', async
   assert.equal(page.cueUpdates(), initialUpdates, 'Flipping must not reposition the cue');
   page.resize(250,180);
   assert.equal(page.cueUpdates(), initialUpdates + 1, 'Changing orientation updates the fixed anchor');
+});
+
+test('a pending deepest card is decoded before the deck advances', async () => {
+  const page = preview();
+  let finish;
+  page.stage.children[4].querySelector('img').decode = () => new Promise(resolve => { finish = resolve; });
+  await page.click();
+  assert.equal(page.front(), page.stage.children[0]);
+  finish(); await page.flush();
+  assert.equal(page.front(), page.stage.children[1]);
+  assert.ok(page.stage.children.every(print => !print.classList.contains('deck-print--away')));
 });

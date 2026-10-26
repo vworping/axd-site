@@ -307,7 +307,7 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
 }
 .deck-print img { width: 100%; height: 100%; object-fit: contain; background: transparent; }
 .deck-print--back { --print-angle: -13deg; --print-x: calc(-1 * var(--print-travel)); --print-y: calc(-.5 * var(--print-travel)); }
-.deck-print--middle { --print-angle: 9deg; --print-x: var(--print-travel); --print-y: calc(-.25 * var(--print-travel)); }
+.deck-print--middle { --print-angle: 9deg; --print-x: calc(var(--print-travel) + var(--print-spread)); --print-y: calc(-.25 * var(--print-travel)); }
 .deck-print--front { touch-action: manipulation; }
 .deck-print--front:not(:disabled):hover { transform: translate(-50%, -50%) translateY(calc(-.6 * var(--print-travel))) rotate(0deg); }
 .deck-print--front.is-flipping { animation: flip-contained .36s ease; }
@@ -393,12 +393,13 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
 .horizontal-layout .hero-composition { grid-template-columns: minmax(0, 56fr) minmax(0, 44fr); padding-top: 25px; padding-bottom: 16px; }
 .photo-deck { width: calc(100% + 2vw); max-width: 620px; }
 .deck-stage { aspect-ratio: 1; }
-.deck-print { padding: 9px 9px 56px; transition: transform .6s cubic-bezier(.22,.7,.2,1), opacity .4s ease; }
+.deck-print { padding: 9px 9px 56px; opacity: 1; transition: transform .6s cubic-bezier(.22,.7,.2,1); }
 .deck-print img { -webkit-user-drag: none; }
-.deck-print--back { --print-angle: -9deg; --print-x: calc(-.8 * var(--print-travel)); --print-y: calc(-.4 * var(--print-travel)); z-index: 1; opacity: 1; }
-.deck-print--middle { --print-angle: 7deg; --print-x: var(--print-travel); --print-y: calc(-.2 * var(--print-travel)); z-index: 2; opacity: 1; }
-.deck-print--front { --print-angle: -3deg; --print-x: 0px; --print-y: 0px; z-index: 3; opacity: 1; }
-.deck-print--away { --print-angle: -9deg; --print-x: calc(-1 * var(--print-travel)); --print-y: var(--print-travel); opacity: 0; z-index: 0; pointer-events: none; }
+.deck-print--back { --print-angle: -9deg; --print-x: calc(-.8 * var(--print-travel) - var(--print-spread)); --print-y: calc(-.4 * var(--print-travel)); z-index: 3; }
+.deck-print--middle { --print-angle: 7deg; --print-x: calc(var(--print-travel) + var(--print-spread)); --print-y: calc(-.2 * var(--print-travel)); z-index: 4; }
+.deck-print--front { --print-angle: -3deg; --print-x: 0px; --print-y: 0px; z-index: 5; }
+.deck-print--rear { --print-angle: 4deg; --print-x: calc(.4 * var(--print-travel) + var(--print-spread)); --print-y: calc(-.8 * var(--print-travel)); z-index: 2; }
+.deck-print--base { --print-angle: -5deg; --print-x: calc(-.25 * var(--print-travel) - var(--print-spread)); --print-y: calc(1.4 * var(--print-travel)); z-index: 1; }
 .deck-print:not(.deck-print--front) { pointer-events: none; }
 .deck-print--front:not(:disabled):hover { transform: translate(-50%, -50%) translateY(calc(-.2 * var(--print-travel))) rotate(-2deg); }
 .print-footer { bottom: 10px; left: 10px; right: 10px; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }
