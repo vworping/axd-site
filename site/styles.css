@@ -399,7 +399,6 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
 .deck-print--middle { --print-angle: 7deg; --print-x: var(--print-travel); --print-y: calc(-.2 * var(--print-travel)); z-index: 2; opacity: 1; }
 .deck-print--front { --print-angle: -3deg; --print-x: 0px; --print-y: 0px; z-index: 3; opacity: 1; }
 .deck-print--away { --print-angle: -9deg; --print-x: calc(-1 * var(--print-travel)); --print-y: var(--print-travel); opacity: 0; z-index: 0; pointer-events: none; }
-.deck-print.is-leaving { z-index: 4; }
 .deck-print:not(.deck-print--front) { pointer-events: none; }
 .deck-print--front:not(:disabled):hover { transform: translate(-50%, -50%) translateY(calc(-.2 * var(--print-travel))) rotate(-2deg); }
 .print-footer { bottom: 10px; left: 10px; right: 10px; flex-direction: column; align-items: stretch; gap: 8px; text-align: left; }

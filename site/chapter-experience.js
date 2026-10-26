@@ -22,9 +22,11 @@
     exitSpotlight.hidden = true;
   }
   function paintSpotlight() {
-    const bounds = constellation.getBoundingClientRect();
-    const viewport = track.getBoundingClientRect();
-    shell.classList.toggle('constellation-spotlight', !spotlightDone && bounds.left < viewport.right - 1 && bounds.right > viewport.left + 1);
+    // The rail is authoritative: a chapter's bounds can still be at the origin
+    // during startup layout, which used to leave the homepage header blurred.
+    const width = track.getBoundingClientRect().width;
+    const start = chapters.indexOf(constellation) * width;
+    shell.classList.toggle('constellation-spotlight', !spotlightDone && track.scrollLeft + width > start + 1 && track.scrollLeft < start + width - 1);
   }
   function setChapter(id) {
     activeChapter = id;
@@ -78,7 +80,7 @@
   }, { passive: true }));
   // Expanding the measurement note changes the scroll range too.
   constellation.addEventListener('toggle', scheduleCanvas, true);
-  window.addEventListener('resize', scheduleCanvas, { passive: true });
+  window.addEventListener('resize', () => { paintSpotlight(); scheduleCanvas(); }, { passive: true });
   document.addEventListener('visibilitychange', syncCanvasMotion);
   // Opening the first photograph clears the invitation. Scrolling, following
   // a link, or using the keyboard can dismiss it without opening anything.

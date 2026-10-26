@@ -5,11 +5,11 @@ import { runInNewContext } from 'node:vm';
 
 const source = await readFile(new URL('chapter-experience.js', import.meta.url), 'utf8');
 
-function preview(reduced = false) {
+function preview(reduced = false, position = 1000) {
   const node = () => {
     const listeners = new Map(), classes = new Set();
     return {
-      classList: { toggle: (name, on) => on ? classes.add(name) : classes.delete(name), remove: name => classes.delete(name) },
+      classList: { toggle: (name, on) => on ? classes.add(name) : classes.delete(name), remove: name => classes.delete(name), contains: name => classes.has(name) },
       addEventListener(type, callback) { listeners.set(type, [...(listeners.get(type) || []), callback]); },
       emit(type, detail) { for (const callback of listeners.get(type) || []) callback({ detail }); },
       dispatch(type, event) { for (const callback of listeners.get(type) || []) callback(event); },
@@ -19,7 +19,7 @@ function preview(reduced = false) {
   };
   const document = node(), shell = node(), track = node(), values = new Map();
   track.children = ['top', 'constellation', 'PET', 'work', 'about'].map(id => ({ ...node(), dataset: { section: id, route: id === 'top' ? '/' : '/' + id } }));
-  track.scrollLeft = 1000;
+  track.scrollLeft = position;
   track.children[1].scrollTop = 1000;
   const ids = new Map(track.children.map(chapter => [chapter.dataset.section, chapter]));
   ids.set('section-track', track);
@@ -37,7 +37,7 @@ function preview(reduced = false) {
     requestAnimationFrame(callback) { callbacks.push(callback); return callbacks.length; },
   });
   return {
-    document, track, value: name => values.get('--chapter-' + name),
+    document, track, shell, value: name => values.get('--chapter-' + name),
     frames(count = 180) {
       for (let i = 0; i < count && callbacks.length; i++) {
         const pending = callbacks; callbacks = []; now += 16;
@@ -46,6 +46,17 @@ function preview(reduced = false) {
     },
   };
 }
+
+test('homepage header stays clear even before offscreen chapter bounds settle', () => {
+  const page = preview(false, 0);
+  assert.equal(page.shell.classList.contains('constellation-spotlight'), false);
+  page.track.scrollLeft = 500;
+  page.track.emit('scroll');
+  assert.equal(page.shell.classList.contains('constellation-spotlight'), true);
+  page.track.scrollLeft = 0;
+  page.track.emit('scroll');
+  assert.equal(page.shell.classList.contains('constellation-spotlight'), false);
+});
 
 test('canvas blends a scrolled chapter into an unscrolled neighbor before arrival', () => {
   const page = preview();
