@@ -78,7 +78,7 @@
       print.style.height = `${size.height}px`;
       print.style.setProperty('--print-height', `${size.height}px`);
     });
-    followCue();
+    requestAnimationFrame(positionCue);
   }
 
   function overlaps(a, b) {
@@ -90,7 +90,7 @@
     }));
   }
 
-  // Keep one short up-left curve, and place it outside the actual paper outline.
+  // Keep one short up-left curve outside the deck's fixed paper envelope.
   // Move the whole cue instead of clamping its label independently of the tip.
   function positionCue() {
     const svg = hint.querySelector('svg');
@@ -105,14 +105,19 @@
     const bounds = deck.getBoundingClientRect();
     const label = hint.querySelector('span');
     const stageBounds = stage.getBoundingClientRect();
-    const visible = prints.filter(print => !print.classList.contains('deck-print--away'));
-    const papers = visible.map(print => {
-      const rect = print.getBoundingClientRect();
-      const matrix = new DOMMatrix(getComputedStyle(print).transform);
+    // Reserve the same outline for every photograph in every resting slot.
+    // The cue belongs to the deck, so flipping must never move it.
+    const width = Math.max(...prints.map(print => parseFloat(print.style.width)));
+    const height = parseFloat(prints[0].style.height);
+    const travel = parseFloat(stage.style.getPropertyValue('--print-travel'));
+    const center = [stageBounds.left - bounds.left + stageBounds.width / 2,
+      stageBounds.top - bounds.top + stageBounds.height / 2];
+    const papers = [[-3, 0, 0], [7, 1, -.2], [-9, -.8, -.4]].map(([angle, tx, ty]) => {
+      const cosine = Math.cos(angle * Math.PI / 180), sine = Math.sin(angle * Math.PI / 180);
       return [[-1,-1], [1,-1], [1,1], [-1,1]].map(([x,y]) => {
-        x *= print.offsetWidth / 2; y *= print.offsetHeight / 2;
-        return [rect.x - bounds.left + rect.width / 2 + matrix.a * x + matrix.c * y,
-          rect.y - bounds.top + rect.height / 2 + matrix.b * x + matrix.d * y];
+        x *= width / 2; y *= height / 2;
+        return [center[0] + tx * travel + cosine * x - sine * y,
+          center[1] + ty * travel + sine * x + cosine * y];
       });
     });
     const right = Math.max(...papers.flat().map(point => point[0]));
@@ -134,7 +139,7 @@
     for (const [dx,dy] of [[28,32], [22,24], [28,16]]) {
       const length = Math.hypot(dx * .32, dy * .24);
       const outward = [dx * .32 / length, dy * .24 / length];
-      const clearance = position === 'side' ? 24 : 18;
+      const clearance = position === 'side' ? 28 : 24;
       papers.forEach(paper => paper.forEach(([x,y], i) => {
         const [nextX,nextY] = paper[(i + 1) % paper.length];
         if ((nextY - y) * outward[0] - (nextX - x) * outward[1] <= 0) return;
@@ -163,17 +168,6 @@
     path.setAttribute('d', window.AXDCuePath(cue.tail, cue.tip));
   }
 
-  let cueFrame;
-  function followCue() {
-    cancelAnimationFrame(cueFrame);
-    const until = performance.now() + (reduced.matches ? 0 : 650);
-    function frame() {
-      positionCue();
-      if (performance.now() < until) cueFrame = requestAnimationFrame(frame);
-    }
-    cueFrame = requestAnimationFrame(frame);
-  }
-
   function render() {
     prints.forEach((print, i) => {
       const slot = (i - index + photos.length) % photos.length;
@@ -186,7 +180,6 @@
       else { print.removeAttribute('id'); print.removeAttribute('aria-describedby'); }
     });
     document.dispatchEvent(new CustomEvent('axd:palette', { detail: { palette: photos[index].palette } }));
-    followCue();
   }
 
   async function advance(direction) {

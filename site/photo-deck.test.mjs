@@ -7,7 +7,7 @@ const source = await readFile(new URL('photo-deck.js', import.meta.url), 'utf8')
 const photoSource = await readFile(new URL('assets/data/photographs.js', import.meta.url), 'utf8');
 
 function preview({ width = 400, height = 350, reduced = false } = {}) {
-  let now = 0, resize;
+  let now = 0, resize, cueUpdates = 0;
   const document = { activeElement: null, dispatchEvent() {}, fonts: { ready: Promise.resolve() } };
   function element(tag) {
     const events = new Map(), attributes = new Map();
@@ -44,11 +44,12 @@ function preview({ width = 400, height = 350, reduced = false } = {}) {
   runInNewContext(source, {
     window, document, matchMedia: () => ({ matches: reduced }),
     getComputedStyle: () => style, performance: { now: () => now },
-    CustomEvent: class {}, requestAnimationFrame: () => 1, cancelAnimationFrame() {},
+    CustomEvent: class {}, requestAnimationFrame: () => ++cueUpdates, cancelAnimationFrame() {},
     ResizeObserver: class { constructor(callback) { resize = callback; } observe() {} },
   });
   return {
     stage, style, document,
+    cueUpdates: () => cueUpdates,
     front: () => stage.children.find(print => print.id === 'photo-next'),
     async click() { this.front().emit('click'); await this.flush(); },
     async key(key) { this.front().emit('keydown', { key, preventDefault() {}, stopPropagation() {} }); await this.flush(); },
@@ -127,4 +128,15 @@ test('rotation preserves the selected image and fits the right-side mat without 
     const imageHeight = parseFloat(print.style.height) - 14;
     assert.ok(Math.abs(imageWidth / imageHeight - Number(print.dataset.aspect)) < 1e-8);
   }
+});
+
+test('the cue is anchored to layout and does not follow photograph flips', async () => {
+  const page = preview({ reduced: true });
+  await page.flush();
+  const initialUpdates = page.cueUpdates();
+  for (let i = 0; i < 10; i++) await page.click();
+  await page.key('ArrowLeft');
+  assert.equal(page.cueUpdates(), initialUpdates, 'Flipping must not reposition the cue');
+  page.resize(250,180);
+  assert.equal(page.cueUpdates(), initialUpdates + 1, 'Changing orientation updates the fixed anchor');
 });

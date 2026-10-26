@@ -205,3 +205,47 @@
   .constellation-chapter #c-palette-orbit { --mobile-palette-cue: 1; }
   .constellation-chapter.is-spotlit .constellation-hero { padding-top: 32px; }
 }
+
+/* Keep the complete color invitation above the rail in short mobile views. */
+@media (max-width: 700px), (pointer: coarse) and (max-width: 1100px) and (orientation: portrait) {
+  .horizontal-layout .constellation-chapter.is-spotlit { padding-top: 8px; }
+  .constellation-chapter.is-spotlit .constellation-hero {
+    height: 100cqh; min-height: 0; padding-block: 32px 12px;
+    grid-template-rows: auto minmax(0, 1fr); gap: 8px; align-content: stretch;
+  }
+  .constellation-chapter.is-spotlit .intro-discovery {
+    --peek-photo-height: clamp(48px, 20cqh, 160px);
+    height: calc(var(--peek-photo-height) + 48px); margin-top: 12px;
+  }
+  .constellation-chapter.is-spotlit .palette-sculpture {
+    container-type: size; align-self: stretch; width: 100%; max-width: none;
+  }
+  .constellation-chapter.is-spotlit .palette-stage {
+    width: min(90%, 100cqh, 340px); height: auto; aspect-ratio: 1; margin-inline: auto;
+  }
+}
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px), (pointer: coarse) and (max-width: 1100px) and (orientation: landscape) {
+  .horizontal-layout .constellation-chapter.is-spotlit { padding-top: 8px; }
+  .constellation-chapter.is-spotlit .constellation-hero {
+    height: 100cqh; min-height: 0; padding-block: 28px 12px;
+    grid-template-rows: minmax(0, 1fr); gap: 24px;
+  }
+  .constellation-chapter.is-spotlit .intro-discovery {
+    --peek-photo-height: clamp(48px, calc(100cqh - 134px), 160px);
+    height: calc(var(--peek-photo-height) + 48px); margin-top: 10px;
+  }
+  .constellation-chapter.is-spotlit .palette-sculpture {
+    container-type: size; align-self: stretch; width: 100%; max-width: none;
+  }
+  .constellation-chapter.is-spotlit .palette-stage {
+    width: min(100%, 100cqh, 360px); height: auto; aspect-ratio: 1; margin-inline: auto;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 700px) and (max-height: 500px) {
+  .constellation-chapter.is-spotlit .constellation-hero { padding-block: 24px 8px; gap: 4px; }
+  .constellation-chapter.is-spotlit .intro-discovery {
+    --peek-photo-height: clamp(28px, 12cqh, 48px);
+    height: calc(var(--peek-photo-height) + 40px); margin-top: 8px;
+  }
+}
