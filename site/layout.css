@@ -758,7 +758,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .horizontal-layout .photo-deck #deck-hint[hidden] { display: none; }
 
 /* Shared pointer proportions: never stretch the arrow or position it over a print. */
-.horizontal-layout .photo-deck #deck-hint { display: flex; flex-direction: column; align-items: center; gap: 5px; top: -76px; right: 0; bottom: auto; left: auto; margin: 0; transform: none; font-size: .875rem; }
+.horizontal-layout .photo-deck #deck-hint { display: flex; flex-direction: column; align-items: center; gap: 5px; top: -40px; right: 0; bottom: auto; left: auto; margin: 0; transform: none; font-size: .875rem; }
 .horizontal-layout .photo-deck #deck-hint > span { transform: none; }
 .horizontal-layout .photo-deck #deck-hint svg { display: block; position: static; width: 64px; height: 57.6px; margin: 0; transform: none; }
 #deck-hint path { stroke-width: 2; vector-effect: non-scaling-stroke; }
