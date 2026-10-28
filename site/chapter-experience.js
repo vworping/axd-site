@@ -6,16 +6,25 @@
   const track = document.getElementById('section-track');
   const chapters = [...track.children];
   const exitSpotlight = document.getElementById('c-spotlight-exit');
+  const spotlightContext = document.getElementById('c-spotlight-context');
+  const spotlightHero = constellation.querySelector('.constellation-hero');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let spotlightDone = false, activeChapter = '', paused = reduced.matches;
+  let spotlightPress = null;
   let canvasFrame = 0, canvasTime = 0, canvasProgress = 0, canvasDepth = 0;
   // The chapter starts spotlit in the markup, so even its first sliver is
   // already in focus mode during a horizontal gesture or direct page load.
-  function clearSpotlight() {
+  function clearSpotlight(keepPosition = false) {
     if (spotlightDone) return;
     spotlightDone = true;
+    const previousBottom = spotlightHero.getBoundingClientRect().bottom;
+    // When the visitor has already scrolled past the wheel, reveal the context
+    // above them without moving the map they are reading.
+    constellation.classList.toggle('spotlight-settled', keepPosition || paused || reduced.matches);
+    spotlightContext.inert = false;
     constellation.classList.remove('is-spotlit');
     shell.classList.remove('constellation-spotlight');
+    if (keepPosition) constellation.scrollTo({ top: constellation.scrollTop + spotlightHero.getBoundingClientRect().bottom - previousBottom, behavior: 'instant' });
     if (document.activeElement === exitSpotlight) {
       document.getElementById('c-palette-orbit').focus({ preventScroll: true });
     }
@@ -70,20 +79,30 @@
   }
   document.addEventListener('axd:chapter', event => setChapter(event.detail.id));
   track.addEventListener('scroll', () => { paintSpotlight(); scheduleCanvas(); }, { passive: true });
-  exitSpotlight.addEventListener('click', clearSpotlight);
+  exitSpotlight.addEventListener('click', () => clearSpotlight());
+  const spotlightControl = target => target.closest('a, button, input, select, summary, #c-palette-orbit, #c-palette-selection');
   constellation.addEventListener('pointerdown', event => {
-    if (!event.target.closest('#c-palette-orbit .palette-hit, .palette-mini, #c-palette-selection, #c-spotlight-exit')) clearSpotlight();
+    spotlightPress = !spotlightDone && event.button === 0 && event.isPrimary !== false && !spotlightControl(event.target)
+      ? { x: event.clientX, y: event.clientY, scroll: constellation.scrollTop } : null;
+  });
+  constellation.addEventListener('pointermove', event => {
+    if (spotlightPress && Math.hypot(event.clientX - spotlightPress.x, event.clientY - spotlightPress.y) > 10) spotlightPress = null;
+  });
+  constellation.addEventListener('pointercancel', () => { spotlightPress = null; });
+  constellation.addEventListener('click', event => {
+    if (spotlightPress && Math.abs(constellation.scrollTop - spotlightPress.scroll) < 10 && !spotlightControl(event.target)) clearSpotlight();
+    spotlightPress = null;
   });
   chapters.forEach(chapter => chapter.addEventListener('scroll', () => {
-    if (chapter === constellation && constellation.scrollTop > 40) clearSpotlight();
+    if (chapter === constellation && !spotlightDone && constellation.scrollTop > 0 && spotlightHero.getBoundingClientRect().bottom <= constellation.getBoundingClientRect().top + 24) clearSpotlight(true);
     scheduleCanvas();
   }, { passive: true }));
   // Expanding the measurement note changes the scroll range too.
   constellation.addEventListener('toggle', scheduleCanvas, true);
   window.addEventListener('resize', () => { paintSpotlight(); scheduleCanvas(); }, { passive: true });
   document.addEventListener('visibilitychange', syncCanvasMotion);
-  // Opening the first photograph clears the invitation. Scrolling, following
-  // a link, or using the keyboard can dismiss it without opening anything.
+  // Opening a photograph reveals the context underneath the dialog. Reading
+  // past the complete spotlight, following a link, or Escape can also exit.
   new MutationObserver(() => {
     if (document.getElementById('c-focus-dialog').open) clearSpotlight();
   }).observe(document.getElementById('c-focus-dialog'), { attributes: true, attributeFilter: ['open'] });

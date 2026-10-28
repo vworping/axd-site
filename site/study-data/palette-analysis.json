@@ -1,0 +1,282 @@
+{
+  "source": "perceptual-palette-drift/notebooks/palette_distribution_outputs/palette_distribution_metrics.csv",
+  "categories": [
+    {
+      "label": "single-hue distributed",
+      "images": [
+        "raw/2020/_DSC0675.jpg",
+        "raw/2020/_DSC1372.jpg",
+        "raw/2020/_DSC1683.jpg",
+        "raw/2020/_DSC1840.jpg",
+        "raw/2020/_DSC1920.jpg",
+        "raw/2020/_DSC2217.jpg",
+        "raw/2020/_DSC3092.jpg",
+        "raw/2020/_DSC3226.jpg",
+        "raw/2020/_DSC3443.jpg",
+        "raw/2020/_DSC3766.jpg",
+        "raw/2020/_DSC3936.jpg",
+        "raw/2020/_DSC4493.jpg",
+        "raw/2020/_I1A0976.jpg",
+        "raw/2021/_DSC0424.jpg",
+        "raw/2021/_DSC5249.jpg",
+        "raw/2021/_DSC5324.jpg",
+        "raw/2021/_DSC5570.jpg",
+        "raw/2021/_DSC6038_3.jpg",
+        "raw/2021/_DSC8274.jpg",
+        "raw/2021/_DSC9565_3.jpg",
+        "raw/2021/_R0A8236.jpg",
+        "raw/2022/_DSC0640.jpg",
+        "raw/2022/_DSC3122.jpg",
+        "raw/2022/_DSC3478.jpg",
+        "raw/2022/_DSC3897.jpg",
+        "raw/2022/_DSC4219.jpg",
+        "raw/2022/_DSC4625.jpg",
+        "raw/2022/_DSC4863.jpg",
+        "raw/2022/_DSC5934.jpg",
+        "raw/2022/_DSC5977.jpg",
+        "raw/2022/_DSC5991.jpg",
+        "raw/2022/_DSC6457.jpg",
+        "raw/2022/_DSC6914.jpg",
+        "raw/2023/_AXW5513.jpg",
+        "raw/2023/_AXW5924.jpg",
+        "raw/2023/_DSC0199.jpg",
+        "raw/2023/_DSC0819.jpg",
+        "raw/2023/_DSC8221.jpg",
+        "raw/2023/_DSC8692.jpg",
+        "raw/2023/_DSC9730.jpg",
+        "raw/2023/_DSC9988.jpg",
+        "raw/2024/_DSC1444.jpg",
+        "raw/2024/_DSC2440.jpg",
+        "raw/2024/_DSC2791.jpg",
+        "raw/2024/_DSC4778.jpg",
+        "raw/2024/_DSC5361.jpg",
+        "raw/2024/_DSC5649.jpg",
+        "raw/2024/_DSC5928.jpg",
+        "raw/2024/_DSC6806.jpg",
+        "raw/2024/_DSC7066.jpg",
+        "raw/2024/_DSC7195.jpg",
+        "raw/2025/DSCF0043.jpg",
+        "raw/2025/_DSC7452.jpg",
+        "raw/2025/_DSC8781.jpg",
+        "raw/2025/_DSC8784.jpg",
+        "raw/2025/_DSC8824.jpg",
+        "raw/2025/_DSC8862.jpg",
+        "raw/2025/_DSC9197.jpg",
+        "raw/2025/_DSC9578.jpg",
+        "raw/2025/_DSF0291.jpg"
+      ],
+      "examples": [
+        {
+          "image": "raw/2025/_DSC9578.jpg",
+          "alt": "Portrait in a bathroom lit in blue.",
+          "caption": "Several blues, spread across all five colors."
+        },
+        {
+          "image": "raw/2025/_DSC8784.jpg",
+          "alt": "Photograph 8784, 2025.",
+          "caption": "Variations of a hue run through several extracted colors."
+        },
+        {
+          "image": "raw/2025/_DSC9197.jpg",
+          "alt": "Photograph 9197, 2025.",
+          "caption": "Variations of a hue run through several extracted colors."
+        }
+      ]
+    },
+    {
+      "label": "neutral dominated",
+      "images": [
+        "raw/2020/_DSC0904.jpg",
+        "raw/2020/_DSC2351.jpg",
+        "raw/2020/_DSC3038.jpg",
+        "raw/2020/_DSC3699.jpg",
+        "raw/2020/_DSC4013.jpg",
+        "raw/2020/_DSC4363_2.jpg",
+        "raw/2020/_I1A0928.jpg",
+        "raw/2021/_DSC4924.jpg",
+        "raw/2021/_DSC5008.jpg",
+        "raw/2021/_DSC5034.jpg",
+        "raw/2021/_DSC5167.jpg",
+        "raw/2021/_DSC5492.jpg",
+        "raw/2021/_DSC5587.jpg",
+        "raw/2021/_DSC6212.jpg",
+        "raw/2021/_R0A7769.jpg",
+        "raw/2021/_R0A7904.jpg",
+        "raw/2022/_DSC2804.jpg",
+        "raw/2022/_DSC3268.jpg",
+        "raw/2022/_DSC5780.jpg",
+        "raw/2022/_DSC6169.jpg",
+        "raw/2022/_DSC6765.jpg",
+        "raw/2023/_AXW5404.jpg",
+        "raw/2023/_DSC0557.jpg",
+        "raw/2023/_DSC0948.jpg",
+        "raw/2023/_DSC1367.jpg",
+        "raw/2023/_DSC7803.jpg",
+        "raw/2023/_DSC7998.jpg",
+        "raw/2023/_DSC8202.jpg",
+        "raw/2023/_DSC8912.jpg",
+        "raw/2023/_DSC9710.jpg",
+        "raw/2024/_DSC2409.jpg",
+        "raw/2024/_DSC2866.jpg",
+        "raw/2024/_DSC4178.jpg",
+        "raw/2024/_DSC5166.jpg",
+        "raw/2024/_DSC6063.jpg",
+        "raw/2024/_DSC6537.jpg",
+        "raw/2024/_DSC7249.jpg",
+        "raw/2024/_DSC7419.jpg",
+        "raw/2025/_DSC7549.jpg",
+        "raw/2025/_DSC8746.jpg",
+        "raw/2025/_DSC8836.jpg",
+        "raw/2025/_DSC8978.jpg",
+        "raw/2025/_DSC9407.jpg",
+        "raw/2025/_DSC9422-Edit.jpg",
+        "raw/2025/_DSF0247.jpg",
+        "raw/2025/_DSF0633.JPG"
+      ],
+      "examples": [
+        {
+          "image": "raw/2025/_DSC9407.jpg",
+          "alt": "Portrait in a parking lot at dusk.",
+          "caption": "Muted grays carry most of the palette, despite the small, vivid details."
+        },
+        {
+          "image": "raw/2025/_DSF0247.jpg",
+          "alt": "Photograph 0247, 2025.",
+          "caption": "Neutrals account for 67% of this extracted palette."
+        },
+        {
+          "image": "raw/2025/_DSC8836.jpg",
+          "alt": "Photograph 8836, 2025.",
+          "caption": "Neutrals account for 91% of this extracted palette."
+        }
+      ]
+    },
+    {
+      "label": "multicolor balanced",
+      "images": [
+        "raw/2020/_DSC0322.jpg",
+        "raw/2020/_DSC2805.jpg",
+        "raw/2020/_DSC4328_3.jpg",
+        "raw/2020/_MG_7515.jpg",
+        "raw/2021/_DSC5400.jpg",
+        "raw/2021/_DSC5473.jpg",
+        "raw/2021/_DSC6026_3.jpg",
+        "raw/2022/_DSC2924.jpg",
+        "raw/2022/_DSC4599.jpg",
+        "raw/2022/_DSC4964.jpg",
+        "raw/2022/_DSC6532.jpg",
+        "raw/2022/_DSC6558.jpg",
+        "raw/2022/_I1A2732-2.jpg",
+        "raw/2023/_DSC0446.jpg",
+        "raw/2023/_DSC7579.jpg",
+        "raw/2023/_DSC8756.jpg",
+        "raw/2023/_DSC9069.jpg",
+        "raw/2023/_DSC9386.jpg",
+        "raw/2024/_DSC4317.jpg",
+        "raw/2024/_DSC5878.jpg",
+        "raw/2024/_DSC7343.jpg",
+        "raw/2025/DSCF0184.JPG",
+        "raw/2025/_DSC8284.jpg",
+        "raw/2025/_DSC9536.jpg",
+        "raw/2025/_DSF0279.jpg"
+      ],
+      "examples": [
+        {
+          "image": "raw/2023/_DSC9386.jpg",
+          "alt": "Portrait in silver clothing, crossed by bands of light and deep shadow.",
+          "caption": "Cool shadows, pale highlights, and warmer tones share the palette."
+        },
+        {
+          "image": "raw/2025/_DSC8284.jpg",
+          "alt": "Photograph 8284, 2025.",
+          "caption": "Several hue families share the extracted palette."
+        },
+        {
+          "image": "raw/2024/_DSC7343.jpg",
+          "alt": "Photograph 7343, 2024.",
+          "caption": "Several hue families share the extracted palette."
+        }
+      ]
+    },
+    {
+      "label": "duotone / two-family",
+      "images": [
+        "raw/2020/_DSC0782.jpg",
+        "raw/2021/_DSC0534.jpg",
+        "raw/2021/_DSC4997.jpg",
+        "raw/2021/_DSC5820.jpg",
+        "raw/2022/_DSC2876.jpg",
+        "raw/2022/_DSC6691.jpg",
+        "raw/2023/_DSC0083.jpg",
+        "raw/2023/_DSC7143.jpg",
+        "raw/2024/_DSC4826.jpg",
+        "raw/2024/_DSC6759.jpg",
+        "raw/2025/_DSC7507.jpg",
+        "raw/2025/_DSC8751.jpg",
+        "raw/2025/_DSC9424.jpg",
+        "raw/2025/_DSF0717.jpg"
+      ],
+      "examples": [
+        {
+          "image": "raw/2023/_DSC7143.jpg",
+          "alt": "Photograph 7143 from 2023.",
+          "caption": "Two hue families carry most of the extracted color weight."
+        },
+        {
+          "image": "raw/2025/_DSC9424.jpg",
+          "alt": "Photograph 9424, 2025.",
+          "caption": "Two hue families carry most of the extracted color weight."
+        },
+        {
+          "image": "raw/2024/_DSC4826.jpg",
+          "alt": "Photograph 4826, 2024.",
+          "caption": "Two hue families carry most of the extracted color weight."
+        }
+      ]
+    },
+    {
+      "label": "cluster dominated",
+      "images": [
+        "raw/2021/_DSC5546.jpg",
+        "raw/2023/_DSC8371.jpg",
+        "raw/2024/_DSC7016.jpg"
+      ],
+      "examples": [
+        {
+          "image": "raw/2024/_DSC7016.jpg",
+          "alt": "Portrait in a dark brick passage, with a red scarf and warm light.",
+          "caption": "One brown color carries 68% of the retained sample."
+        },
+        {
+          "image": "raw/2023/_DSC8371.jpg",
+          "alt": "Photograph 8371, 2023.",
+          "caption": "One extracted color carries 58% of the retained sample."
+        },
+        {
+          "image": "raw/2021/_DSC5546.jpg",
+          "alt": "Photograph 5546, 2021.",
+          "caption": "One extracted color carries 68% of the retained sample."
+        }
+      ]
+    },
+    {
+      "label": "single-cluster dominated",
+      "images": [
+        "raw/2021/_DSC0012.jpg",
+        "raw/2024/_DSC6724.jpg"
+      ],
+      "examples": [
+        {
+          "image": "raw/2024/_DSC6724.jpg",
+          "alt": "Portrait with bright shapes projected across the face against a dark background.",
+          "caption": "One near-black color carries 74% of the retained sample."
+        },
+        {
+          "image": "raw/2021/_DSC0012.jpg",
+          "alt": "Photograph 0012, 2021.",
+          "caption": "One extracted color carries 78% of the retained sample."
+        }
+      ]
+    }
+  ]
+}

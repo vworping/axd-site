@@ -25,7 +25,7 @@ Plain HTML, CSS, and JavaScript. No framework or package installation is require
 
 ## Building [pet.]
 
-The [PET page](https://mindofaxd.com/pet) tells the story of a **personal engagement tool**: a badge that starts a hello, brings a phone into the exchange, and uses an NFC card to carry the conversation forward. It brings together two enclosure CAD studies, the three-step interaction, and notes on learning ESP firmware, wiring the reader, and revising the case.
+The [PET page](https://mindofaxd.com/pet) tells the story of a **personal engagement tool**: a badge that starts a hello, brings a phone into the exchange, and uses an NFC card to carry the conversation forward. It brings together an enclosure CAD render, real prototype photographs, an interactive personalized-card study, and notes on learning ESP firmware, wiring the reader, and revising the case.
 
 An embedded, interactive OS preview lets visitors explore the animated greeting, Hello flow, settings, and Constellation photo inspection. Phone, radio, and card events are simulated; the preview does not create live introductions or write NFC cards. The page shares the portfolio's motion controls, shutter transitions, expanded image viewer, and watermarked Save / copy tools.
 

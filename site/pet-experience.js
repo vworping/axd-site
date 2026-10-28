@@ -73,7 +73,6 @@
     move(event.key === 'ArrowLeft' ? -1 : 1);
   };
   viewer.addEventListener('keydown', arrowNavigation);
-  document.querySelector('.device-gallery').addEventListener('keydown', arrowNavigation);
   viewer.addEventListener('click', event => {
     const rect = viewer.getBoundingClientRect();
     if (event.target === viewer && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) window.AXDDialogs.close(viewer);

@@ -11,14 +11,15 @@
   <meta property="og:title" content="Palace: PET">
   <meta property="og:description" content="A wearable introduction. The device, the screens, and the build.">
   <meta property="og:url" content="https://mindofaxd.com/pet.html">
-  <meta property="og:image" content="https://mindofaxd.com/assets/images/pet/enclosure-04c.webp">
-  <meta property="og:image:width" content="1600">
-  <meta property="og:image:height" content="764">
+  <meta property="og:image" content="https://mindofaxd.com/assets/images/pet/enclosure-final.webp">
+  <meta property="og:image:width" content="1800">
+  <meta property="og:image:height" content="825">
   <meta property="og:image:alt" content="Front and back CAD views of PET’s black enclosure.">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" href="assets/images/favicon-axd.png">
   <link rel="stylesheet" href="experience.css">
+  <link rel="stylesheet" href="case-studies.css">
   <link rel="stylesheet" href="ambient-gradient.css">
   <script src="ambient-gradient.js" defer></script>
   <script src="dialog-motion.js" defer></script>
@@ -35,66 +36,100 @@
     <a class="back-link" href="/collaborations">↖ Back to collaborations</a>
   </header>
   <main id="story" class="wrap">
-    <section class="device-hero" aria-labelledby="pet-title">
-      <div class="intro-copy">
-        <p class="eyebrow">2026 · PROTOTYPE / V2 IN DEVELOPMENT</p>
-        <h1 id="pet-title">[pet.]</h1>
-        <p class="lead">personal engagement tool</p>
-        <p>I wanted a way to show people what I’m working on while we’re talking. PET puts my projects on a small touch display and lets someone say hello from their phone.</p>
-        <div class="pet-intro-links"><a href="#pet-os">Try the prototype ↓</a><a href="#pet-v2">Working toward V2 ↓</a></div>
-      </div>
-      <div class="device-gallery" aria-label="Enclosure studies">
-        <figure class="device-print print-early">
-          <div class="paper">
-            <button type="button" class="image-button" data-gallery="device" data-title="The first frame" data-description="Early CAD study: warm white shell, original black glass, replaceable waist clip. Body: 140 × 100 × 25.45 mm; 30.45 mm deep at the clip pad, before the clip." aria-label="Enlarge the early enclosure render" disabled>
-              <img src="assets/images/pet/enclosure-01.webp" width="1600" height="853" alt="Early PET enclosure study, showing a light frame from the front and back." fetchpriority="high">
-            </button>
-            <figcaption><div class="drawing-caption"><span>01 / FIRST FRAME</span><span>Select image to enlarge ↗</span></div><p>Warm white shell, original black glass, replaceable waist clip.</p><p>Body: 140 × 100 × 25.45 mm. Depth at clip pad: 30.45 mm, before the clip. Dimensions from the CAD study.</p></figcaption>
+    <section class="pet-intro" aria-labelledby="pet-title">
+      <div class="pet-intro-copy"><p class="eyebrow">2026 / PERSONAL ENGAGEMENT TOOL</p><h1 id="pet-title">[pet.]</h1><p class="lead">A small device.<br> A more memorable hello.</p><div class="pet-intro-links"><a href="#pet-os">Meet the prototype ↓</a><a href="#pet-build">The build &amp; what’s next ↓</a></div></div>
+      <figure class="pet-intro-device"><a class="pet-screen-link" href="#pet-os" aria-label="Try the interactive PET prototype"><img src="assets/images/pet/os-home.png" width="1088" height="637" alt="The current PET home screen, with a greeting and project shortcuts." fetchpriority="high"></a></figure>
+    </section>
+
+    <section class="os-section pet-live" id="pet-os" aria-labelledby="os-title">
+      <div class="section-heading"><div><h2 id="os-title">Go ahead. Say hello.</h2><p class="os-note">Tap the screen, or use <strong>Try Hello</strong> below for a guided introduction. <strong>Reset</strong> starts again.</p></div><button type="button" id="motion-toggle" aria-pressed="false" hidden>Pause motion</button></div>
+      <iframe id="os-preview" src="pet-preview/index.html" title="Interactive PET OS preview" loading="eager"></iframe>
+      <p class="pet-demo-note">Current OS · simulated phone and NFC events · no live introductions</p>
+    </section>
+
+    <div class="case-study pet-case-study">
+      <section class="case-section case-opening" aria-labelledby="why-title">
+        <p class="case-label">01 / Why PET exists</p>
+        <div class="case-split">
+          <h2 id="why-title" class="case-statement">A project to show.<br>A hello to remember.</h2>
+          <div class="case-copy"><p>I wanted to share what I’m making while talking to someone in person. PET puts the work in the conversation.</p>
+            <dl class="case-notes case-compact-notes"><div><dt>Today</dt><dd>A working touch-display prototype, a phone-based Hello flow, and tested NFC card links.</dd></div><div><dt>The possibility</dt><dd>A portable portfolio paired with customizable cards that remember how we met.</dd></div></dl>
           </div>
-        </figure>
-        <figure class="device-print print-current">
-          <div class="paper">
-            <button type="button" class="image-button" data-gallery="device" data-title="The next enclosure" data-description="FIELD 04C CAD study in black PLA: 21 mm hardware stack, 24.25 mm body depth. Power at the lower left; SD above USB, buttons below USB. The screen is an earlier UI mockup." aria-label="Enlarge the later enclosure render" disabled>
-              <img src="assets/images/pet/enclosure-04c.webp" width="1600" height="764" alt="Black PET enclosure CAD study, showing the front, rear, and side openings." fetchpriority="high">
-            </button>
-            <figcaption><div class="drawing-caption"><span>02 / FIELD 04C</span><span>Select image to enlarge ↗</span></div><p>Black PLA. Hardware stack: 21 mm. Body depth: 24.25 mm.</p><p>Power at the lower left; SD above USB, buttons below USB. CAD study with an earlier screen mockup.</p></figcaption>
+        </div>
+        <ol class="pet-exchange" aria-label="The Hello interaction"><li><span>On PET</span><strong>Open Hello.</strong></li><li><span>On your phone</span><strong>Scan. Introduce yourself.</strong></li><li><span>On the NFC card</span><strong>Carry the context forward.</strong></li></ol>
+      </section>
+
+      <section class="case-section" aria-labelledby="interaction-design-title">
+        <p class="case-label">02 / Designing the interaction</p>
+        <h2 id="interaction-design-title" class="case-statement">Small screen.<br>Deliberate choices.</h2>
+        <div class="pet-design-row" data-study-switch data-view="landscape">
+          <div class="case-copy"><h3>Room for the work.</h3><p>Landscape gives projects and useful information room beside the greeting. A vertical layout stacks the same conversation into a narrower space.</p>
+            <fieldset class="study-switch"><legend class="sr-only">Compare screen orientation</legend><label><input type="radio" name="pet-orientation" value="landscape" checked><span>Landscape</span></label><label><input type="radio" name="pet-orientation" value="portrait"><span>Portrait</span></label></fieldset>
+            <p class="case-caption">Layout comparison · portrait is a concept.</p>
           </div>
-        </figure>
-      </div>
-    </section>
+          <figure class="pet-orientation-stage">
+            <div class="pet-orientation-device">
+              <div class="pet-orientation-content" data-study-panel="landscape"><img src="assets/images/pet/os-home.png" width="1088" height="637" loading="lazy" alt="Current landscape OS: Andre Weiss and Hello side by side, with three project shortcuts below."></div>
+              <div class="pet-orientation-content pet-portrait-screen" data-study-panel="portrait" hidden role="img" aria-label="Conceptual portrait layout: name, greeting, and project links stacked vertically"><span class="pet-wire-top">[pet.] <span>Wi-Fi off</span></span><strong>ANDRE<br>WEISS.</strong><span class="pet-wire-sub">Photographer x researcher</span><span class="pet-wire-hello">[hello]</span><span class="pet-wire-label">CURRENTLY BUILDING</span><div class="pet-wire-projects"><span>[pet.]</span><span>ATLA</span><span>Constellation</span></div></div>
+            </div>
+            <figcaption data-orientation-caption>Current OS / projects and greeting share the screen.</figcaption>
+          </figure>
+        </div>
+        <div class="pet-design-row pet-display-row" data-study-switch data-view="color">
+          <div class="case-copy"><h3>Does a photograph need full color?</h3><p>Photography first drew me to a color LCD. But composition can hold its own in monochrome—opening a different display direction.</p>
+            <fieldset class="study-switch"><legend class="sr-only">Compare display treatments</legend><label><input type="radio" name="pet-display" value="color" checked><span>Color</span></label><label><input type="radio" name="pet-display" value="mono"><span>Monochrome</span></label></fieldset>
+            <p class="case-caption">A visual study, not an e-ink simulation.</p>
+          </div>
+          <figure class="pet-screen-study pet-display-study"><img src="assets/images/pet/os-photography.png" width="1088" height="637" loading="lazy" alt="Current PET photography screen, showing four photographs and their color palettes."><figcaption>Current OS / the same photographs in another light.</figcaption></figure>
+        </div>
+        <div class="pet-nfc-note" data-nfc-card data-side="front" data-tag="ready">
+          <div class="case-copy"><h3>Let the card be the point of contact.</h3><p>The <a class="case-inline-link" href="https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf" target="_blank" rel="noopener noreferrer">RC522</a> reads and writes tags; it doesn’t act as a phone-tappable card. A QR starts the introduction. The finished card becomes the tap point.</p><p>Each card opens a personal greeting and, with permission, the topic we connected over. A reminder of our conversation.</p>
+            <div class="pet-card-actions"><button type="button" data-nfc-place>Place the NFC tag ↘</button><button type="button" data-nfc-flip>See the back ↻</button></div>
+            <p class="sr-only" data-nfc-status role="status" aria-live="polite"></p>
+          </div>
+          <div class="pet-card-stage">
+            <div class="pet-card-turn">
+              <div class="pet-card-face pet-card-front"><img src="assets/images/pet/card-front.webp" width="1400" height="800" alt="White business card: Andre Weiss, Creative Strategist, with the AXD logo." loading="lazy">
+                <svg class="pet-card-tag" data-nfc-tag viewBox="0 0 100 100" role="img" aria-label="Illustrated NFC sticker, placed at the top-right of the white card" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#ffffff55" stroke="#dedfdf" stroke-width=".6"/><g fill="none" stroke="#aeb1b3" stroke-width=".85"><circle cx="50" cy="50" r="26"/><circle cx="50" cy="50" r="28"/><circle cx="50" cy="50" r="30"/><circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="34"/><circle cx="50" cy="50" r="36"/><circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="40"/><circle cx="50" cy="50" r="42"/><path d="M61 73l9 5m-6-9l10 6"/></g><path d="M68 72l5 3-2 4-5-3z" fill="#8b8e91"/></svg>
+              </div>
+              <div class="pet-card-face pet-card-back" aria-hidden="true"><img src="assets/images/pet/card-back.webp" width="1400" height="800" alt="Reverse of the card: a stadium under a pink sky, with the word connected." loading="lazy"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <section class="interaction" aria-labelledby="interaction-title">
-      <h2 id="interaction-title">The interaction</h2>
-      <ol class="hello-steps">
-        <li><span>01</span><h3>Start on PET.</h3><p>Tap hello. Scan the QR code with your phone.</p></li>
-        <li><span>02</span><h3>Say it back.</h3><p>Share your name and what we’re talking about. Your hello appears on the badge.</p></li>
-        <li><span>03</span><h3>Carry it forward.</h3><p>An NFC card opens my profile with the topic you agreed to share—a reminder of how we met.</p></li>
-      </ol>
-    </section>
+      <section class="case-section" id="pet-build" aria-labelledby="build-title">
+        <p class="case-label">03 / Building the prototype</p>
+        <div class="case-split"><h2 id="build-title" class="case-statement">Learning across<br>screens, wires, and a shell.</h2><div class="case-copy"><p>My first ESP project: HTML/CSS to try the screens, AI coding help for firmware, then wiring the NFC reader, testing card links, and revising the case in CAD.</p></div></div>
+        <div class="device-gallery pet-build-gallery" aria-label="Enclosure design and printed prototype">
+          <div class="pet-build-study">
+            <figure class="device-print"><div class="paper">
+              <button type="button" class="image-button" data-gallery="device" data-title="The enclosure" data-description="Rendered from the final enclosure meshes with the current OS. The two views show the power switch and USB-C, SD, and service-button openings. Revised backing and switch still need a physical fit check." aria-label="Enlarge the final enclosure CAD render" disabled><img src="assets/images/pet/enclosure-final.webp" width="1800" height="825" alt="Front and rear CAD views of PET: centered rear AXD and NFC artwork, a side power switch, USB-C, SD, and two service-button openings." loading="lazy"></button>
+              <figcaption>The enclosure / CAD</figcaption>
+            </div></figure>
+            <details class="case-detail pet-hardware"><summary>Inside the build</summary><div class="case-detail-content"><p><strong>138 × 96 × 22.4 mm.</strong> The shell has been printed. This render uses the final CAD geometry with the current OS on screen.</p><p>The tighter backing and longer switch are CAD-checked revisions; their physical fit still needs testing.</p><p class="parts"><a href="https://www.amazon.com/dp/B0DD7N19FT" target="_blank" rel="noopener noreferrer">Waveshare touch display ↗</a><a href="https://www.amazon.com/dp/B0H8CGVYVV" target="_blank" rel="noopener noreferrer">RC522 NFC reader ↗</a><a href="https://www.amazon.com/dp/B0FT3C1WRP" target="_blank" rel="noopener noreferrer">3.7 V LiPo battery ↗</a><a href="https://www.amazon.com/dp/B0FXG1F7KD" target="_blank" rel="noopener noreferrer">Transparent NTAG213 stickers ↗</a></p></div></details>
+          </div>
+          <div class="pet-build-study pet-prototype-photos" data-pet-photos>
+            <figure class="device-print" data-pet-photo><div class="paper">
+              <button type="button" class="image-button study-photo-window" data-gallery="device" data-title="The printed prototype / front" data-description="The physical enclosure and working display, photographed during development." aria-label="Enlarge the front of the printed prototype" disabled><img src="assets/images/pet/enclosure-front.webp" width="1400" height="1050" alt="The real black PET enclosure on a wooden table, with the working home screen." loading="lazy"></button>
+              <figcaption><button type="button" data-prototype-step="-1" aria-label="Previous prototype photograph">←</button><span>Printed prototype / front</span><button type="button" data-prototype-step="1" aria-label="Next prototype photograph">→</button></figcaption>
+            </div></figure>
+            <figure class="device-print" data-pet-photo hidden><div class="paper">
+              <button type="button" class="image-button study-photo-window" data-gallery="device" data-title="The printed prototype / back" data-description="The physical black backing, with white AXD and NFC graphics." aria-label="Enlarge the back of the printed prototype" disabled><img src="assets/images/pet/enclosure-back.webp" width="1400" height="1050" alt="The rear of the real black PET enclosure, with white AXD lettering and the NFC symbol." loading="lazy"></button>
+              <figcaption><button type="button" data-prototype-step="-1" aria-label="Previous prototype photograph">←</button><span>Printed prototype / back</span><button type="button" data-prototype-step="1" aria-label="Next prototype photograph">→</button></figcaption>
+            </div></figure>
+            <p class="sr-only" data-prototype-status role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </section>
 
-    <section class="os-section" id="pet-os" aria-labelledby="os-title">
-      <div class="section-heading"><div><h2 id="os-title">The OS</h2><p class="os-note">Interactive demo · no live introductions</p></div><button type="button" id="motion-toggle" aria-pressed="false" hidden>Pause motion</button></div>
-      <iframe id="os-preview" src="pet-preview/index.html" title="Interactive PET OS preview" loading="lazy"></iframe>
-    </section>
-
-    <section class="build" aria-labelledby="build-title">
-      <h2 id="build-title">Making it</h2>
-      <div><p>This is my first time working with ESP. I’m using AI coding help to figure out the firmware, HTML/CSS to try out the screens, and CAD for the enclosure. Along the way, I’ve been wiring the NFC reader, testing card links on my phone, and revising the case.</p>
-      <p class="parts">Built around a <a href="https://www.amazon.com/dp/B0DD7N19FT" target="_blank" rel="noopener noreferrer">Waveshare touch display ↗</a>, a <a href="https://www.amazon.com/dp/B0H8CGVYVV" target="_blank" rel="noopener noreferrer">NULLLAB NFC reader ↗</a>, and a <a href="https://www.amazon.com/dp/B0FT3C1WRP" target="_blank" rel="noopener noreferrer">3.7 V LiPo battery ↗</a>.</p></div>
-    </section>
-
-    <section class="v2-study" id="pet-v2" aria-labelledby="v2-title">
-      <div class="v2-heading">
-        <p class="eyebrow">NEXT ITERATION</p>
-        <h2 id="v2-title">Working toward V2.</h2>
-        <p>I tested card links and simultaneous hellos with peers, then demoed PET at an Accenture networking event. That testing defined three questions for V2.</p>
-      </div>
-      <div class="v2-decisions">
-        <article><span class="decision-number">01 / DISPLAY</span><h3>LCD or e-ink?</h3><p>Which fits the next badge better: an animated LCD or a slimmer, quieter e-ink display?</p></article>
-        <article><span class="decision-number">02 / NFC</span><h3>What should a tap carry?</h3><p>How should the NFC card look, and what should it share to carry a conversation forward?</p></article>
-        <article><span class="decision-number">03 / SHARED INTERACTION</span><h3>How do group hellos work?</h3><p>After testing simultaneous hellos with peers, how should the next version acknowledge each person and keep exchanges distinct?</p></article>
-      </div>
-    </section>
+      <section class="case-section case-field" aria-labelledby="field-title">
+        <p class="case-label">04 / Testing in the field</p>
+        <div class="case-split"><h2 id="field-title" class="case-statement">What happens when<br>everyone says hello?</h2><div class="case-copy"><p>Peer testing and a demo at an Accenture networking event brought PET into real conversations. Simultaneous introductions exposed an unfinished interaction.</p></div></div>
+        <dl class="case-sequence"><div><dt>Observation</dt><dd>Several hellos can arrive at once.</dd></div><div><dt>Design implication</dt><dd>Each person needs a clear acknowledgment.</dd></div><div><dt>Open question</dt><dd>How do we keep every exchange distinct?</dd></div></dl>
+        <div class="pet-next" id="pet-v2"><h3 id="v2-title">Working toward V2.</h3><p>Development hasn’t started. Display choice, card design, and concurrent hellos remain open.</p><a class="case-return" href="#pet-os">Try the current prototype ↑</a></div>
+      </section>
+    </div>
   </main>
   <footer class="experience-footer wrap"><a class="back-link" href="/collaborations">← Back to the portfolio</a><p>[pet.]</p></footer>
   <dialog id="image-viewer" tabindex="-1" aria-labelledby="viewer-title" aria-describedby="viewer-description">

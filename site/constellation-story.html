@@ -1,0 +1,69 @@
+<div class="project-story case-study constellation-case-study" id="about-project">
+  <section class="case-section case-opening" aria-labelledby="project-story-title">
+    <p class="case-label">01 / The question</p>
+    <div class="case-split">
+      <h2 id="project-story-title" class="case-statement">Different photographs.<br>A shared sense of color?</h2>
+      <div class="case-copy"><p>I kept noticing dark tones in my photography. Were there color relationships I couldn’t immediately see?</p><p>A question explored through 150 photographs, made between 2020 and 2025.</p></div>
+    </div>
+  </section>
+
+  <section class="case-section" aria-labelledby="photography-data-title">
+    <p class="case-label">02 / From a color to a palette</p>
+    <div class="case-split">
+      <h2 id="photography-data-title" class="case-statement">Can you see the color<br>before it returns?</h2>
+      <div class="case-copy"><p>Which palette belongs to this photograph? Choose a palette to bring its colors back.</p></div>
+    </div>
+    <div class="palette-game" data-palette-game data-rounds="2025/9578,2025/7452,2023/8371,2025/8824,2024/2791,2024/2409,2023/0083,2025/9424" data-state="guessing">
+      <figure class="study-polaroid palette-game-print">
+        <div class="palette-image-stage"><img data-guess-image src="/constellation/assets/images/2025/_DSC9578.jpg" width="3712" height="3712" loading="lazy" alt="Monochrome view of photograph 9578, 2025."></div>
+        <figcaption><span data-guess-caption>9578 / 2025</span></figcaption>
+      </figure>
+      <div class="palette-game-controls">
+        <p class="palette-instruction" id="palette-instruction">Look at the balance of light and dark. Which colors do you imagine?</p>
+        <div class="palette-options" data-guess-options role="group" aria-labelledby="palette-instruction"></div>
+        <p class="palette-feedback" data-guess-feedback role="status" aria-live="polite"></p>
+        <div class="palette-actions"><button type="button" data-guess-reveal>Reveal the colors</button><button type="button" data-guess-next>Another photograph <span aria-hidden="true">→</span></button></div>
+        <button type="button" class="palette-explore" data-guess-explore hidden>Explore this photograph’s closest palettes ↗</button>
+      </div>
+    </div>
+    <details class="case-detail"><summary>How five colors become a comparison</summary><div class="case-detail-content"><p>The width of each band represents its share of sampled pixels. Those pixels are grouped into five colors in <a class="case-inline-link" href="https://cie.co.at/eilvterm/17-23-076" target="_blank" rel="noopener noreferrer">CIELAB ↗</a>, which approximates perceived color differences. The extraction filters extreme shadows and highlights when enough pixels remain, so the bar describes that retained sample.</p><p>A palette keeps the colors and their proportions, but loses their positions in the photograph. There is no meaningful “first color”: Wasserstein distance compares these weighted distributions, allowing one color’s share to match across several others.</p></div></details>
+  </section>
+
+  <section class="case-section" aria-labelledby="tradeoffs-title">
+    <p class="case-label">03 / The extraction changes the relationship</p>
+    <div class="case-split"><h2 id="tradeoffs-title" class="case-statement">The pixels you keep<br>change the match.</h2><div class="case-copy"><p>Wasserstein comparisons felt more interpretable during experimentation. But the extraction mattered too: filtering extreme shadows made this dark image match a bright one.</p></div></div>
+    <div class="extraction-study" data-study-switch data-view="filtered">
+      <fieldset class="study-switch"><legend>Follow-up extraction experiment</legend><label><input type="radio" name="extraction" value="filtered" checked><span>Extremes filtered</span></label><label><input type="radio" name="extraction" value="retained"><span>Extremes retained</span></label></fieldset>
+      <div class="extraction-pair">
+        <figure class="study-polaroid" style="--photo-ratio:1"><div class="study-photo-window"><img src="/constellation/assets/images/2025/_DSC9536.jpg" width="1946" height="1946" loading="lazy" alt="Dark portrait with blue and purple light."></div><figcaption>9536 / 2025 <span>Starting photograph</span></figcaption></figure>
+        <div class="extraction-match">
+          <figure class="study-polaroid" data-study-panel="filtered" style="--photo-ratio:.6667"><div class="study-photo-window"><img src="/constellation/assets/images/2021/_DSC5546.jpg" width="3730" height="5595" loading="lazy" alt="Portrait with a large bright background."></div><figcaption>5546 / 2021 <span>Closest with extremes filtered</span></figcaption></figure>
+          <figure class="study-polaroid" data-study-panel="retained" style="--photo-ratio:.6667" hidden><div class="study-photo-window"><img src="/constellation/assets/images/2024/_DSC6063.jpg" width="3845" height="5767" loading="lazy" alt="Dark indoor portrait with blue tones."></div><figcaption>6063 / 2024 <span>Closest with extremes retained</span></figcaption></figure>
+        </div>
+      </div>
+      <p class="sr-only" data-extraction-status role="status"></p>
+      <p class="case-caption">Keeping shadows and highlights changed the closest match. One diagnostic example—not proof that every match improved. The map above retains the original extraction.</p>
+    </div>
+    <details class="case-detail"><summary>What changed, and what didn’t</summary><div class="case-detail-content"><p>The audit kept five CIELAB colors and Transport comparison, then re-extracted palettes without brightness clipping. A paired control used the same sampled pixels; neither variant filtered skin tones.</p><p>Separately, “Matched weighted” pairs colors one-to-one. Transport allows split matches and accounts for changes in proportions. Both remain available in the map.</p></div></details>
+  </section>
+
+  <section class="case-section case-observations" aria-labelledby="observations-title">
+    <p class="case-label">04 / Observations</p>
+    <div class="case-split"><h2 id="observations-title" class="case-statement">Recurring tones.<br>An open interpretation.</h2><div class="case-copy"><p>Darker palettes and red- and blue-oriented colors recurred. A distribution analysis added a nuance: five extracted colors often describe variations of one hue, or mostly neutrals.</p><p class="case-emphasis">Patterns worth exploring. Not a definitive photographic signature.</p></div></div>
+    <div class="case-distribution" data-analysis-examples><!-- STUDY_DISTRIBUTION --></div>
+    <p class="case-caption">Exploratory labels for these 150 photographs, based on palette weights and hue families. Changing the thresholds can change the labels.</p>
+    <details class="case-detail"><summary>How to read these categories</summary><div class="case-detail-content"><p>“Single-hue distributed” describes colors spread across several clusters but concentrated in a hue family or closely aligned hues. “Neutral dominated” requires at least 65% neutral weight, after checking for a single cluster with at least 70% weight.</p><p>The remaining categories describe balanced mixtures, two-family palettes, or dominance by one extracted cluster. Each photograph receives one label; these are descriptive rules, not validated aesthetic judgments.</p></div></details>
+  </section>
+
+  <section class="case-section case-future" aria-labelledby="relationships-title">
+    <p class="case-label">05 / From exploration to possibility</p>
+    <div class="case-split">
+      <h2 id="relationships-title" class="case-statement">The map invites exploration.<br>The palettes make the comparison.</h2>
+      <div class="case-copy"><p>t-SNE, UMAP, and MDS offer different approximate views. Nearby points needn’t have equally close original color distances.</p><p>“Closest palettes” uses the underlying comparisons, not the distance between points on screen.</p><a class="case-return" href="#explorer">Explore the layouts ↑</a></div>
+    </div>
+    <div class="case-possibilities">
+      <div><p class="case-status">Potential applications</p><h3>Start with the map.<br>Follow a color connection.</h3></div>
+      <div class="case-copy"><p>A related photograph could become the start of a sequence, a mood, or a new direction for an edit.</p><dl class="case-notes"><div><dt>Curate a collection.</dt><dd>Explore a neighborhood of photographs, compare their palettes, then choose by subject, composition, and story.</dd></div><div><dt>Find a starting point for a brief.</dt><dd>A future version could use a design palette to find a way into the map and narrow a selection for an editorial, website, or campaign.</dd></div></dl><p class="case-caption">Possibilities to test: does color similarity help make a selection, and when does it miss the mood?</p></div>
+    </div>
+  </section>
+</div>
