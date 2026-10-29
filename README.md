@@ -39,7 +39,8 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | Hero photos and measured palettes | [`site/assets/data/photographs.js`](site/assets/data/photographs.js) |
 | Hero tagline pairings and About name animation | [`site/name-motion.js`](site/name-motion.js) |
 | Hero tagline markup, initial wording, and screen-reader text | [`site/index.html`](site/index.html) |
-| About text, portrait, contact links, background | [`site/index.html`](site/index.html) |
+| About text, contact links, background | [`site/index.html`](site/index.html) |
+| About portraits and measured palettes | [`site/assets/data/about-portraits.js`](site/assets/data/about-portraits.js) |
 | [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
 | Constellation explorer and snapshot updates | [`docs/CONSTELLATION.md`](docs/CONSTELLATION.md) |
 | [pet.] OS preview and sync workflow | [`docs/PET-EXPERIENCE.md`](docs/PET-EXPERIENCE.md) |

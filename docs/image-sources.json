@@ -31,11 +31,31 @@
       "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
     }
   },
-  "about": {
-    "src": "assets/images/about/_DSF0655.webp",
-    "source": "/Users/axdreweiss/Desktop/_DSF0655.JPG",
-    "width": 800,
-    "height": 1200,
-    "processing": "EXIF orientation applied; uncropped WebP at 1200 and 640 pixels on the long edge."
-  }
+  "about": [
+    {
+      "src": "assets/images/about/_DSF0655.webp",
+      "source": "site/assets/images/about/_DSF0655.webp",
+      "source_sha256": "2d08b7128a35aa56d03dc937889f97c231f64d736c45b9309d6ee9d76c270ea7",
+      "width": 800,
+      "height": 1200,
+      "processing": "Existing derivatives retained.",
+      "original_source_record": "/Users/axdreweiss/Desktop/_DSF0655.JPG"
+    },
+    {
+      "src": "assets/images/about/_DSF2089.webp",
+      "source": ".local-archive/about-portraits/sources/_DSF2089.jpg",
+      "source_sha256": "92d6f06606e84bc8d02d8a4ae76a52e06874a82d894bf0d4788ac465ada8d9e1",
+      "width": 800,
+      "height": 1200,
+      "processing": "EXIF orientation applied; converted to sRGB; uncropped WebP at 1200 and 640 pixels on the long edge; metadata removed."
+    },
+    {
+      "src": "assets/images/about/_DSF3337.webp",
+      "source": ".local-archive/about-portraits/sources/_DSF3337.JPG",
+      "source_sha256": "82faba612ccb3b63ba40adbd2a118b64d287bc15c36653c413b13725bdb12129",
+      "width": 800,
+      "height": 1200,
+      "processing": "EXIF orientation applied; converted to sRGB; uncropped WebP at 1200 and 640 pixels on the long edge; metadata removed."
+    }
+  ]
 }

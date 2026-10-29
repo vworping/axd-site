@@ -42,6 +42,7 @@
   </script>
   <script src="/assets/data/projects.js?v=24" defer></script>
   <script src="/assets/data/photographs.js" defer></script>
+  <script src="/assets/data/about-portraits.js" defer></script>
   <script src="/dialog-motion.js?v=11" defer></script>
   <link rel="stylesheet" href="/constellation-chapter.css">
   <link rel="stylesheet" href="/pet-chapter.css">
@@ -53,6 +54,7 @@
   <script src="/chapter-experience.js" defer></script>
   <script src="/logo-motion.js?v=9" defer></script>
   <script src="/photo-deck.js?v=8" defer></script>
+  <script src="/about-portraits.js" defer></script>
   <script src="/name-motion.js?v=19" defer></script>
   <script src="/story-shelf.js?v=15" defer></script>
   <script src="/script.js?v=24" defer></script>
@@ -118,11 +120,21 @@
 
       <section class="connect-section section-pad" id="about" data-section="about" data-route="/about" data-title="Palace: About" data-section-label="About & Say Hello" aria-labelledby="about-title">
         <div class="connect-layout">
-          <figure class="portrait-card">
-            <button class="portrait-window" id="portrait-open" type="button" aria-label="Expand portrait of Andre Weiss" aria-haspopup="dialog">
-              <!-- Portrait derivatives and source mapping: docs/image-sources.json. -->
-              <img id="about-portrait" src="/assets/images/about/_DSF0655.webp" srcset="/assets/images/about/_DSF0655-small.webp 427w, /assets/images/about/_DSF0655.webp 800w" sizes="(max-width: 700px) 34vw, 35vw" alt="Andre Weiss in a red racing jacket, photographed in falling snow" width="800" height="1200" loading="lazy" decoding="async">
-            </button>
+          <figure class="portrait-card" role="group" aria-label="Portraits of Andre Weiss">
+            <div class="portrait-frame">
+              <button class="portrait-window" id="portrait-open" type="button" aria-label="Expand portrait of Andre Weiss" aria-haspopup="dialog">
+                <span class="portrait-image-stage">
+                  <!-- Portrait derivatives and source mapping: docs/image-sources.json. -->
+                  <img id="about-portrait" src="/assets/images/about/_DSF0655.webp" srcset="/assets/images/about/_DSF0655-small.webp 427w, /assets/images/about/_DSF0655.webp 800w" sizes="(max-width: 700px) 34vw, 35vw" alt="Andre Weiss in a red racing jacket, photographed in falling snow" width="800" height="1200" loading="lazy" decoding="async">
+                </span>
+              </button>
+              <div class="portrait-controls" hidden>
+                <button id="portrait-prev" type="button" aria-label="Previous portrait"><span aria-hidden="true">←</span></button>
+                <span class="portrait-palette" id="portrait-palette" role="img" aria-label="Extracted color palette"></span>
+                <button id="portrait-next" type="button" aria-label="Next portrait"><span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+            <figcaption class="sr-only" id="portrait-status" aria-live="polite" aria-atomic="true"></figcaption>
           </figure>
           <div class="connect-copy">
             <h2 id="about-title"><span class="sr-only">Hi, I’m Andre.</span><span class="greeting-prefix" aria-hidden="true">Hi, I’m</span><span class="name-morph" id="name-morph" aria-hidden="true"><span class="name-label"><span class="name-bracket">[</span><span class="name-word">AX</span><span class="name-bracket">]</span></span></span></h2>

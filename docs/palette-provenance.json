@@ -28,5 +28,266 @@
     "source": "site/constellation/index.html",
     "image": "raw/2023/_DSC9386.jpg",
     "method": "Published five-color LAB palette; unchanged hex values and weights. Shared by the print palette and animated AXD brackets."
+  },
+  "assets/images/about/_DSF0655.webp": {
+    "source": "site/assets/images/about/_DSF0655.webp",
+    "source_sha256": "2d08b7128a35aa56d03dc937889f97c231f64d736c45b9309d6ee9d76c270ea7",
+    "method": "Perceptual Palette Drift: sample_lab_pixels + extract_palette; CIELAB MiniBatchKMeans, descending cluster weights, LAB centroids converted to sRGB.",
+    "extractor": "perceptual-palette-drift/src/extract_palettes.py",
+    "extractor_sha256": "0f30529d421154957dd7a3c29f656ae5e421a18f794a021bbb7c0ca50bd9fbea",
+    "rng_seed": 0,
+    "parameters": {
+      "n_sample": 100000,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "max_image_edge": 1600,
+      "exclude_skin": false,
+      "k": 5,
+      "batch_size": 2048,
+      "max_iter": 200,
+      "n_init": 5,
+      "random_state": 0
+    },
+    "sampling": {
+      "orig_width": 800,
+      "orig_height": 1200,
+      "sample_width": 800,
+      "sample_height": 1200,
+      "n_sample_before_clip": 100000,
+      "n_sample_after_lightness_clip": 49542,
+      "n_sample_used": 49542,
+      "used_lightness_clip": 1,
+      "lightness_clip_fallback_to_unclipped": 0,
+      "lightness_clip_removed_fraction": 0.50458,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "used_skin_clip": 0,
+      "skin_removed_fraction": 0.0
+    },
+    "lab_centroids": [
+      [
+        83.27777862548828,
+        6.629591464996338,
+        7.674856662750244
+      ],
+      [
+        19.567996978759766,
+        1.181742787361145,
+        3.507490396499634
+      ],
+      [
+        38.493858337402344,
+        3.224043846130371,
+        3.650641441345215
+      ],
+      [
+        57.49261474609375,
+        7.881999969482422,
+        6.52816915512085
+      ],
+      [
+        24.761268615722656,
+        28.00434112548828,
+        22.404129028320312
+      ]
+    ],
+    "palette": [
+      {
+        "hex": "#e2cbc1",
+        "weight": 0.28807881
+      },
+      {
+        "hex": "#332f2a",
+        "weight": 0.27588713
+      },
+      {
+        "hex": "#625955",
+        "weight": 0.15742199
+      },
+      {
+        "hex": "#9c857f",
+        "weight": 0.14292923
+      },
+      {
+        "hex": "#66261a",
+        "weight": 0.13568285
+      }
+    ]
+  },
+  "assets/images/about/_DSF2089.webp": {
+    "source": ".local-archive/about-portraits/sources/_DSF2089.jpg",
+    "source_sha256": "92d6f06606e84bc8d02d8a4ae76a52e06874a82d894bf0d4788ac465ada8d9e1",
+    "method": "Perceptual Palette Drift: sample_lab_pixels + extract_palette; CIELAB MiniBatchKMeans, descending cluster weights, LAB centroids converted to sRGB.",
+    "extractor": "perceptual-palette-drift/src/extract_palettes.py",
+    "extractor_sha256": "0f30529d421154957dd7a3c29f656ae5e421a18f794a021bbb7c0ca50bd9fbea",
+    "rng_seed": 0,
+    "parameters": {
+      "n_sample": 100000,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "max_image_edge": 1600,
+      "exclude_skin": false,
+      "k": 5,
+      "batch_size": 2048,
+      "max_iter": 200,
+      "n_init": 5,
+      "random_state": 0
+    },
+    "sampling": {
+      "orig_width": 2121,
+      "orig_height": 3182,
+      "sample_width": 1066,
+      "sample_height": 1600,
+      "n_sample_before_clip": 100000,
+      "n_sample_after_lightness_clip": 44562,
+      "n_sample_used": 44562,
+      "used_lightness_clip": 1,
+      "lightness_clip_fallback_to_unclipped": 0,
+      "lightness_clip_removed_fraction": 0.55438,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "used_skin_clip": 0,
+      "skin_removed_fraction": 0.0
+    },
+    "lab_centroids": [
+      [
+        15.00460433959961,
+        0.03171171993017197,
+        12.938213348388672
+      ],
+      [
+        27.072174072265625,
+        3.3449058532714844,
+        22.0570125579834
+      ],
+      [
+        54.407257080078125,
+        24.35074234008789,
+        28.2691650390625
+      ],
+      [
+        47.596893310546875,
+        0.9873270392417908,
+        17.027812957763672
+      ],
+      [
+        80.08210754394531,
+        0.9648231267929077,
+        7.097493648529053
+      ]
+    ],
+    "palette": [
+      {
+        "hex": "#2c2513",
+        "weight": 0.31470761
+      },
+      {
+        "hex": "#4f3d1e",
+        "weight": 0.27186841
+      },
+      {
+        "hex": "#b67153",
+        "weight": 0.15102553
+      },
+      {
+        "hex": "#7d6f54",
+        "weight": 0.13437457
+      },
+      {
+        "hex": "#cec5b9",
+        "weight": 0.12802388
+      }
+    ]
+  },
+  "assets/images/about/_DSF3337.webp": {
+    "source": ".local-archive/about-portraits/sources/_DSF3337.JPG",
+    "source_sha256": "82faba612ccb3b63ba40adbd2a118b64d287bc15c36653c413b13725bdb12129",
+    "method": "Perceptual Palette Drift: sample_lab_pixels + extract_palette; CIELAB MiniBatchKMeans, descending cluster weights, LAB centroids converted to sRGB.",
+    "extractor": "perceptual-palette-drift/src/extract_palettes.py",
+    "extractor_sha256": "0f30529d421154957dd7a3c29f656ae5e421a18f794a021bbb7c0ca50bd9fbea",
+    "rng_seed": 0,
+    "parameters": {
+      "n_sample": 100000,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "max_image_edge": 1600,
+      "exclude_skin": false,
+      "k": 5,
+      "batch_size": 2048,
+      "max_iter": 200,
+      "n_init": 5,
+      "random_state": 0
+    },
+    "sampling": {
+      "orig_width": 3817,
+      "orig_height": 5726,
+      "sample_width": 1067,
+      "sample_height": 1600,
+      "n_sample_before_clip": 100000,
+      "n_sample_after_lightness_clip": 24906,
+      "n_sample_used": 24906,
+      "used_lightness_clip": 1,
+      "lightness_clip_fallback_to_unclipped": 0,
+      "lightness_clip_removed_fraction": 0.7509399999999999,
+      "tau_low": 10.0,
+      "tau_high": 95.0,
+      "min_after_clip": 10000,
+      "used_skin_clip": 0,
+      "skin_removed_fraction": 0.0
+    },
+    "lab_centroids": [
+      [
+        68.64388275146484,
+        12.525765419006348,
+        -25.201839447021484
+      ],
+      [
+        53.45970153808594,
+        34.86381530761719,
+        40.45003128051758
+      ],
+      [
+        12.88038444519043,
+        5.95785665512085,
+        5.120964050292969
+      ],
+      [
+        67.83780670166016,
+        12.722668647766113,
+        51.898799896240234
+      ],
+      [
+        27.26702117919922,
+        19.78971290588379,
+        32.65725326538086
+      ]
+    ],
+    "palette": [
+      {
+        "hex": "#a7a2d5",
+        "weight": 0.492291
+      },
+      {
+        "hex": "#c5653b",
+        "weight": 0.20460933
+      },
+      {
+        "hex": "#2c1e1a",
+        "weight": 0.11659841
+      },
+      {
+        "hex": "#d49b45",
+        "weight": 0.10463342
+      },
+      {
+        "hex": "#66330c",
+        "weight": 0.08186782
+      }
+    ]
   }
 }

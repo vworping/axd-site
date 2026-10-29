@@ -6,7 +6,7 @@ const root = new URL('./', import.meta.url);
 const output = new URL('./dist/', root);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const file of ['index.html', 'constellation', 'pet-preview', 'favicon.ico', 'styles.css', 'layout.css', 'chapters.css', 'chapter-experience.js', 'cue-path.js', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
+for (const file of ['index.html', 'constellation', 'pet-preview', 'favicon.ico', 'styles.css', 'layout.css', 'chapters.css', 'chapter-experience.js', 'cue-path.js', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'about-portraits.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
   await cp(new URL(file, root), new URL(file, output), { recursive: true, filter: path => !path.endsWith('/.DS_Store') });
 }
 // Source uses relative preview images so local phone sharing stays on the LAN.

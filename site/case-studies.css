@@ -2,6 +2,7 @@
 .case-study { max-width: 1200px; margin-inline: auto; }
 .project-story.case-study { display: block; max-width: 1280px; margin-top: 40px; padding: 0; border: 0; }
 .case-study .case-section { padding-block: clamp(36px, 5vw, 72px); border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+.case-study .case-section:has(> .case-detail:last-child) { padding-bottom: 22px; }
 .case-study .case-label { display: block; margin: 0 0 26px; font-size: .6875rem; line-height: 1.5; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .case-study .case-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; gap: clamp(28px, 6vw, 80px); }
 .case-study .case-section h2 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.65rem); font-weight: 400; line-height: 1.13; letter-spacing: -.055em; text-wrap: balance; }

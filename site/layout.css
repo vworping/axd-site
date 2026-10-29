@@ -842,12 +842,21 @@ html[data-input="pointer"] :focus { outline: none !important; }
  margin-inline: auto;
 }
 .portrait-card { display: flex; justify-content: center; align-self: center; min-width: 0; }
-.portrait-window { position: relative; width: fit-content; max-width: 100%; padding: 12px; border: 1px solid #27313f40; background: #ffffff24; }
-.portrait-window::before, .portrait-window::after { content: ''; position: absolute; width: 28px; height: 28px; pointer-events: none; }
-.portrait-window::before { top: -5px; left: -5px; border-top: 2px solid #59687b; border-left: 2px solid #59687b; }
-.portrait-window::after { right: -5px; bottom: -5px; border-right: 2px solid #59687b; border-bottom: 2px solid #59687b; }
-.portrait-window img { width: auto; height: auto; max-width: 100%; max-height: clamp(220px, calc(100cqh - 90px), 600px); object-fit: contain; }
-.portrait-window { appearance: none; border-radius: 0; cursor: zoom-in; }
+.portrait-frame { position: relative; width: fit-content; max-width: 100%; padding: 12px 12px 0; border: 1px solid #27313f40; background: #ffffff24; }
+.portrait-frame::before, .portrait-frame::after { content: ''; position: absolute; width: 28px; height: 28px; pointer-events: none; }
+.portrait-frame::before { top: -5px; left: -5px; border-top: 2px solid #59687b; border-left: 2px solid #59687b; }
+.portrait-frame::after { right: -5px; bottom: -5px; border-right: 2px solid #59687b; border-bottom: 2px solid #59687b; }
+.portrait-window { display: block; width: 100%; padding: 0; border: 0; background: transparent; appearance: none; border-radius: 0; cursor: zoom-in; }
+.portrait-image-stage { position: relative; display: block; overflow: hidden; isolation: isolate; }
+.portrait-window img { display: block; width: auto; height: auto; max-width: 100%; max-height: clamp(200px, calc(100cqh - 122px), 568px); object-fit: contain; }
+.portrait-window .portrait-outgoing { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; pointer-events: none; }
+.portrait-controls { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+.portrait-controls[hidden] { display: none; }
+.portrait-frame:has(.portrait-controls[hidden]) { padding-bottom: 12px; }
+.portrait-controls button { display: grid; place-items: center; flex: 0 0 36px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); font-size: 1.25rem; }
+.portrait-controls button:hover { background: #27313f0d; }
+.portrait-palette { display: flex; flex: 1; height: 8px; overflow: hidden; }
+.portrait-palette span { min-width: 0; flex-basis: 0; }
 .connect-copy { min-width: 0; }
 .connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
 .connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
@@ -900,8 +909,11 @@ html[data-input="pointer"] :focus { outline: none !important; }
  }
  .connect-copy { display: contents; }
  .portrait-card { grid-column: 1; grid-row: 1; }
- .portrait-window { width: 100%; padding: 9px; }
+ .portrait-frame { width: 100%; padding: 9px 9px 0; }
  .portrait-window img { width: 100%; max-height: none; }
+ .portrait-controls { gap: 2px; }
+ .portrait-controls button { flex-basis: 30px; }
+ .portrait-palette { height: 6px; }
  .connect-copy #about-title { grid-column: 2; grid-row: 1; align-self: center; flex-direction: column; align-items: flex-start; gap: .08em; font-size: clamp(2rem, min(12vw, 9.5cqh), 4rem); }
  #about-title .name-morph { flex-basis: auto; }
  .connect-copy > p { grid-column: 1 / -1; grid-row: 3; margin: calc(14px + var(--about-row-gap)) 0 0; font-size: .9375rem; line-height: 1.45; }
@@ -912,12 +924,21 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .connect-footer { flex-direction: column; align-items: flex-end; font-size: .625rem; }
 }
 
+/* Short phones keep the original small portrait column. Give its palette a
+   full-width row so the arrow targets never squeeze the colors away. */
+@media (max-width: 700px) and (max-height: 700px) and (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+ .portrait-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 0; padding-top: 6px; }
+ .portrait-controls[hidden] { display: none; }
+ .portrait-palette { grid-column: 1 / -1; grid-row: 1; }
+ .portrait-controls button { grid-row: 2; height: 32px; min-width: 0; }
+}
+
 @media (orientation: landscape) and (max-height: 600px) {
  .horizontal-layout .connect-section { padding-block: 12px 10px; gap: 8px; }
  .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; align-content: start; gap: clamp(28px, 4vw, 48px); }
  .portrait-card { align-self: start; }
- .portrait-window { padding: 10px; }
- .portrait-window img { max-height: clamp(150px, calc(100cqh - 30px), 320px); }
+ .portrait-frame { padding: 10px 10px 0; }
+ .portrait-window img { max-height: clamp(120px, calc(100cqh - 64px), 286px); }
  .connect-copy { align-self: center; }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }

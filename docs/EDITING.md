@@ -38,12 +38,22 @@ Project galleries fit their frames to those image dimensions and animate width a
 ## Hero and About
 
 - **Hero photos and palettes:** `site/assets/data/photographs.js`. Array order determines the visible 001–005 numbers. Responsive WebP files live under `site/assets/images/hero/`, named after their originals. The same palette drives each print and the AXD brackets; `docs/palette-provenance.json` records the measured source.
-- **Portrait:** search for `CHANGE PORTRAIT HERE` or `about-portrait` in `site/index.html`. Update `src`, `srcset`, `width`, `height`, and `alt` together. Current files are `assets/images/about/_DSF0655.webp` and `_DSF0655-small.webp`; sources are mapped in `docs/image-sources.json`.
+- **About portraits:** `site/assets/data/about-portraits.js` contains the three photographs, alt text, and measured palettes. The initial portrait remains in `site/index.html` as a fallback. Responsive WebP pairs live under `site/assets/images/about/`; source records are in `docs/image-sources.json` and extraction settings, sample counts, input hashes, and LAB centroids are in `docs/palette-provenance.json`.
 - **Biography, email, social links, background dates:** `site/index.html`.
 - **Logo share card:** `site/assets/images/share-logo.png`.
 - **Favicon:** `site/assets/images/favicon-axd.png`. The build gives this a content-based filename to refresh icon caches and keeps the old PNG URL available. Also regenerate `site/favicon.ico` from the same image when changing the logo; it provides the standard fallback in 16, 32, 48, 64, 128, and 256 pixel sizes.
 
-The portrait frame follows the photograph's natural proportions. Its padding is in `.portrait-window` in `site/layout.css`.
+The portrait frame follows the photograph's natural proportions. Its padding is in `.portrait-frame` in `site/layout.css`. Arrows and left/right keys change portraits; clicking the photograph still opens the existing full-image viewer. Photo and palette transitions wait for image decoding, respect Pause motion and reduced motion, and settle when About leaves view. There is no automatic photo cycling.
+
+The two new originals are preserved in `.local-archive/about-portraits/sources/` and are not published. Web copies are uncropped, oriented, converted to sRGB, stripped of metadata, and capped at 1200 or 640 pixels on the long edge. The original snow portrait is no longer at its old Desktop path; its existing 800×1200 WebP was used for palette extraction and left unchanged.
+
+To regenerate the About assets with the existing Perceptual Palette Drift environment:
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 ../perceptual-palette-drift/.venv/bin/python tools/prepare-about-portraits.py --palette-project ../perceptual-palette-drift
+```
+
+This calls that project's `sample_lab_pixels` and `extract_palette` functions: 100,000 sampled pixels, five CIELAB clusters, fixed seeds, lightness range 10–95 with the existing low-sample fallback, no skin filtering, and a 1600-pixel analysis cap. Palette band widths represent shares of the retained sample. Re-extraction is only needed when photographs or extraction choices change; Python is not needed to build or run the site.
 
 ## Code map
 
@@ -55,6 +65,7 @@ The portrait frame follows the photograph's natural proportions. Its padding is 
 | `script.js` | Project dialog content, galleries, full-image view, input handling. |
 | `story-shelf.js` | Project previews and bounded mobile photo positions. |
 | `photo-deck.js` | Hero photo sizing and flipping. |
+| `about-portraits.js` | About photo navigation, decode-safe transitions, and measured palette strips. |
 | `logo-motion.js` | Palette logo and intro animation. |
 | `name-motion.js` | About name spelling transitions and staggered whole-word hero tagline rolls. |
 | `dialog-motion.js` | Opening shutter animation. |
