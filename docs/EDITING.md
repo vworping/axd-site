@@ -43,7 +43,7 @@ Project galleries fit their frames to those image dimensions and animate width a
 - **Logo share card:** `site/assets/images/share-logo.png`.
 - **Favicon:** `site/assets/images/favicon-axd.png`. The build gives this a content-based filename to refresh icon caches and keeps the old PNG URL available. Also regenerate `site/favicon.ico` from the same image when changing the logo; it provides the standard fallback in 16, 32, 48, 64, 128, and 256 pixel sizes.
 
-The portrait frame follows the photograph's natural proportions. Its padding is in `.portrait-frame` in `site/layout.css`. Arrows and left/right keys change portraits; clicking the photograph still opens the existing full-image viewer. Photo and palette transitions wait for image decoding, respect Pause motion and reduced motion, and settle when About leaves view. There is no automatic photo cycling.
+The portrait frame uses a consistent 2:3 image window, sized to the available chapter space. Its padding is in `.portrait-frame` in `site/layout.css`. Both photo layers fit the same window without cropping or scaling during the crossfade. Arrows and left/right keys change portraits; clicking the photograph still opens the existing full-image viewer. Photo and palette transitions wait for image decoding, respect Pause motion and reduced motion, and settle when About leaves view. There is no automatic photo cycling.
 
 The two new originals are preserved in `.local-archive/about-portraits/sources/` and are not published. Web copies are uncropped, oriented, converted to sRGB, stripped of metadata, and capped at 1200 or 640 pixels on the long edge. The original snow portrait is no longer at its old Desktop path; its existing 800×1200 WebP was used for palette extraction and left unchanged.
 

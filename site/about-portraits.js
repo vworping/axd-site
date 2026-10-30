@@ -87,13 +87,11 @@
     updatePalette(photo, moving);
     if (moving) {
       const timing = { duration: 850, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
-      animations.push(image.animate([
-        { opacity: 0, transform: `translateX(${direction * 7}%) scale(1.035)` },
-        { opacity: 1, transform: 'translateX(0) scale(1)' },
-      ], timing));
+      // Keep the decoded incoming photograph opaque underneath the outgoing
+      // layer: a single fade avoids shrinking edges or exposing the backdrop.
       animations.push(outgoing.animate([
-        { opacity: 1, transform: 'translateX(0) scale(1)' },
-        { opacity: 0, transform: `translateX(${direction * -7}%) scale(.985)` },
+        { opacity: 1 },
+        { opacity: 0 },
       ], timing));
       const batch = animations;
       Promise.all(batch.map(animation => animation.finished.catch(() => {})))
