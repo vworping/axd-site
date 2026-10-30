@@ -247,3 +247,13 @@
     height: calc(var(--peek-photo-height) + 40px); margin-top: 8px;
   }
 }
+
+/* Both project introductions share the same title → links → invitation rhythm. */
+.project-chapter :is(.pet-intro-copy, .spotlight-context-inner) > :is(#p-pet-title, #c-constellation-title) { margin-block: 16px 20px; }
+.project-chapter .project-intro-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px 24px; margin: 0 0 24px; }
+.project-chapter :is(.pet-intro-copy, .spotlight-context-inner) .project-intro-actions > a { display: inline-flex; align-items: center; min-height: 44px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--muted); color: var(--ink); font-size: .8125rem; line-height: 1.35; text-decoration: none; }
+.pet-chapter .pet-intro-copy > .lead { margin: 0; }
+@media (max-width: 700px), (pointer: coarse) and (max-width: 1100px) and (orientation: portrait) {
+  .project-chapter :is(.pet-intro-copy, .spotlight-context-inner) > :is(#p-pet-title, #c-constellation-title) { margin-block: 10px 14px; }
+  .project-chapter .project-intro-actions { gap: 8px 20px; margin-bottom: 16px; }
+}

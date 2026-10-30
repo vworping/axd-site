@@ -25,15 +25,18 @@
     outgoing?.remove();
     outgoing = null;
   }
-  function updatePalette(photo, moving) {
+  function updatePalette(photo, moving, previous = []) {
     palette.setAttribute('aria-label', `Five colors extracted from this photograph: ${photo.palette.map(color => `${color.hex}, ${(color.weight * 100).toFixed(1)} percent`).join('; ')}`);
     photo.palette.forEach((color, i) => {
       const swatch = swatches[i];
-      const before = { backgroundColor: swatch.style.backgroundColor, flexGrow: swatch.style.flexGrow };
+      const before = previous[i];
+      // A flex-grow total below 1 leaves unfilled space. Keep the weights well
+      // above that threshold even while the staggered bands are interpolating.
+      const grow = color.weight * 100;
       swatch.style.backgroundColor = color.hex;
-      swatch.style.flexGrow = color.weight;
+      swatch.style.flexGrow = grow;
       swatch.title = `${color.hex.toUpperCase()} · ${(color.weight * 100).toFixed(1)}% of the retained sample`;
-      if (moving) animations.push(swatch.animate([before, { backgroundColor: color.hex, flexGrow: color.weight }],
+      if (moving) animations.push(swatch.animate([before, { backgroundColor: color.hex, flexGrow: grow }],
         { duration: 680, delay: i * 35, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' }));
     });
   }
@@ -63,9 +66,15 @@
       return;
     }
     if (ticket !== request || chapter.inert || document.hidden) return;
+    const moving = canMove() && typeof image.animate === 'function';
+    // Capture visible colors and proportions before canceling an interrupted
+    // animation, so the next transition doesn't jump to its old destination.
+    const previous = moving ? swatches.map(swatch => {
+      const style = getComputedStyle(swatch);
+      return { backgroundColor: style.backgroundColor, flexGrow: style.flexGrow };
+    }) : [];
     settle();
     if (next === index) return;
-    const moving = canMove() && typeof image.animate === 'function';
     if (moving) {
       outgoing = image.cloneNode();
       outgoing.removeAttribute('id');
@@ -84,7 +93,7 @@
     image.width = photo.width;
     image.height = photo.height;
     status.textContent = `${photo.label}. Photograph ${index + 1} of ${photos.length}.`;
-    updatePalette(photo, moving);
+    updatePalette(photo, moving, previous);
     if (moving) {
       const timing = { duration: 850, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
       // Keep the decoded incoming photograph opaque underneath the outgoing

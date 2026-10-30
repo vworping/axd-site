@@ -857,7 +857,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .portrait-controls button { display: grid; place-items: center; flex: 0 0 36px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--ink); font-size: 1.25rem; }
 .portrait-controls button:hover { background: #27313f0d; }
 .portrait-palette { display: flex; flex: 1; height: 8px; overflow: hidden; }
-.portrait-palette span { min-width: 0; flex-basis: 0; }
+.portrait-palette span { min-width: 0; min-height: 0; flex-basis: 0; }
 .connect-copy { min-width: 0; }
 .connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
 .connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
@@ -899,21 +899,17 @@ html[data-input="pointer"] :focus { outline: none !important; }
 @media (max-width: 700px) and (orientation: portrait) {
  .horizontal-layout .connect-section { padding-block: clamp(12px, 2dvh, 20px); gap: 10px; }
  .connect-layout {
-  --portrait-height: clamp(96px, calc(100cqh - 320px), 220px);
   --about-row-gap: clamp(6px, 1.2cqh, 14px);
   flex: 1 0 auto;
-  grid-template-columns: calc((var(--portrait-height) - 20px) * 2 / 3 + 20px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
   /* Equal flexible rows center the complete text/contact group below the
      portrait without spreading its individual pieces apart. */
   grid-template-rows: auto minmax(0, 1fr) auto auto auto minmax(0, 1fr);
-  gap: 0 24px;
+  gap: 0 clamp(16px, 4vw, 22px);
  }
  .connect-copy { display: contents; }
  .portrait-card { grid-column: 1; grid-row: 1; }
  .portrait-frame { --portrait-inset: 9px; width: 100%; }
- .portrait-controls { gap: 2px; }
- .portrait-controls button { flex-basis: 30px; }
- .portrait-palette { height: 6px; }
  .connect-copy #about-title { grid-column: 2; grid-row: 1; align-self: center; flex-direction: column; align-items: flex-start; gap: .08em; font-size: clamp(2rem, min(12vw, 9.5cqh), 4rem); }
  #about-title .name-morph { flex-basis: auto; }
  .connect-copy > p { grid-column: 1 / -1; grid-row: 3; margin: calc(14px + var(--about-row-gap)) 0 0; font-size: .9375rem; line-height: 1.45; }
@@ -924,20 +920,24 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .connect-footer { flex-direction: column; align-items: flex-end; font-size: .625rem; }
 }
 
-/* Short phones keep the original small portrait column. Give its palette a
-   full-width row so the arrow targets never squeeze the colors away. */
-@media (max-width: 700px) and (max-height: 700px) and (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
- .portrait-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 0; padding-top: 6px; }
+/* Mobile keeps the photograph tall: palette and navigation share a side rail. */
+@media (max-width: 700px) and (orientation: portrait), (orientation: landscape) and (max-height: 600px) {
+ .portrait-frame { --portrait-rail: 24px; display: grid; grid-template-columns: minmax(0, 1fr) var(--portrait-rail); gap: 8px; padding-bottom: var(--portrait-inset); }
+ .portrait-window { grid-column: 1; grid-row: 1; }
+ .portrait-controls { grid-column: 2; grid-row: 1; display: grid; grid-template-columns: 1fr; grid-template-rows: 32px minmax(0, 1fr) 32px; gap: 8px; min-height: 0; }
  .portrait-controls[hidden] { display: none; }
- .portrait-palette { grid-column: 1 / -1; grid-row: 1; }
- .portrait-controls button { grid-row: 2; height: 32px; min-width: 0; }
+ .portrait-palette { grid-column: 1; grid-row: 2; flex-direction: column; justify-self: center; align-self: stretch; width: 6px; height: auto; min-height: 0; }
+ .portrait-controls button { grid-column: 1; width: 100%; height: 32px; min-width: 0; }
+ #portrait-prev { grid-row: 1; }
+ #portrait-next { grid-row: 3; }
+ .portrait-frame:has(.portrait-controls[hidden]) { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (orientation: landscape) and (max-height: 600px) {
  .horizontal-layout .connect-section { padding-block: 12px 10px; gap: 8px; }
- .connect-layout { grid-template-columns: minmax(120px, .65fr) minmax(0, 1.6fr); align-items: start; align-content: start; gap: clamp(28px, 4vw, 48px); }
+ .connect-layout { grid-template-columns: minmax(150px, .7fr) minmax(0, 1.6fr); align-items: start; align-content: start; gap: clamp(28px, 4vw, 48px); }
  .portrait-card { align-self: start; }
- .portrait-frame { --portrait-inset: 10px; --portrait-image-height: clamp(120px, calc(100cqh - 64px), 286px); }
+ .portrait-frame { --portrait-inset: 10px; --portrait-image-height: clamp(150px, calc(100cqh - 36px), 300px); width: calc(var(--portrait-image-height) * 2 / 3 + var(--portrait-inset) * 2 + var(--portrait-rail) + 10px); }
  .connect-copy { align-self: center; }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }

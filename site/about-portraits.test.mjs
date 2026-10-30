@@ -48,7 +48,8 @@ function gallery({ reduced = false, paused = false } = {}) {
       return new Promise((resolve, reject) => { loads.set(this.src, { resolve, reject }); });
     }
   }
-  runInNewContext(source, { window, document, Image, matchMedia: () => media });
+  runInNewContext(source, { window, document, Image, matchMedia: () => media,
+    getComputedStyle: element => ({ ...element.style, ...element.renderedStyle }) });
   return { ids, card, stage, image, effects, document, media, photos: window.ABOUT_PORTRAITS,
     next: () => ids['portrait-next'].emit('click'), prev: () => ids['portrait-prev'].emit('click'),
     load: async (i, fail = false) => { const pending = loads.get(window.ABOUT_PORTRAITS[i].src); assert.ok(pending); pending[fail ? 'reject' : 'resolve'](); await flush(); },
@@ -79,6 +80,34 @@ test('rapid requests cannot replace the latest choice with an older decoded imag
   assert.equal(g.image.src, g.photos[2].src);
   await g.finish();
   assert.equal(g.stage.children.length, 1);
+});
+
+test('palette bands fill the bar throughout staggered transitions and finish at measured proportions', async () => {
+  const g = gallery();
+  g.next(); await g.load(1);
+  const bands = g.effects.filter(effect => 'flexGrow' in effect.keyframes[0]);
+  // Flex distributes all space when its grow factors sum to at least one,
+  // including the most conservative combination of intermediate values.
+  assert.ok(bands.reduce((sum, effect) => sum + Math.min(...effect.keyframes.map(frame => Number(frame.flexGrow))), 0) > 1);
+  const sizes = g.ids['portrait-palette'].children.map(swatch => Number(swatch.style.flexGrow));
+  const total = sizes.reduce((sum, size) => sum + size, 0);
+  sizes.forEach((size, i) => assert.ok(Math.abs(size / total - g.photos[1].palette[i].weight) < 1e-6));
+});
+
+test('an interrupted palette transition starts from visible colors and widths instead of jumping to its previous target', async () => {
+  const g = gallery();
+  g.next(); await g.load(1);
+  const visible = g.ids['portrait-palette'].children.map((swatch, i) => {
+    swatch.renderedStyle = { backgroundColor: `rgb(${30 + i}, 40, 50)`, flexGrow: String(10 + i * 5) };
+    return swatch.renderedStyle;
+  });
+  const before = g.effects.length;
+  g.next(); await g.load(2);
+  const bands = g.effects.slice(before).filter(effect => 'flexGrow' in effect.keyframes[0]);
+  assert.equal(bands.length, 5);
+  bands.forEach((effect, i) => assert.deepEqual(JSON.parse(JSON.stringify(effect.keyframes[0])), visible[i]));
+  await g.finish();
+  assert.equal(g.image.src, g.photos[2].src);
 });
 
 test('a failed next image preserves the current photo and finishes outgoing cleanup', async () => {
