@@ -841,7 +841,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  min-height: min-content;
  width: 100%;
  max-width: 1440px;
- margin-inline: 0;
+ margin-inline: auto;
 }
 /* Reserve the corners in layout so their outer edges share the text gutter. */
 .portrait-card { display: flex; justify-content: flex-start; align-self: center; min-width: 0; padding: 10px; }
@@ -940,7 +940,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 
 @media (orientation: landscape) and (max-height: 600px) {
  .horizontal-layout .connect-section { padding-block: 12px 10px; gap: 8px; }
- .connect-layout { grid-template-columns: minmax(150px, .7fr) minmax(0, 1.6fr); align-content: start; gap: clamp(28px, 4vw, 48px); }
+ .connect-layout { grid-template-columns: minmax(150px, .7fr) minmax(0, 1.6fr); gap: clamp(28px, 4vw, 48px); }
  .portrait-frame { --portrait-inset: 10px; --portrait-image-height: clamp(150px, calc(100cqh - 36px), 300px); width: calc(var(--portrait-image-height) * 2 / 3 + var(--portrait-inset) * 2 + var(--portrait-rail) + 10px); }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }
