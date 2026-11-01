@@ -833,7 +833,8 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .connect-layout {
  display: grid;
  grid-template-columns: minmax(180px, .8fr) minmax(0, 1.4fr);
- align-items: center;
+ align-items: start;
+ align-content: center;
  gap: clamp(32px, 6vw, 96px);
  flex: 1 0 auto;
  min-height: min-content;
@@ -841,7 +842,8 @@ html[data-input="pointer"] :focus { outline: none !important; }
  max-width: 1440px;
  margin-inline: auto;
 }
-.portrait-card { display: flex; justify-content: center; align-self: center; min-width: 0; }
+/* Reserve the corners in layout so their outer edges share the text gutter. */
+.portrait-card { display: flex; justify-content: flex-start; align-self: start; min-width: 0; padding: 10px; }
 .portrait-frame { --portrait-inset: 12px; --portrait-image-height: clamp(200px, calc(100cqh - 122px), 568px); position: relative; width: calc(var(--portrait-image-height) * 2 / 3 + var(--portrait-inset) * 2 + 2px); max-width: 100%; padding: var(--portrait-inset) var(--portrait-inset) 0; border: 1px solid #27313f40; background: #ffffff24; }
 .portrait-frame::before, .portrait-frame::after { content: ''; position: absolute; width: 28px; height: 28px; pointer-events: none; }
 .portrait-frame::before { top: -11px; left: -11px; border-top: 2px solid #59687b; border-left: 2px solid #59687b; }
@@ -858,7 +860,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .portrait-controls button:hover { background: #27313f0d; }
 .portrait-palette { display: flex; flex: 1; height: 8px; overflow: hidden; }
 .portrait-palette span { min-width: 0; min-height: 0; flex-basis: 0; }
-.connect-copy { min-width: 0; }
+.connect-copy { min-width: 0; align-self: start; }
 .connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
 .connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
 .greeting-prefix { white-space: nowrap; }
@@ -901,7 +903,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .connect-layout {
   --about-row-gap: clamp(6px, 1.2cqh, 14px);
   flex: 1 0 auto;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
   /* Equal flexible rows center the complete text/contact group below the
      portrait without spreading its individual pieces apart. */
   grid-template-rows: auto minmax(0, 1fr) auto auto auto minmax(0, 1fr);
@@ -938,7 +940,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  .connect-layout { grid-template-columns: minmax(150px, .7fr) minmax(0, 1.6fr); align-items: start; align-content: start; gap: clamp(28px, 4vw, 48px); }
  .portrait-card { align-self: start; }
  .portrait-frame { --portrait-inset: 10px; --portrait-image-height: clamp(150px, calc(100cqh - 36px), 300px); width: calc(var(--portrait-image-height) * 2 / 3 + var(--portrait-inset) * 2 + var(--portrait-rail) + 10px); }
- .connect-copy { align-self: center; }
+ .connect-copy { align-self: start; }
  .connect-copy h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); }
  .connect-copy > p { margin-top: 10px; font-size: .9375rem; line-height: 1.4; }
  .background-button { margin-top: 8px; }

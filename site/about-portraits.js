@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const photos = window.ABOUT_PORTRAITS || [];
-  const image = document.getElementById('about-portrait');
+  let image = document.getElementById('about-portrait');
   if (!image || photos.length < 2) return;
   const chapter = document.getElementById('about');
   const card = image.closest('.portrait-card');
@@ -12,7 +12,7 @@
   const cache = new Map();
   let index = 0, requested = 0, request = 0;
   let paused = document.getElementById('motion-toggle')?.getAttribute('aria-pressed') === 'true';
-  let animations = [], outgoing;
+  let animations = [], outgoing = [];
   const swatches = photos[0].palette.map(() => document.createElement('span'));
   palette.replaceChildren(...swatches);
   card.querySelector('.portrait-controls').hidden = false;
@@ -20,10 +20,11 @@
   const sources = photo => `${photo.src.replace('.webp', '-small.webp')} ${Math.round(photo.width * 640 / Math.max(photo.width, photo.height))}w, ${photo.src} ${photo.width}w`;
   const canMove = () => !reduced.matches && !paused && !document.hidden && !chapter.inert;
   function settle() {
+    image.style.opacity = '1';
     animations.forEach(animation => animation.cancel());
     animations = [];
-    outgoing?.remove();
-    outgoing = null;
+    outgoing.forEach(layer => layer.remove());
+    outgoing = [];
   }
   function updatePalette(photo, moving, previous = []) {
     palette.setAttribute('aria-label', `Five colors extracted from this photograph: ${photo.palette.map(color => `${color.hex}, ${(color.weight * 100).toFixed(1)} percent`).join('; ')}`);
@@ -45,10 +46,11 @@
       const photo = photos[next];
       const pending = new Image();
       pending.decoding = 'async';
+      pending.loading = 'eager';
       pending.sizes = image.sizes;
       pending.srcset = sources(photo);
       pending.src = photo.src;
-      cache.set(next, pending.decode().catch(error => { cache.delete(next); throw error; }));
+      cache.set(next, pending.decode().then(() => pending).catch(error => { cache.delete(next); throw error; }));
     }
     return cache.get(next);
   }
@@ -58,7 +60,8 @@
   async function advance(direction) {
     requested = (requested + direction + photos.length) % photos.length;
     const next = requested, ticket = ++request;
-    try { await preload(next); } catch {
+    let incoming;
+    try { incoming = await preload(next); } catch {
       if (ticket === request) {
         requested = index;
         status.textContent = 'That photograph could not load. Please try again.';
@@ -66,6 +69,7 @@
       return;
     }
     if (ticket !== request || chapter.inert || document.hidden) return;
+    if (next === index) return;
     const moving = canMove() && typeof image.animate === 'function';
     // Capture visible colors and proportions before canceling an interrupted
     // animation, so the next transition doesn't jump to its old destination.
@@ -73,39 +77,44 @@
       const style = getComputedStyle(swatch);
       return { backgroundColor: style.backgroundColor, flexGrow: style.flexGrow };
     }) : [];
-    settle();
-    if (next === index) return;
     if (moving) {
-      outgoing = image.cloneNode();
-      outgoing.removeAttribute('id');
-      outgoing.removeAttribute('srcset');
-      outgoing.src = image.currentSrc || image.src;
-      outgoing.alt = '';
-      outgoing.setAttribute('aria-hidden', 'true');
-      outgoing.className = 'portrait-outgoing';
-      stage.append(outgoing);
-    }
+      // Freeze the visible composite on a rapid second tap. Removing its old
+      // layers here would flash the previous destination at full opacity.
+      image.style.opacity = getComputedStyle(image).opacity;
+      animations.forEach(animation => animation.cancel());
+      animations = [];
+    } else settle();
+    image.removeAttribute('id');
+    image.alt = '';
+    image.setAttribute('aria-hidden', 'true');
+    image.className = 'portrait-outgoing';
+    outgoing.push(image);
     index = next;
     const photo = photos[index];
-    image.srcset = sources(photo);
-    image.src = photo.src;
+    // Mount the actual decoded element, rather than replacing the source of
+    // a visible image (which can briefly repaint empty on mobile browsers).
+    cache.delete(next);
+    image = incoming;
+    image.id = 'about-portrait';
     image.alt = photo.alt;
     image.width = photo.width;
     image.height = photo.height;
+    image.style.opacity = moving ? '0' : '1';
+    stage.append(image);
     status.textContent = `${photo.label}. Photograph ${index + 1} of ${photos.length}.`;
     updatePalette(photo, moving, previous);
     if (moving) {
       const timing = { duration: 850, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both' };
-      // Keep the decoded incoming photograph opaque underneath the outgoing
-      // layer: a single fade avoids shrinking edges or exposing the backdrop.
-      animations.push(outgoing.animate([
-        { opacity: 1 },
+      // The previous composition stays painted underneath until this decoded
+      // photograph is opaque. Both layers resize together in the fixed frame.
+      animations.push(image.animate([
         { opacity: 0 },
+        { opacity: 1 },
       ], timing));
       const batch = animations;
       Promise.all(batch.map(animation => animation.finished.catch(() => {})))
         .then(() => { if (animations === batch) settle(); });
-    }
+    } else settle();
     warmNext();
   }
   document.getElementById('portrait-prev').addEventListener('click', () => advance(-1));
@@ -121,7 +130,6 @@
   reduced.addEventListener('change', () => { if (reduced.matches) settle(); });
   document.addEventListener('axd:chapter', event => { if (event.detail.id !== 'about') suspend(); else warmNext(); });
   document.addEventListener('visibilitychange', () => { if (document.hidden) suspend(); else warmNext(); });
-  window.addEventListener('resize', settle, { passive: true });
   updatePalette(photos[0], false);
   warmNext();
 })();

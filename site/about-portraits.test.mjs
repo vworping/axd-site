@@ -16,7 +16,7 @@ function gallery({ reduced = false, paused = false } = {}) {
       emit(type, event = {}) { return events.get(type)?.(event); },
       setAttribute(k, v) { attributes.set(k, v); },
       getAttribute(k) { return attributes.get(k); },
-      removeAttribute(k) { attributes.delete(k); },
+      removeAttribute(k) { attributes.delete(k); if (k === 'id') this.id = ''; },
       append(child) { this.children.push(child); child.parentElement = this; },
       replaceChildren(...children) { this.children = children; },
       remove() { this.parentElement.children = this.parentElement.children.filter(child => child !== this); },
@@ -34,23 +34,26 @@ function gallery({ reduced = false, paused = false } = {}) {
   const stage = node(), card = node(), controls = node();
   card.querySelector = () => controls;
   const image = ids['about-portrait'];
+  image.id = 'about-portrait';
   image.closest = () => card;
   image.sizes = '35vw';
   stage.append(image);
   ids['motion-toggle'].setAttribute('aria-pressed', String(paused));
   ids.about.inert = false;
-  const document = Object.assign(node(), { getElementById: id => ids[id], createElement: node });
+  const document = Object.assign(node(), { getElementById: id => id === 'about-portrait' ? stage.children.find(child => child.id === id) : ids[id], createElement: node });
   const window = node(), media = Object.assign(node(), { matches: reduced });
   runInNewContext(data, { window });
   Object.assign(image, window.ABOUT_PORTRAITS[0]);
   class Image {
+    constructor() { Object.assign(this, node()); }
     decode() {
-      return new Promise((resolve, reject) => { loads.set(this.src, { resolve, reject }); });
+      return new Promise((resolve, reject) => { loads.set(this.src, { resolve, reject, image: this }); });
     }
   }
   runInNewContext(source, { window, document, Image, matchMedia: () => media,
-    getComputedStyle: element => ({ ...element.style, ...element.renderedStyle }) });
-  return { ids, card, stage, image, effects, document, media, photos: window.ABOUT_PORTRAITS,
+    getComputedStyle: element => ({ opacity: '1', ...element.style, ...element.renderedStyle }) });
+  return { ids, card, stage, get image() { return document.getElementById('about-portrait'); }, effects, document, window, media, photos: window.ABOUT_PORTRAITS,
+    decoded: i => loads.get(window.ABOUT_PORTRAITS[i].src).image,
     next: () => ids['portrait-next'].emit('click'), prev: () => ids['portrait-prev'].emit('click'),
     load: async (i, fail = false) => { const pending = loads.get(window.ABOUT_PORTRAITS[i].src); assert.ok(pending); pending[fail ? 'reject' : 'resolve'](); await flush(); },
     finish: async () => { effects.forEach(effect => effect.finish()); await flush(); },
@@ -62,14 +65,43 @@ test('decodes before replacing the portrait, then synchronizes image, palette, a
   g.next();
   assert.equal(g.image.src, g.photos[0].src);
   await g.load(1);
+  assert.equal(g.image, g.decoded(1), 'the visible element is the one that finished decoding');
   assert.equal(g.image.src, g.photos[1].src);
   assert.equal(g.image.alt, g.photos[1].alt);
   assert.equal(g.ids['portrait-palette'].children[0].style.backgroundColor, g.photos[1].palette[0].hex);
   assert.match(g.ids['portrait-status'].textContent, /Rain.*2 of 3/);
   assert.equal(g.stage.children.length, 2);
-  assert.equal(g.stage.children[1].getAttribute('aria-hidden'), 'true');
+  assert.equal(g.stage.children[0].getAttribute('aria-hidden'), 'true');
+  assert.equal(g.stage.children.filter(child => child.id === 'about-portrait').length, 1);
   await g.finish();
   assert.equal(g.stage.children.length, 1);
+});
+
+test('an interrupted photo fade retains the visible layers and opacity until the new photograph is opaque', async () => {
+  const g = gallery();
+  const original = g.image;
+  g.next(); await g.load(1);
+  const partial = g.image;
+  partial.renderedStyle = { opacity: '0.37' };
+  g.next(); await g.load(2);
+  assert.deepEqual(g.stage.children, [original, partial, g.image]);
+  assert.equal(partial.style.opacity, '0.37');
+  assert.equal(original.src, g.photos[0].src);
+  assert.equal(partial.src, g.photos[1].src);
+  await g.finish();
+  assert.deepEqual(g.stage.children, [g.image]);
+  assert.equal(g.image.style.opacity, '1');
+});
+
+test('browser chrome resizing and rotation do not cancel a photograph or palette fade', async () => {
+  const g = gallery();
+  g.next(); await g.load(1);
+  g.window.emit('resize');
+  assert.equal(g.stage.children.length, 2);
+  assert.ok(g.effects.every(effect => !effect.cancelled));
+  await g.finish();
+  assert.equal(g.stage.children.length, 1);
+  assert.equal(g.image.src, g.photos[1].src);
 });
 
 test('rapid requests cannot replace the latest choice with an older decoded image', async () => {
