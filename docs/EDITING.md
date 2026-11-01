@@ -45,6 +45,8 @@ Project galleries fit their frames to those image dimensions and animate width a
 
 The portrait frame uses a consistent 2:3 image window, sized to the available chapter space. Its padding is in `.portrait-frame` in `site/layout.css`. Both photo layers fit the same window without cropping or scaling during the crossfade. Arrows and left/right keys change portraits; clicking the photograph still opens the existing full-image viewer. Photo and palette transitions wait for image decoding, respect Pause motion and reduced motion, and settle when About leaves view. There is no automatic photo cycling.
 
+Center the adjacent About information on the **photograph**, excluding the desktop palette footer (`--portrait-footer-offset`). The mobile side rail is symmetric, so that offset is zero; portrait phones keep the greeting alongside the photo and the longer copy below. The corner decorations reserve their own space. `about-portraits.js` measures the header mark's visible SVG inset so the About gutter aligns with the logo's actual stroke, including after font loading and rotation.
+
 The two new originals are preserved in `.local-archive/about-portraits/sources/` and are not published. Web copies are uncropped, oriented, converted to sRGB, stripped of metadata, and capped at 1200 or 640 pixels on the long edge. The original snow portrait is no longer at its old Desktop path; its existing 800×1200 WebP was used for palette extraction and left unchanged.
 
 To regenerate the About assets with the existing Perceptual Palette Drift environment:

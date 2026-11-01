@@ -9,6 +9,15 @@
   const palette = document.getElementById('portrait-palette');
   const status = document.getElementById('portrait-status');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  // The header SVG's visible left stroke starts at 3 / 160 of its width.
+  // Align About's gutter with that ink edge, rather than the SVG's empty inset.
+  const brand = document.getElementById('brand');
+  if (brand) {
+    const alignGutter = () => chapter.style.setProperty('--about-optical-inset', `${brand.getBoundingClientRect().width * 3 / 160}px`);
+    alignGutter();
+    if ('ResizeObserver' in window) new ResizeObserver(alignGutter).observe(brand);
+    else window.addEventListener('resize', alignGutter, { passive: true });
+  }
   const cache = new Map();
   let index = 0, requested = 0, request = 0;
   let paused = document.getElementById('motion-toggle')?.getAttribute('aria-pressed') === 'true';
