@@ -248,6 +248,10 @@
   }
 }
 
+/* Bring the revealed introduction up without changing the spotlight layout. */
+.constellation-chapter:not(.is-spotlit) .constellation-hero { padding-top: 8px; }
+.constellation-chapter:not(.is-spotlit) .intro-copy { align-self: start; }
+
 /* Both project introductions share the same title → links → invitation rhythm. */
 .project-chapter :is(.pet-intro-copy, .spotlight-context-inner) > :is(#p-pet-title, #c-constellation-title) { margin-block: 16px 20px; }
 .project-chapter .project-intro-actions { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 8px 24px; margin: 0 0 24px; }
