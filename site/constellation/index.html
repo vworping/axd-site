@@ -268,8 +268,9 @@ dialog::backdrop { background: #0b1118d9; backdrop-filter: none; }
 .palette-mini:nth-child(2) { transform: translateY(6px) rotate(3deg); }
 .palette-mini:nth-child(3) { transform: rotate(-2deg); }
 .palette-mini:hover, .palette-mini:focus-visible { transform: translateY(-5px); }
-.palette-mini-image { display: block; overflow: hidden; }
+.palette-mini-image { position: relative; display: block; overflow: hidden; }
 .palette-mini-image img { display: block; width: auto; height: auto; max-width: 100%; max-height: 144px; margin-inline: auto; object-fit: contain; object-position: center; }
+.palette-mini.is-resizing .palette-mini-image img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-height: 100%; }
 .palette-mini-swatch { display: block; height: 4px; margin-top: 5px; }
 .palette-mini-caption { display: block; padding-block: 7px; font-size: .5625rem; white-space: nowrap; }
 .palette-mini, .palette-selection { -webkit-tap-highlight-color: transparent; }
@@ -996,17 +997,97 @@ new ResizeObserver(() => draw()).observe(stage);
     tag.hidden = false;
     $('palette-selection').hidden = active < 0;
   }
-  function showMatches(hex) {
+  const photoStrip = $('palette-photos'), photoAnimations = new Map();
+  let photoRequest = 0;
+  function settleMatch(card) {
+    photoAnimations.get(card)?.forEach(animation => animation.cancel());
+    photoAnimations.delete(card);
+    const images = [...card.querySelectorAll('img')];
+    images.slice(0, -1).forEach(image => image.remove());
+    if (images.length) images.at(-1).style.opacity = '1';
+    card.classList.remove('is-resizing');
+  }
+  const settleMatches = () => [...photoAnimations.keys()].forEach(settleMatch);
+  document.addEventListener('axd:motion', event => { if (event.detail.paused) settleMatches(); });
+  reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) settleMatches(); });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) settleMatches(); });
+  document.addEventListener('axd:chapter', event => { if (event.detail.id !== 'constellation') settleMatches(); });
+  window.addEventListener('resize', settleMatches, { passive: true });
+  async function showMatches(hex) {
     if (shownColor === hex) return;
     shownColor = hex;
+    const request = ++photoRequest;
     const target = rgb(hex);
     // Find one closest swatch per photograph, so every preview is a different image.
     const matches = colorIndex.map(({ node, colors }) => {
       const closest = colors.map(color => ({ ...color, distance: color.rgb.reduce((sum, value, c) => sum + (value - target[c]) ** 2, 0) })).sort((a, b) => a.distance - b.distance)[0];
       return { node, ...closest };
     }).sort((a, b) => a.distance - b.distance).slice(0, 3);
+    let incoming;
+    try {
+      incoming = await Promise.all(matches.map(async ({ node }) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.width = node.width; image.height = node.height;
+        image.alt = `Photograph ${node.id}, ${node.year}`;
+        image.src = node.src;
+        await image.decode();
+        return image;
+      }));
+    } catch { return; }
+    if (request !== photoRequest) return;
     tag.setAttribute('aria-label', `Photographs with colors similar to ${hex}`);
-    $('palette-photos').innerHTML = matches.map(({ node, hex: match }) => `<button type="button" class="palette-mini" style="--mini-ratio:${node.width / node.height}" data-image="${escapeHTML(node.image)}" aria-label="Explore photograph ${escapeHTML(node.id)} with a similar color"><span class="palette-mini-image">${imageHTML(node)}</span><span class="palette-mini-swatch" style="background:${match}" aria-label="Matching color ${match}"></span><span class="palette-mini-caption">${escapeHTML(node.id)} / ${node.year}</span></button>`).join('');
+    matches.forEach(({ node, hex: match }, index) => {
+      let card = photoStrip.children[index];
+      if (!card) {
+        card = document.createElement('button');
+        card.type = 'button'; card.className = 'palette-mini';
+        card.innerHTML = '<span class="palette-mini-image"></span><span class="palette-mini-swatch"></span><span class="palette-mini-caption"></span>';
+        photoStrip.append(card);
+      }
+      const swatch = card.querySelector('.palette-mini-swatch');
+      swatch.style.background = match;
+      swatch.setAttribute('aria-label', `Matching color ${match}`);
+      if (card.dataset.image === node.image) return;
+      const window = card.querySelector('.palette-mini-image');
+      const moving = !!card.dataset.image && !paused && !reducedMotion.matches && visible && !document.hidden && !previewOpen;
+      // Read the current interpolated size before interrupting a quick hover.
+      const width = getComputedStyle(card).width, height = getComputedStyle(window).height;
+      const outgoing = moving ? [...window.querySelectorAll('img')] : [];
+      if (moving) {
+        outgoing.forEach(image => {
+          image.style.opacity = getComputedStyle(image).opacity;
+          image.alt = ''; image.setAttribute('aria-hidden', 'true');
+        });
+        photoAnimations.get(card)?.forEach(animation => animation.cancel());
+        photoAnimations.delete(card);
+      } else {
+        settleMatch(card);
+      }
+      card.classList.remove('is-resizing');
+      card.style.setProperty('--mini-ratio', node.width / node.height);
+      card.dataset.image = node.image;
+      card.setAttribute('aria-label', `Explore photograph ${node.id} with a similar color`);
+      card.querySelector('.palette-mini-caption').textContent = `${node.id} / ${node.year}`;
+      window.replaceChildren(incoming[index]);
+      if (!moving) return;
+      // Measure with the original responsive sizing rules, then center both
+      // photos in the resizing window so neither edge acts as a reveal mask.
+      const targetWidth = getComputedStyle(card).width, targetHeight = getComputedStyle(window).height;
+      card.classList.add('is-resizing');
+      window.prepend(...outgoing);
+      const timing = { duration: 440, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' };
+      const animations = [
+        card.animate([{ width }, { width: targetWidth }], timing),
+        window.animate([{ height }, { height: targetHeight }], timing),
+        incoming[index].animate([{ opacity: 0 }, { opacity: 1 }], timing),
+        ...outgoing.map(image => image.animate([{ opacity: image.style.opacity }, { opacity: 0 }], timing)),
+      ];
+      photoAnimations.set(card, animations);
+      Promise.all(animations.map(animation => animation.finished.catch(() => {}))).then(() => {
+        if (photoAnimations.get(card) === animations) settleMatch(card);
+      });
+    });
   }
   $('palette-photos').addEventListener('click', event => {
     const card = event.target.closest('[data-image]');
