@@ -3,6 +3,7 @@
   const mark = document.getElementById('name-morph');
   const label = mark.querySelector('.name-label');
   const word = mark.querySelector('.name-word');
+  const greeting = document.querySelector('#about-title .greeting-prefix');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const names = ['AX', 'AXD', 'AXDRE', 'ANDRE'];
   let current = 0;
@@ -163,12 +164,15 @@
   }
 
   function fitLabel() {
-    const size = parseFloat(getComputedStyle(mark).fontSize) * .98;
+    const size = parseFloat(getComputedStyle(mark).fontSize);
     label.style.fontSize = `${size}px`;
     const brackets = [...label.querySelectorAll('.name-bracket')].reduce((sum, el) => sum + el.getBoundingClientRect().width, 0);
     const required = Math.max(...names.map(measure)) + brackets + size * .05;
     const available = mark.clientWidth - 8;
     if (available > 0 && required > available) label.style.fontSize = `${size * available / required}px`;
+    // Fit the entire greeting to the longest name, keeping both lines equal
+    // throughout AX → ANDRE rather than shrinking only the bracketed name.
+    greeting.style.fontSize = label.style.fontSize;
     word.style.width = `${measure(word.textContent)}px`;
   }
 
