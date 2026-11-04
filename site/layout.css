@@ -2,7 +2,8 @@
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* About has one set of responsive rules at the end of this file. */
 /* Three compact chapters: photographs, collaborations, and an introduction. */
-.site-header nav { flex-wrap: nowrap; padding-inline-end: clamp(12px, 1.2vw, 24px); }
+:root { --header-nav-inset: clamp(12px, 1.2vw, 24px); --action-gutter: calc(var(--gutter) + var(--header-nav-inset)); }
+.site-header nav { flex-wrap: nowrap; padding-inline-end: var(--header-nav-inset); }
 .photo-deck #deck-hint { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; top: -26px; right: 8%; left: auto; bottom: auto; font-size: .875rem; transform: rotate(5deg); }
 .photo-deck #deck-hint[hidden] { display: none; }
 .photo-deck #deck-hint > span { display: block; font-size: inherit; line-height: 1.2; margin: 0; transform: none; text-align: left; }
@@ -640,6 +641,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  gap: 20px;
  min-height: 76px;
  padding-block: 10px;
+ padding-inline-end: var(--action-gutter);
  background: transparent;
 }
 .section-navigation button {
@@ -826,12 +828,14 @@ html[data-input="pointer"] :focus { outline: none !important; }
  display: flex;
  flex-direction: column;
  gap: 20px;
- padding: clamp(20px, 3dvh, 32px) calc(var(--gutter) + var(--about-optical-inset, 3px));
+ padding: clamp(20px, 3dvh, 32px) var(--action-gutter) clamp(20px, 3dvh, 32px) calc(var(--gutter) + var(--about-optical-inset, 3px));
  background: transparent;
  color: var(--ink);
 }
 .connect-layout {
  --portrait-footer-offset: 32px;
+ /* Let right-side actions reach the shared edge beyond the text's width cap. */
+ --connect-action-overhang: max(0px, calc((100cqw - 1440px) / 2));
  display: grid;
  grid-template-columns: minmax(180px, .8fr) minmax(0, 1.4fr);
  align-items: center;
@@ -866,16 +870,16 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .connect-copy h2 { font-size: clamp(2.5rem, 4.6vw, 5.4rem); font-weight: 400; letter-spacing: -.065em; line-height: 1.05; }
 .connect-copy #about-title { display: flex; flex-wrap: wrap; align-items: center; gap: .06em .24em; }
 .greeting-prefix { white-space: nowrap; }
-#about-title .name-morph { flex: 0 1 4.5em; width: 4.5em; max-width: 100%; height: 1.3em; font-size: inherit; place-items: center start; padding-inline: 2px; }
+#about-title .name-morph { flex: 0 1 4.5em; width: 4.5em; max-width: 100%; height: 1.3em; font-size: inherit; place-items: center start; padding-inline: 0; }
 #about-title .name-label { display: flex; align-items: center; gap: .025em; font-family: var(--body); font-weight: 400; font-size: .95em; letter-spacing: -.065em; transform-origin: left center; }
 #about-title .name-word { display: block; flex: none; overflow: hidden; white-space: nowrap; padding-inline: .04em; }
-#about-title .name-bracket { flex: none; }
+#about-title .name-bracket { flex: none; font-weight: 700; }
 .connect-copy > p { max-width: 38em; margin-top: 18px; font-size: clamp(1rem, 1.65vw, 1.4rem); letter-spacing: -.02em; line-height: 1.5; color: #424b58; }
-.background-button { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; min-height: 44px; padding: 10px 0; margin-top: 24px; background: transparent; border-bottom: 1px solid #27313f40; text-align: left; font-size: .875rem; }
+.background-button { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: calc(100% + var(--connect-action-overhang)); min-height: 44px; padding: 10px 0; margin-top: 24px; background: transparent; border-bottom: 1px solid #27313f40; text-align: left; font-size: .875rem; }
 .background-button > span { font-size: 1.5rem; line-height: 1; }
 .background-button:hover { border-color: currentColor; }
 .connect-contact { margin-top: 24px; }
-.connect-hello { display: inline-flex; align-items: center; gap: 25px; font: 900 clamp(2.3rem, 4.8vw, 5.5rem)/1 var(--display); letter-spacing: -.065em; }
+.connect-hello { display: flex; justify-content: space-between; align-items: center; width: calc(100% + var(--connect-action-overhang)); gap: 25px; font: 900 clamp(2.3rem, 4.8vw, 5.5rem)/1 var(--display); letter-spacing: -.065em; }
 .connect-hello > span { font-family: var(--body); font-weight: 400; font-size: 1.05em; letter-spacing: 0; transition: transform .2s; }
 .connect-hello:hover > span { transform: translate(4px, -4px); }
 .connect-socials { display: flex; justify-content: flex-start; gap: 12px; margin: 16px 0 0; }

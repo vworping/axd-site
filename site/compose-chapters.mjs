@@ -112,8 +112,7 @@ export async function composeChapters(shell, output) {
   cHTML = cHTML.replace(/<h1 id="constellation-title">Palette\s*<br>constellation\.<\/h1>/, '<h2 id="constellation-title">Palette<br>constellation.</h2>')
     .replace(/(<p class="eyebrow" id="collection-count">[\s\S]*?<div class="intro-links">[\s\S]*?<\/div>)/, '<div class="spotlight-context" id="spotlight-context" inert><div class="spotlight-context-inner">$1</div></div>')
     .replace('<div class="intro-links">', '<div class="intro-links project-intro-actions">')
-    .replace('<p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>', '<p class="lead">Select a color. See where it takes you.</p>')
-    .replace('<div class="palette-sculpture">', '<button class="back-link spotlight-exit" id="spotlight-exit" type="button" aria-label="Continue exploring"><span>Continue</span><span aria-hidden="true">↘</span></button><div class="palette-sculpture">');
+    .replace('<p class="lead">Start with a color on the wheel to discover photographs with similar hues.</p>', '<div class="spotlight-invitation"><p class="lead">Select a color. See where it takes you.</p><button class="back-link spotlight-exit" id="spotlight-exit" type="button" aria-label="Continue exploring"><span>Continue</span><span aria-hidden="true">↘</span></button></div>');
   let cCSS = [...constellation.matchAll(/<style>([\s\S]*?)<\/style>/g)].map(match => match[1]).join('\n') + '\n' + studyCSS;
   let cJS = constellation.match(/<script>const DATA([\s\S]*?)<\/script>/)[0].replace(/^<script>|<\/script>$/g, '');
   // The shell owns modal animation and the motion preference for every chapter.
