@@ -17,8 +17,10 @@
 .image-save-dialog, .project-chapter .image-save-dialog {
   width: min(300px, calc(100vw - 88px)); max-height: calc(100dvh - 72px); padding: 16px;
 }
-.image-save-top, .project-chapter .image-save-top { gap: 12px; }
-.image-save-top h2, .project-chapter .image-save-top h2 { font-size: 22px; }
+.image-save-top, .project-chapter .image-save-top { position: relative; display: block; padding-inline-end: 32px; }
+.image-save-top h2, .project-chapter .image-save-top h2 { margin: 0; font-size: 22px; line-height: 1.15; }
+.image-save-top button, .project-chapter .image-save-top button { position: absolute; top: -6px; right: -6px; width: 44px; height: 44px; }
+.image-save-dialog > p, .project-chapter .image-save-dialog > p { margin: 10px 0 0; text-align: left; }
 .image-save-actions, .project-chapter .image-save-actions { flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .image-save-actions button, .project-chapter .image-save-actions button { padding: 10px 12px; font-size: 12px; }
 .project-chapter :is(#c-constellation-title, #p-pet-title) {
@@ -65,7 +67,7 @@
 .constellation-chapter.motion-paused .spotlight-context { transition: none; }
 .constellation-chapter.is-spotlit .spotlight-invitation .lead { position: relative; z-index: 1; }
 /* Match the header's edge even when the chapter reaches its maximum width. */
-.constellation-chapter .spotlight-exit { position: absolute; top: 0; right: calc(var(--gutter) + var(--header-nav-inset) - 50vw + 50%); z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 0; background: transparent; font-size: .75rem; white-space: nowrap; }
+.constellation-chapter .spotlight-exit { position: absolute; top: 0; right: calc(var(--gutter) - 50vw + 50%); z-index: 3; display: inline-flex; align-items: center; gap: 7px; padding: 0; background: transparent; font-size: .75rem; white-space: nowrap; }
 .constellation-chapter .spotlight-exit::after { content: ''; position: absolute; bottom: 8px; left: 0; right: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .2s; }
 .constellation-chapter .spotlight-exit:hover::after,
 .constellation-chapter .spotlight-exit:focus-visible::after { transform: scaleX(1); }
@@ -184,8 +186,8 @@
 @media (max-width: 700px), (pointer: coarse) and (max-width: 1100px), (orientation: landscape) and (max-height: 600px) and (max-width: 1100px) {
   .constellation-chapter .spotlight-invitation { display: flex; align-items: baseline; gap: 12px; }
   .constellation-chapter .spotlight-invitation .lead { flex: 1; min-width: 0; }
-  .constellation-chapter .spotlight-exit { position: relative; inset: auto; flex: 0 0 auto; margin-block: -12px; margin-inline-end: var(--header-nav-inset); }
-  .constellation-chapter .palette-hint { translate: 10px 14px; }
+  .constellation-chapter .spotlight-exit { position: relative; inset: auto; flex: 0 0 auto; margin-block: -12px; }
+  .constellation-chapter #c-palette-orbit { width: calc(100% - 16px); height: calc(100% - 16px); margin: 16px 8px 0; }
 }
 
 @media (max-width: 700px), (pointer: coarse) and (max-width: 1100px) and (orientation: portrait) {
@@ -201,7 +203,7 @@
   .constellation-chapter .palette-peek { padding: 10px 6px; }
   .constellation-chapter .palette-peek-photos { gap: 16px; }
   .constellation-chapter .palette-mini-caption { padding-block: 5px; }
-  .constellation-chapter .palette-sculpture { width: clamp(156px, calc(78cqh - 148px), 360px); max-width: 90%; }
+  .constellation-chapter .palette-sculpture { width: clamp(240px, calc(78cqh - 100px), 360px); max-width: 90%; }
   .constellation-chapter #c-palette-orbit { --mobile-palette-cue: 1; }
   .constellation-chapter .palette-hint { font-size: .75rem; }
 }
@@ -225,8 +227,8 @@
 @media (max-width: 700px), (pointer: coarse) and (max-width: 1100px) and (orientation: portrait) {
   .horizontal-layout .constellation-chapter.is-spotlit { padding-top: 8px; }
   .constellation-chapter.is-spotlit .constellation-hero {
-    height: 100cqh; min-height: 0; padding-block: 32px 12px;
-    grid-template-rows: auto minmax(0, 1fr); gap: 8px; align-content: stretch;
+    height: auto; min-height: 100cqh; padding-block: 32px 12px;
+    grid-template-rows: auto minmax(240px, 1fr); gap: 8px; align-content: stretch;
   }
   .constellation-chapter.is-spotlit .intro-discovery {
     --peek-photo-height: clamp(48px, 20cqh, 160px);
@@ -236,7 +238,7 @@
     container-type: size; align-self: stretch; width: 100%; max-width: none;
   }
   .constellation-chapter.is-spotlit .palette-stage {
-    width: min(90%, 100cqh, 340px); height: auto; aspect-ratio: 1; margin-inline: auto;
+    width: min(90%, max(240px, 100cqh), 340px); height: auto; aspect-ratio: 1; margin-inline: auto;
   }
 }
 @media (orientation: landscape) and (max-height: 600px) and (max-width: 1100px), (pointer: coarse) and (max-width: 1100px) and (orientation: landscape) {

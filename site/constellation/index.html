@@ -890,7 +890,7 @@ new ResizeObserver(() => draw()).observe(stage);
   const hintLabel = hint.querySelector('span'), hintArrow = hint.querySelector('svg'), hintPath = hint.querySelector('path');
   hintPath.setAttribute('d', window.AXDCuePath([64, 6], [12, 62]));
   let mobileCue = false;
-  let wheelWidth = 0, wheelHeight = 0, wheelScale = 1, wheelOffset = [0, 0], cueLabelWidth = 0, cueLabelHeight = 0;
+  let wheelWidth = 0, wheelHeight = 0, wheelScale = 1, wheelOffset = [0, 0], cueLabelWidth = 0, cueLabelHeight = 0, cueRight = 0;
   function shuffled(items) {
     const result = [...items];
     for (let i = result.length - 1; i > 0; i--) {
@@ -982,13 +982,17 @@ new ResizeObserver(() => draw()).observe(stage);
       selection.style.left = `${wheelOffset[0] + cx / (3 * area) / 400 * wheelWidth}px`;
       selection.style.top = `${wheelOffset[1] + cy / (3 * area) / 400 * wheelHeight}px`;
       // Every viewport uses the same downward curve and symmetric arrowhead.
-      const edge = point(-.95, false);
-      const tip = [wheelOffset[0] + edge[0] / 400 * wheelWidth + 10, wheelOffset[1] + edge[1] / 400 * wheelHeight - 12];
+      const edge = point(mobileCue ? -.25 : -.95, false);
+      const tip = [wheelOffset[0] + edge[0] / 400 * wheelWidth + (mobileCue ? 12 : 10), wheelOffset[1] + edge[1] / 400 * wheelHeight - (mobileCue ? 4 : 12)];
       // Position the same 64px SVG used by the hero; never stretch its shaft.
       const arrowLeft = tip[0] - 12 * .8, arrowTop = tip[1] - 62 * .8;
+      // Bend toward the available space as the mobile rim morphs, keeping
+      // the label inside the content gutter and the tip clear of the color.
+      const tailX = mobileCue ? Math.min(40, (cueRight - 2 - arrowLeft - cueLabelWidth / 2) / .8) : 64;
+      hintPath.setAttribute('d', window.AXDCuePath([tailX, 6], [12, 62]));
       hintArrow.style.left = `${arrowLeft}px`;
       hintArrow.style.top = `${arrowTop}px`;
-      hintLabel.style.left = `${arrowLeft + 64 * .8 - cueLabelWidth / 2}px`;
+      hintLabel.style.left = `${arrowLeft + tailX * .8 - cueLabelWidth / 2}px`;
       hintLabel.style.top = `${arrowTop - cueLabelHeight}px`;
     }
     // Keep the first or last inspected matches in view instead of replacing
@@ -1186,6 +1190,7 @@ new ResizeObserver(() => draw()).observe(stage);
     mobileCue = style.getPropertyValue('--mobile-palette-cue').trim() === '1';
     const stage = wheelStage.getBoundingClientRect();
     wheelOffset = [bounds.left - stage.left, bounds.top - stage.top];
+    cueRight = interaction.getBoundingClientRect().right - stage.left;
     const label = hintLabel.getBoundingClientRect();
     cueLabelWidth = label.width;
     cueLabelHeight = label.height;

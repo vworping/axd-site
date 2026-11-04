@@ -2,8 +2,7 @@
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 /* About has one set of responsive rules at the end of this file. */
 /* Three compact chapters: photographs, collaborations, and an introduction. */
-:root { --header-nav-inset: clamp(12px, 1.2vw, 24px); --action-gutter: calc(var(--gutter) + var(--header-nav-inset)); }
-.site-header nav { flex-wrap: nowrap; padding-inline-end: var(--header-nav-inset); }
+.site-header nav { flex-wrap: nowrap; }
 .photo-deck #deck-hint { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; top: -26px; right: 8%; left: auto; bottom: auto; font-size: .875rem; transform: rotate(5deg); }
 .photo-deck #deck-hint[hidden] { display: none; }
 .photo-deck #deck-hint > span { display: block; font-size: inherit; line-height: 1.2; margin: 0; transform: none; text-align: left; }
@@ -641,7 +640,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  gap: 20px;
  min-height: 76px;
  padding-block: 10px;
- padding-inline-end: var(--action-gutter);
+ padding-inline: var(--gutter);
  background: transparent;
 }
 .section-navigation button {
@@ -828,7 +827,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
  display: flex;
  flex-direction: column;
  gap: 20px;
- padding: clamp(20px, 3dvh, 32px) var(--action-gutter) clamp(20px, 3dvh, 32px) calc(var(--gutter) + var(--about-optical-inset, 3px));
+ padding: clamp(20px, 3dvh, 32px) var(--gutter) clamp(20px, 3dvh, 32px) calc(var(--gutter) + var(--about-optical-inset, 3px));
  background: transparent;
  color: var(--ink);
 }
