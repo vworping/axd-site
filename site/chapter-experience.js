@@ -80,17 +80,21 @@
   document.addEventListener('axd:chapter', event => setChapter(event.detail.id));
   track.addEventListener('scroll', () => { paintSpotlight(); scheduleCanvas(); }, { passive: true });
   exitSpotlight.addEventListener('click', () => clearSpotlight());
-  const spotlightControl = target => target.closest('a, button, input, select, summary, #c-palette-orbit, #c-palette-selection');
+  // Only the colored paths are controls; the SVG also covers empty backdrop.
+  const spotlightControl = target => target.closest('a, button, input, select, textarea, summary, [role="button"], #c-palette-selection');
   constellation.addEventListener('pointerdown', event => {
     spotlightPress = !spotlightDone && event.button === 0 && event.isPrimary !== false && !spotlightControl(event.target)
-      ? { x: event.clientX, y: event.clientY, scroll: constellation.scrollTop } : null;
+      ? { id: event.pointerId, x: event.clientX, y: event.clientY, scroll: constellation.scrollTop } : null;
   });
   constellation.addEventListener('pointermove', event => {
     if (spotlightPress && Math.hypot(event.clientX - spotlightPress.x, event.clientY - spotlightPress.y) > 10) spotlightPress = null;
   });
   constellation.addEventListener('pointercancel', () => { spotlightPress = null; });
-  constellation.addEventListener('click', event => {
-    if (spotlightPress && Math.abs(constellation.scrollTop - spotlightPress.scroll) < 10 && !spotlightControl(event.target)) clearSpotlight();
+  // Touch browsers need not synthesize a click on non-interactive space.
+  constellation.addEventListener('pointerup', event => {
+    if (spotlightPress && event.pointerId === spotlightPress.id &&
+        Math.hypot(event.clientX - spotlightPress.x, event.clientY - spotlightPress.y) <= 10 &&
+        Math.abs(constellation.scrollTop - spotlightPress.scroll) < 10 && !spotlightControl(event.target)) clearSpotlight();
     spotlightPress = null;
   });
   chapters.forEach(chapter => chapter.addEventListener('scroll', () => {

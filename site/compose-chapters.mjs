@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
 
 // Keep the original project snapshots editable, but publish their content in
 // one document. IDs, styles, and image-export listeners stay chapter-local.
@@ -72,6 +72,11 @@ export async function composeChapters(shell, output) {
   const studyMarker = /<section class="project-story"[\s\S]*?<\/section>/;
   if (!studyMarker.test(constellation)) throw new Error('Constellation story marker changed; review composition.');
   const data = JSON.parse(constellation.match(/<script>const DATA = ([^\n]+);/)[1]);
+  // Local macOS reads ignore filename case; the published asset server does not.
+  const photoFiles = new Set(await readdir(new URL('constellation/', site), { recursive: true }));
+  for (const photo of data.nodes) {
+    if (!photoFiles.has(photo.src)) throw new Error(`Missing Constellation photograph (check filename case): ${photo.src}`);
+  }
   // Build-only research records: emit the illustrated findings, not a data download.
   const analysis = JSON.parse(await read('study-data/palette-analysis.json'));
   const classified = analysis.categories.flatMap(category => category.images);

@@ -107,13 +107,13 @@ test('reduced motion keeps the canvas static during chapter navigation', () => {
   assert.equal(page.value('depth'), 1);
 });
 
-const background = { target: { closest: () => null }, button: 0, clientX: 40, clientY: 160 };
+const background = { target: { closest: () => null }, pointerId: 1, pointerType: 'touch', button: 0, clientX: 40, clientY: 160 };
 
 test('a completed tap on surrounding chapter space reveals the context', () => {
   const page = preview();
   page.track.children[1].dispatch('pointerdown', background);
   assert.equal(page.document.getElementById('c-spotlight-exit').hidden, false);
-  page.track.children[1].dispatch('click', background);
+  page.track.children[1].dispatch('pointerup', background);
   assert.equal(page.document.getElementById('c-spotlight-exit').hidden, true);
   assert.equal(page.context.inert, false);
 });
@@ -124,7 +124,7 @@ test('swipes and cancelled touches on empty space leave the spotlight active', (
     chapter.dispatch('pointerdown', background);
     if (gesture === 'scroll') { chapter.scrollTop += 20; chapter.emit('scroll'); }
     else chapter.dispatch(gesture, { ...background, clientY: 210 });
-    chapter.dispatch('click', background);
+    chapter.dispatch('pointerup', background);
     assert.equal(page.document.getElementById('c-spotlight-exit').hidden, false, gesture);
     assert.equal(page.context.inert, true);
   }
@@ -146,14 +146,37 @@ test('scrolling within the hero stays spotlit, then reveals past it without shif
 });
 
 test('pressing a wheel or photo control does not dismiss the spotlight before activation', () => {
-  for (const control of ['#c-palette-orbit', 'button', '#c-palette-selection']) {
+  for (const control of ['[role="button"]', 'button', '#c-palette-selection']) {
     const page = preview();
-    page.track.children[1].dispatch('pointerdown', {
+    const event = {
       ...background,
       target: { closest: selectors => selectors.split(', ').includes(control) ? {} : null },
-    });
+    };
+    page.track.children[1].dispatch('pointerdown', event);
+    page.track.children[1].dispatch('pointerup', event);
     assert.equal(page.document.getElementById('c-spotlight-exit').hidden, false, control);
     page.document.getElementById('c-spotlight-exit').emit('click');
     assert.equal(page.document.getElementById('c-spotlight-exit').hidden, true);
+  }
+});
+
+test('empty SVG space dismisses spotlight on touch release without a synthesized click', () => {
+  const page = preview(), chapter = page.track.children[1];
+  const emptyWheel = {
+    ...background,
+    target: { closest: selectors => selectors.split(', ').includes('#c-palette-orbit') ? {} : null },
+  };
+  chapter.dispatch('pointerdown', emptyWheel);
+  assert.equal(page.context.inert, true);
+  chapter.dispatch('pointerup', emptyWheel);
+  assert.equal(page.context.inert, false);
+});
+
+test('unmatched releases and movement without pointermove do not dismiss spotlight', () => {
+  for (const release of [{ ...background, pointerId: 2 }, { ...background, clientX: 90 }]) {
+    const page = preview(), chapter = page.track.children[1];
+    chapter.dispatch('pointerdown', background);
+    chapter.dispatch('pointerup', release);
+    assert.equal(page.context.inert, true);
   }
 });

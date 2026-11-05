@@ -24,6 +24,8 @@ The invitation and photo strip share a left edge; the wheel is centered beside t
 
 The spotlight's three photo buttons persist between color selections. New matches decode before updating, then the paper width and image-window height use the same 440 ms cubic-bezier(.22,1,.36,1) resize as the galleries and map. Both photos stay centered in the window as they crossfade; rapid selections continue from the visible size and opacity. Final dimensions still come from the original responsive image rules, including all mobile size limits. Pause, reduced motion, chapter departure, hidden tabs, and viewport resizing settle temporary layers. Preserve this snapshot refinement when syncing the explorer.
 
+Photograph `src` values must match the exported filenames exactly, including extension case; the build checks this even on case-insensitive local filesystems. Keep research image identifiers unchanged. A failed preview load allows the same color to be retried, and an older request cannot replace a newer selection. Spotlight dismissal uses a completed pointer release in surrounding space, including empty parts of the wheel's SVG, without relying on a synthesized touch click. Color controls, photo buttons, scrolling, and swipes retain their own behavior.
+
 The third “Closest palettes” print tucks behind the upper pair. The upper cards keep their stacking order during hover and keyboard focus so their photo IDs, years, comparison values, and numbered links remain available.
 
 The build includes this page in the sitemap and hashes its inline script for the existing Content Security Policy. Publish through the normal reviewed commit to `main`; see [deployment](DEPLOYMENT.md).

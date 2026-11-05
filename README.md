@@ -72,7 +72,7 @@ PET’s “Working toward V2” section records peer testing of card links and s
 
 ```sh
 node site/build.mjs
-node --test site/security.test.mjs site/chapter-experience.test.mjs site/palette-cue.test.mjs
+node --test site/*.test.mjs
 git diff --check
 ```
 
