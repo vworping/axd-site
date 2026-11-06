@@ -152,12 +152,13 @@
 .case-study .pet-prototype-photos figcaption button:focus-visible { outline: 2px solid currentColor; outline-offset: -3px; }
 .case-study .pet-prototype-photos { --photo-ratio: 4 / 3; }
 /* A palette guessing exercise, kept open like the surrounding editorial layout. */
-.case-study .palette-game { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: clamp(28px, 6vw, 80px); min-height: 460px; margin: 28px 0 0; padding: 16px 0; }
+.case-study .palette-game { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: clamp(28px, 6vw, 80px); min-height: 460px; margin: 28px 0 0; padding: 16px 0 0; }
+.case-study .palette-game + .case-detail { margin-top: 8px; }
 .case-study .palette-game-print { width: min(100%, calc(370px * var(--photo-ratio, 1) + 20px)); justify-self: center; }
 .case-study .palette-image-stage img { display: block; width: 100%; height: auto; }
 .case-study [data-state="guessing"] .palette-image-stage img { filter: grayscale(1); }
 .case-study .palette-game-print figcaption { display: grid; gap: 5px; padding: 18px 2px 22px; text-align: center; font-size: .75rem; line-height: 1.4; }
-.case-study .palette-game-controls { position: relative; min-width: 0; width: min(100%, 430px); padding-bottom: 56px; }
+.case-study .palette-game-controls { position: relative; min-width: 0; width: min(100%, 430px); }
 .case-study .palette-instruction { max-width: 32ch; margin: 0 0 24px; font-size: 1rem; line-height: 1.6; letter-spacing: -.025em; }
 .case-study .palette-options { display: grid; gap: 16px; }
 .case-study .guess-option { position: relative; display: block; width: 100%; padding: 6px 6px 22px; border: 0; border-radius: 0; background: var(--paper); color: var(--muted); text-align: right; font: inherit; box-shadow: 0 5px 12px -7px #17212c66; transform: rotate(-1deg); transition: transform 350ms ease, opacity 350ms ease; }
@@ -170,11 +171,12 @@
 .case-study .guess-option[data-result="correct"] { color: var(--ink); }
 .case-study .guess-option[data-result="other"] { opacity: .4; }
 .case-study .guess-option[aria-disabled="true"] { cursor: default; }
-.case-study .palette-feedback { min-height: 1.7em; margin: 18px 0 8px; font-size: .75rem; line-height: 1.7; color: var(--muted); }
+.case-study .palette-feedback { min-height: 0; margin: 12px 0 0; font-size: .75rem; line-height: 1.7; color: var(--muted); }
 .case-study .palette-actions { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .case-study .palette-actions button, .case-study .palette-explore { min-height: 44px; padding: 8px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; color: inherit; font: inherit; font-size: .8125rem; text-align: left; }
 .case-study .palette-actions [aria-disabled="true"] { color: var(--muted); border-color: transparent; cursor: default; }
-.case-study .palette-explore { position: absolute; bottom: 0; left: 0; max-width: 100%; margin: 0; font-size: .75rem; }
+/* Let the reveal-only action take space only while visible, including when its label wraps. */
+.case-study .palette-explore { max-width: 100%; margin: 4px 0 0; font-size: .75rem; }
 .case-study .palette-game button:focus-visible, .case-study .analysis-option:focus-visible, .case-study .study-photo-open:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; }
 
 /* Counts and their actual examples share a single spread, not six cards. */
@@ -205,13 +207,12 @@
 .case-study .analysis-example-note .study-print-label { margin-bottom: 6px; }
 @media (max-width: 700px) {
   .case-study .palette-game, .case-study .case-distribution { grid-template-columns: minmax(0, 1fr); gap: 30px; min-height: 0; }
-  .case-study .palette-game { margin-top: 22px; padding: 12px 0; }
+  .case-study .palette-game { margin-top: 22px; padding: 12px 0 0; }
   .case-study .palette-game-print { width: min(100%, calc(240px * var(--photo-ratio, 1) + 20px)); }
   .case-study .palette-game-controls { width: 100%; max-width: 430px; justify-self: center; }
   .case-study .palette-instruction { margin-bottom: 12px; font-size: 1rem; }
   .case-study .palette-options { gap: 12px; }
   .case-study .guess-palette-bar { height: 30px; }
-  .case-study .palette-feedback { margin-top: 14px; }
   .case-study .palette-actions { gap: 8px 20px; }
   .case-study .palette-actions button { font-size: .75rem; }
   .case-study .analysis-categories { min-height: 0; }
