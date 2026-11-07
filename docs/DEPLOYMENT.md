@@ -46,7 +46,7 @@ Do not force-push the old tag over `main`.
 
 ## Browser security
 
-`site/worker.mjs` runs before assets and redirects HTTP requests to HTTPS, preserving the path and query. Localhost HTTP previews remain supported. The `ASSETS` binding serves the static build afterward. Requests now invoke this small Worker; Cloudflare Worker request limits apply.
+`site/worker.mjs` runs before assets and permanently redirects `www.mindofaxd.com` to `https://mindofaxd.com`, matching the canonical URLs and sitemap. It combines HTTPS, domain, and legacy chapter normalization into one 308 redirect while preserving query strings and asset paths. Localhost HTTP previews remain supported. Both public domains must stay attached to this Worker so the redirect runs. The `ASSETS` binding serves the static build afterward. Requests now invoke this small Worker; Cloudflare Worker request limits apply.
 
 `site/build.mjs` generates `site/dist/_headers` and ignored security-header JSON files bundled into the Worker. The Worker attaches these headers directly to all asset responses, including Constellation, PET, and the PET OS preview: a Content Security Policy, framing protection, MIME-type protection, referrer and permissions policies, and 30-day HSTS (without subdomain or preload commitments). The CSP allows the existing Cloudflare Web Analytics script and reporting endpoint. It automatically hashes the inline scripts from the composed portfolio and PET OS preview, including the intro bootstrap and Constellation explorer. Inline styles remain allowed because the photo and palette animations set styles dynamically. When adding external resources, update and test the policy in the build script.
 

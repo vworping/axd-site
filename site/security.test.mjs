@@ -78,6 +78,43 @@ test('localhost HTTP preview remains usable', async () => {
   assert.equal(await response.text(), 'Local preview');
 });
 
+test('www redirects permanently to the apex, including assets and legacy paths', async () => {
+  const paths = [
+    ...Object.keys(routes).map(path => [path, path]),
+    ['/pet.html', '/PET'], ['/work/', '/collaborations'], ['/about/', '/about'],
+    ['/index.html', '/'], ['/constellation/index.html', '/constellation'],
+    ['/assets/images/share-logo.png', '/assets/images/share-logo.png'],
+    ['/robots.txt', '/robots.txt'], ['/sitemap.xml', '/sitemap.xml'],
+    ['/missing.html', '/missing.html'],
+  ];
+  for (const protocol of ['http:', 'https:']) {
+    for (const [from, to] of paths) {
+      // No asset binding: aliases must redirect before fetching any content.
+      const response = await worker.fetch(new Request(`${protocol}//www.mindofaxd.com${from}?ref=job%20application&source=portfolio`), {});
+      assert.equal(response.status, 308);
+      assert.equal(response.headers.get('Location'), `https://mindofaxd.com${to}?ref=job%20application&source=portfolio`);
+    }
+  }
+});
+
+test('following a www redirect returns the canonical page and current experience', async () => {
+  const html = await readFile(new URL('dist/index.html', import.meta.url), 'utf8');
+  for (const path of Object.keys(chapterRoutes)) {
+    const redirect = await worker.fetch(new Request(`https://www.mindofaxd.com${path}`), {});
+    const response = await worker.fetch(new Request(redirect.headers.get('Location')), {
+      ASSETS: { fetch: async () => new Response(html, { headers: { 'Content-Type': 'text/html' } }) },
+    });
+    assert.equal(response.status, 200, 'The canonical destination must not redirect again');
+    const content = await response.text();
+    assert.ok(content.includes(`rel="canonical" href="https://mindofaxd.com${path}"`));
+    assert.ok(content.includes(`property="og:url" content="https://mindofaxd.com${path}"`));
+    assert.match(content, /2026 — NOW<\/dt><dd><h3>Operations Lead, Product Strategy &amp; Marketing \(part-time\)<\/h3><p>ATLA Innovations/);
+    assert.match(content, /2023 — 2025<\/dt><dd><h3>Research Data Operations Lead<\/h3><p>Boston University/);
+    assert.match(content, /2021 — NOW<\/dt><dd><h3>Freelance Photographer &amp; Visual Designer/);
+    assert.ok(!content.includes('Research Data Manager'));
+  }
+});
+
 test('direct chapter requests fetch the shared document and receive their own metadata', async () => {
   const html = await readFile(new URL('dist/index.html', import.meta.url), 'utf8');
   for (const [path, { title }] of Object.entries(chapterRoutes)) {

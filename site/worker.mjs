@@ -2,19 +2,18 @@ import securityHeaders from './.generated/security-headers.json' with { type: 'j
 import previewHeaders from './.generated/preview-security-headers.json' with { type: 'json' };
 import { chapterPath, chapterMetadata } from './chapter-routes.mjs';
 
-// Enforce encryption before serving any public asset. Local HTTP previews work.
+// Consolidate the public domains and enforce HTTPS before serving any asset.
+// Combine host, protocol, and chapter aliases in one permanent redirect.
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.protocol === 'http:' && !['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)) {
       url.protocol = 'https:';
-      return Response.redirect(url.href, 308);
     }
+    if (url.hostname === 'www.mindofaxd.com') url.hostname = 'mindofaxd.com';
     const chapter = chapterPath(url.pathname);
-    if (chapter && url.pathname !== chapter) {
-      url.pathname = chapter;
-      return Response.redirect(url.href, 308);
-    }
+    if (chapter) url.pathname = chapter;
+    if (url.href !== request.url) return Response.redirect(url.href, 308);
     const assetURL = new URL(request.url);
     if (chapter) assetURL.pathname = '/';
     const asset = await env.ASSETS.fetch(chapter ? new Request(assetURL, request) : request);
