@@ -15,7 +15,7 @@ A photography portfolio built around a stack of prints, measured color palettes,
 - Project previews, complete stories, photo galleries, and expanded images.
 - [Palette Constellation](https://mindofaxd.com/constellation/): an interactive palette sculpture, matching photograph previews, and a comparison photo board. A responsive **Choose one** cue shares the hero’s curved arrow and keeps its proportions at every screen size; tapping a color pins it while opening its photo previews.
 - [Building [pet.]](https://mindofaxd.com/pet): a personal engagement tool, with enclosure studies, a few build notes, and an interactive OS preview.
-- A palette-to-brackets intro, spelling name animation, shutter transitions, and ambient page gradients, with reduced-motion and pause support.
+- An intro with softly appearing brackets that fill with color from the bottom up, spelling name animation, shutter transitions, and ambient page gradients, with reduced-motion and pause support.
 - Responsive desktop and mobile layouts, keyboard navigation, and native dialogs.
 - Clean web images with watermarked copies available through **Take a copy**.
 

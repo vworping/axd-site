@@ -7,8 +7,7 @@
   const overlay = document.getElementById('intro-overlay');
   const mark = document.getElementById('intro-mark');
   const word = mark.querySelector('.mark-word');
-  const brandPaths = [...brand.querySelectorAll('path')];
-  const introPaths = [...mark.querySelectorAll('path')];
+  const introFill = document.getElementById('intro-bracket-fill');
   const brandGradients = [...brand.querySelectorAll('linearGradient')];
   const introGradients = [...mark.querySelectorAll('linearGradient')];
   const skip = document.getElementById('intro-skip');
@@ -25,46 +24,21 @@
   let flight;
   let frame = 0;
 
-  // Two continuous semicircles become the actual [ ] around AXD.
-  // Cubic segments have the same point count in both shapes, avoiding a jump.
-  function draw(paths, gradients, seconds, unfold = 1) {
-    paths.forEach((path, side) => {
-      const vertices = side === 0 ? [[20, 6], [7, 6], [7, 54], [20, 54]]
-        : [[140, 6], [153, 6], [153, 54], [140, 54]];
-      const direction = side === 0 ? -1 : 1;
-      const span = direction * Math.PI / 3;
-      const initialAngle = -Math.PI / 2 + seconds * .45;
-      const radius = 24;
-      let d = '';
-      for (let part = 0; part < 3; part++) {
-        const angle = initialAngle + part * span;
-        const end = angle + span;
-        const k = 4 / 3 * Math.tan(span / 4);
-        const circle = [
-          [80 + radius * Math.cos(angle), 30 + radius * Math.sin(angle)],
-          [80 + radius * (Math.cos(angle) - k * Math.sin(angle)), 30 + radius * (Math.sin(angle) + k * Math.cos(angle))],
-          [80 + radius * (Math.cos(end) + k * Math.sin(end)), 30 + radius * (Math.sin(end) - k * Math.cos(end))],
-          [80 + radius * Math.cos(end), 30 + radius * Math.sin(end)],
-        ];
-        const bracket = [0, 1 / 3, 2 / 3, 1].map((t) =>
-          vertices[part].map((v, axis) => lerp(v, vertices[part + 1][axis], t)));
-        const points = bracket.map((point, i) => point.map((v, axis) => lerp(circle[i][axis], v, unfold).toFixed(2)));
-        if (!part) d += `M ${points[0]} `;
-        d += `C ${points[1]} ${points[2]} ${points[3]} `;
-      }
-      path.setAttribute('d', d.trim());
-    });
+  function drawGradients(gradients, seconds) {
     // Move a smooth field of measured colors inside each crisp bracket.
     gradients.forEach((gradient, side) => {
-      const phase = seconds * .33 + side * .85 * unfold;
+      const phase = seconds * .33 + side * .85;
       gradient.setAttribute('gradientTransform', `translate(0 ${22 * Math.sin(phase)}) rotate(${16 * Math.sin(phase * .65)} 80 30)`);
     });
   }
 
-  function settleBrackets(paths) {
-    if (paths.length < 2) return;
-    paths[0].setAttribute('d', 'M 20 6 L 7 6 L 7 54 L 20 54');
-    paths[1].setAttribute('d', 'M 140 6 L 153 6 L 153 54 L 140 54');
+  function drawIntro(elapsed, seconds) {
+    // Fade in the empty brackets, then raise one level of color through both.
+    const fill = smooth((elapsed - 350) / 1800);
+    mark.style.setProperty('--bracket-opacity', smooth(elapsed / 750));
+    introFill.setAttribute('y', 60 * (1 - fill));
+    introFill.setAttribute('height', 60 * fill);
+    drawGradients(introGradients, seconds);
   }
 
   function setPalette(palette) {
@@ -97,6 +71,7 @@
     page.inert = false;
     overlay.style.removeProperty('--veil');
     mark.style.removeProperty('transform');
+    mark.style.removeProperty('--bracket-opacity');
     word.style.removeProperty('opacity');
     word.style.removeProperty('transform');
     skip.style.removeProperty('opacity');
@@ -109,17 +84,15 @@
     // Let requestAnimationFrame follow the display refresh rate. The settled
     // header needs only gradient updates; its bracket geometry is already fixed.
     const seconds = paused || reduced.matches ? 0 : now / 1000;
-    draw([], brandGradients, seconds);
+    drawGradients(brandGradients, seconds);
     if (active) {
       if (!root.classList.contains('intro-pending') || window.axdIntroExpired) {
         finishIntro();
         return;
       }
       const elapsed = now - started;
-      const unfold = smooth((elapsed - 900) / 1200);
-      const appear = smooth((elapsed - 1700) / 600);
-      if (unfold >= 1) settleBrackets(introPaths);
-      else draw(introPaths, introGradients, seconds, unfold);
+      const appear = smooth((elapsed - 1950) / 500);
+      drawIntro(elapsed, seconds);
       word.style.opacity = appear;
       word.style.transform = `translateY(${9 * (1 - appear)}px)`;
       if (elapsed >= 2500) {
@@ -155,7 +128,7 @@
     page.inert = true;
     mark.style.removeProperty('transform');
     word.style.opacity = 0;
-    draw(introPaths, introGradients, performance.now() / 1000, 0);
+    drawIntro(0, performance.now() / 1000);
     active = true;
     started = performance.now();
     flight = undefined;
@@ -196,7 +169,7 @@
       finishIntro();
       cancelAnimationFrame(frame);
       frame = 0;
-      draw(brandPaths, brandGradients, 0);
+      drawGradients(brandGradients, 0);
     }
     syncControls();
     requestFrame();
@@ -209,7 +182,7 @@
     }).observe(brand);
   }
 
-  draw(brandPaths, brandGradients, 0);
+  drawGradients(brandGradients, 0);
   syncControls();
   if (root.classList.contains('intro-pending')) {
     page.inert = true;

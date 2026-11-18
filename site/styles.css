@@ -66,6 +66,8 @@ dialog{border:0;padding:0;color:var(--ink)}dialog::backdrop{background:rgba(0,0,
   will-change: transform;
 }
 .intro-pending .intro-mark .mark-word { opacity: 0; }
+.intro-mark .mark-brackets { opacity: var(--bracket-opacity, 0); }
+.intro-bracket-track { stroke: var(--ink); opacity: .12; }
 .intro-skip {
   position: absolute;
   bottom: 30px;
