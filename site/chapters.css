@@ -112,7 +112,8 @@
 .pet-chapter.motion-hidden .paper { animation-play-state: paused; }
 .project-chapter[inert] *, .project-chapter[inert] *::before, .project-chapter[inert] *::after { animation-play-state: paused !important; }
 .horizontal-layout .work-section { grid-template-rows: auto minmax(0, 1fr); }
-.hero-shell { position: relative; isolation: isolate; overflow: clip; background: #c9d1db; }
+:root { --canvas-base: #c9d1db; --canvas-cool: #99b4d5; --canvas-warm: #dcc4bb; }
+.hero-shell { position: relative; isolation: isolate; overflow: clip; background: var(--canvas-base); }
 .hero-shell::before {
   content: '';
   position: absolute;
@@ -120,8 +121,8 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse calc(80% + var(--chapter-depth, 0) * 12%) calc(85% - var(--chapter-depth, 0) * 12%) at calc(90% - var(--chapter-progress, 0) * 35%) calc(18% + var(--chapter-progress, 0) * 25%), #99b4d5 0%, transparent 65%),
-    radial-gradient(ellipse at calc(10% + var(--chapter-progress, 0) * 40%) calc(85% - var(--chapter-depth, 0) * 20%), #dcc4bb 0%, transparent 60%), #c9d1db;
+    radial-gradient(ellipse calc(80% + var(--chapter-depth, 0) * 12%) calc(85% - var(--chapter-depth, 0) * 12%) at calc(90% - var(--chapter-progress, 0) * 35%) calc(18% + var(--chapter-progress, 0) * 25%), var(--canvas-cool) 0%, transparent 65%),
+    radial-gradient(ellipse at calc(10% + var(--chapter-progress, 0) * 40%) calc(85% - var(--chapter-depth, 0) * 20%), var(--canvas-warm) 0%, transparent 60%), var(--canvas-base);
   animation: chapter-ambient-drift 18s ease-in-out infinite alternate;
 }
 @keyframes chapter-ambient-drift { from { transform: translate3d(-2%, -1%, 0); } to { transform: translate3d(2%, 1%, 0); } }

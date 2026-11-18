@@ -1,0 +1,105 @@
+/* Native dark support keeps Safari Adaptive Dark Mode from recoloring the
+   photographs, measured palettes, or the independently animated canvas. */
+:root { color-scheme: light dark; }
+.horizontal-layout .project-chapter { color-scheme: inherit; }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas-base: #18212b;
+    --canvas-cool: #30475e;
+    --canvas-warm: #4b373b;
+    --hero-ground: var(--canvas-base);
+    --ink: #f0efeb;
+    --muted: #c0cbd5;
+    --line: #65717f;
+    --paper: #27313d;
+    --accent: #b5c9df;
+  }
+
+  /* Composed project snapshots define their own light tokens. Let them follow
+     the shell, including form controls and the map's labels and buttons. */
+  .horizontal-layout .project-chapter {
+    --ink: inherit;
+    --muted: inherit;
+    --line: inherit;
+    --paper: inherit;
+    --accent: inherit;
+    --ground: var(--canvas-base);
+    --field: var(--canvas-base);
+  }
+
+  .intro-overlay::before,
+  .image-dialog[data-single] {
+    background:
+      radial-gradient(ellipse at 90% 18%, var(--canvas-cool), transparent 65%),
+      radial-gradient(ellipse at 10% 85%, var(--canvas-warm), transparent 60%),
+      var(--canvas-base);
+  }
+
+  .hero-topline,
+  .hero-research .research-note,
+  .connect-copy > p,
+  .connect-footer,
+  .story-select,
+  .collab-meta,
+  .constellation-note p,
+  .pet-note > span > span { color: var(--muted); }
+  .is-active .story-select { color: var(--ink); }
+
+  /* Dark mats keep the print treatment without applying filters to images. */
+  .deck-print,
+  .collab-paper,
+  .pet-chapter .paper,
+  .pet-chapter .image-button { background: var(--paper); border-color: var(--line); }
+  .project-chapter .case-study .study-polaroid,
+  .pet-chapter .paper figcaption { color: var(--ink); }
+  .portrait-frame { background: #ffffff0a; border-color: var(--line); }
+  .portrait-frame::before,
+  .portrait-frame::after,
+  .background-button,
+  .connect-socials a { border-color: var(--line); }
+
+  .skip-link { color: var(--paper); }
+  .section-navigation button:not(:disabled):hover .round-arrow { color: var(--canvas-base); }
+  .dismiss-button:hover,
+  .project-chapter .dismiss-button:hover,
+  .portrait-controls button:hover,
+  .connect-socials a:hover,
+  .gallery-controls button:hover,
+  .project-chapter .case-study .analysis-example-controls button:hover,
+  .project-chapter .case-study .pet-prototype-photos figcaption button:hover { background: #ffffff14; }
+  .project-chapter .case-study .distribution-track { background: #ffffff14; }
+
+  .constellation-chapter .map-note { background: var(--paper); border-color: var(--line); }
+  .constellation-chapter select option { background: var(--paper); color: var(--ink); }
+  .constellation-chapter #c-focus-dialog,
+  .constellation-chapter #c-focus-dialog .dialog-bar,
+  .pet-chapter #p-image-viewer { background: var(--paper); }
+  .constellation-chapter #c-focus-dialog .dialog-bar { border-color: var(--line); }
+
+  .image-dialog { background: var(--canvas-base); color: var(--ink); }
+  .project-dialog,
+  .project-dialog .dialog-topbar,
+  .project-dialog .gallery-expand,
+  .project-dialog .gallery-expand > img,
+  .project-dialog .gallery-thumbnails button { background: var(--paper); border-color: var(--line); }
+  .project-dialog,
+  .project-dialog .dialog-label,
+  .project-dialog .dialog-topbar .dismiss-button,
+  .project-dialog .gallery-controls,
+  .project-dialog .dialog-story h2,
+  .project-dialog .dialog-summary,
+  .project-dialog .dialog-story #dialog-body p,
+  .project-dialog .project-facts dd { color: var(--ink); }
+  .project-dialog .dialog-story .section-label,
+  .project-dialog .project-facts dt,
+  .dialog-palette-wrap { color: var(--muted); }
+  .project-dialog .gallery-controls,
+  .project-dialog .project-facts > div,
+  .dialog-palette-wrap { border-color: var(--line); }
+  .project-dialog .gallery-step { border-color: var(--line) !important; }
+  .project-dialog .gallery-step:hover,
+  .project-dialog .gallery-step:focus-visible { background: var(--ink) !important; color: var(--paper); }
+  .project-dialog::backdrop,
+  .image-dialog[data-single]::backdrop { background: #0b1118d9; }
+}
