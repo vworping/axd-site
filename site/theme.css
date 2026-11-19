@@ -36,7 +36,7 @@
     --muted: #c0cbd5;
     --line: #65717f;
     --paper: #27313d;
-    --photo-paper: #d6d0c4;
+    --photo-paper: #c1abb8;
     --photo-edge: #ffffffb3;
     --photo-shadow: #0b1118a6;
     --accent: #b5c9df;
@@ -87,7 +87,7 @@
     .project-dialog .gallery-expand
   ) {
     --ink: #27313f;
-    --muted: #445161;
+    --muted: #35404f;
     --line: #7a8490;
     background: var(--photo-paper);
     color: var(--ink);
