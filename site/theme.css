@@ -1,7 +1,30 @@
 /* Native dark support keeps Safari Adaptive Dark Mode from recoloring the
    photographs, measured palettes, or the independently animated canvas. */
-:root { color-scheme: light dark; }
+:root {
+  color-scheme: light dark;
+  --photo-edge: #7a8490;
+  --photo-shadow: #19232766;
+}
 .horizontal-layout .project-chapter { color-scheme: inherit; }
+
+/* Every mat gets an edge, including prints whose snapshot has no border.
+   A shadow rim preserves photo sizing and the separate keyboard focus ring. */
+:is(
+  .deck-print,
+  .collab-paper,
+  .portrait-frame,
+  .constellation-chapter .photo-print,
+  .constellation-chapter .palette-mini,
+  .constellation-chapter .image-frame,
+  .constellation-chapter .neighbor-card,
+  .project-chapter .case-study .study-polaroid,
+  .project-chapter .case-study .guess-option,
+  .pet-chapter .paper,
+  .project-dialog .gallery-expand
+) {
+  border-color: transparent;
+  box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow);
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -13,8 +36,9 @@
     --muted: #c0cbd5;
     --line: #65717f;
     --paper: #27313d;
-    --photo-paper: #55504b;
-    --photo-edge: #716a63;
+    --photo-paper: #d6d0c4;
+    --photo-edge: #ffffffb3;
+    --photo-shadow: #0b1118a6;
     --accent: #b5c9df;
   }
 
@@ -48,21 +72,31 @@
   .pet-note > span > span { color: var(--muted); }
   .is-active .story-select { color: var(--ink); }
 
-  /* Warm mats separate the prints from the cool canvas and dialog surfaces. */
-  .deck-print,
-  .collab-paper,
-  .portrait-frame,
-  .constellation-chapter .photo-print,
-  .constellation-chapter .palette-mini,
-  .constellation-chapter .image-frame,
-  .constellation-chapter .neighbor-card,
-  .project-chapter .case-study .study-polaroid,
-  .project-chapter .case-study .guess-option,
-  .pet-chapter .paper,
+  /* Keep photo mats separate from the canvas and dialog surfaces. */
+  :is(
+    .deck-print,
+    .collab-paper,
+    .portrait-frame,
+    .constellation-chapter .photo-print,
+    .constellation-chapter .palette-mini,
+    .constellation-chapter .image-frame,
+    .constellation-chapter .neighbor-card,
+    .project-chapter .case-study .study-polaroid,
+    .project-chapter .case-study .guess-option,
+    .pet-chapter .paper,
+    .project-dialog .gallery-expand
+  ) {
+    --ink: #27313f;
+    --muted: #445161;
+    --line: #7a8490;
+    background: var(--photo-paper);
+    color: var(--ink);
+  }
+  /* Inner image surfaces share the mat color; the rim belongs to the frame. */
   .pet-chapter .image-button,
   .project-dialog .gallery-expand > .gallery-image-stage {
     background: var(--photo-paper);
-    border-color: var(--photo-edge);
+    border-color: transparent;
   }
   .project-chapter .case-study .study-polaroid,
   .pet-chapter .paper figcaption { color: var(--ink); }
