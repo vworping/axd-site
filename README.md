@@ -48,7 +48,7 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | Fonts, base styles, core visual treatment | [`site/styles.css`](site/styles.css) |
 | System dark-mode palette and surface overrides | [`site/theme.css`](site/theme.css) |
 
-The portfolio follows the visitor's system appearance. Light mode retains the pale warm/cool canvas; dark mode uses a deeper blue/charcoal gradient with light text and dark photo mats. Native `color-scheme` support is declared before rendering so Safari Adaptive Dark Mode leaves the authored colors alone. Photographs and extracted palette swatches keep their original colors. The shared canvas colors live in `site/chapters.css`, with dark overrides in `site/theme.css`.
+The portfolio follows the visitor's system appearance. Light mode retains the pale warm/cool canvas; dark mode uses a deeper blue/charcoal gradient with light text and warm charcoal photo mats. The mats use separate `--photo-paper` and `--photo-edge` tokens so they stand apart from the cool dialog surfaces. Native `color-scheme` support is declared before rendering so Safari Adaptive Dark Mode leaves the authored colors alone. Photographs and extracted palette swatches keep their original colors. The shared canvas colors live in `site/chapters.css`, with dark overrides in `site/theme.css`.
 
 For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
 
