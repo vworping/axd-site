@@ -45,12 +45,12 @@
   backgroundResize.observe(background);
   // Font loading can change the rows without changing the scroll viewport.
   if (document.fonts) document.fonts.ready.then(syncBackgroundScroll);
-  $('background-dismiss').addEventListener('click', () => background.close());
+  $('background-dismiss').addEventListener('click', () => window.AXDDialogs.close(background));
   background.addEventListener('close', () => $('background-open').focus({ preventScroll: true }));
   background.addEventListener('click', (event) => {
     if (event.target !== background) return;
     const rect = background.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) background.close();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) window.AXDDialogs.close(background);
   });
 
   const dialog = $('project-dialog');
@@ -212,7 +212,7 @@
       });
     });
   }
-  $('dialog-dismiss').addEventListener('click', () => dialog.close());
+  $('dialog-dismiss').addEventListener('click', () => window.AXDDialogs.close(dialog));
   dialog.addEventListener('close', () => returnFocus?.focus({ preventScroll: true }));
   $('gallery-prev').addEventListener('click', () => updateGallery(-1));
   $('gallery-next').addEventListener('click', () => updateGallery(1));
@@ -237,10 +237,13 @@
   });
   const closeExpanded = () => window.AXDDialogs.close(imageDialog);
   $('image-dismiss').addEventListener('click', closeExpanded);
-  imageDialog.addEventListener('cancel', event => {
-    event.preventDefault();
-    closeExpanded();
-  });
+  // Escape must wait for the same closing shutter as buttons and outside clicks.
+  for (const modal of [background, dialog, imageDialog]) {
+    modal.addEventListener('cancel', event => {
+      event.preventDefault();
+      window.AXDDialogs.close(modal);
+    });
+  }
   document.querySelectorAll('.image-dismiss-side').forEach((side) => {
     side.addEventListener('click', closeExpanded);
   });
@@ -270,8 +273,7 @@
       if (event.target !== modal) return;
       const rect = modal.getBoundingClientRect();
       if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
-        if (modal === imageDialog) closeExpanded();
-        else modal.close();
+        window.AXDDialogs.close(modal);
       }
     });
   }

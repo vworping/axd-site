@@ -70,7 +70,7 @@ This calls that project's `sample_lab_pixels` and `extract_palette` functions: 1
 | `about-portraits.js` | About photo navigation, decode-safe transitions, and measured palette strips. |
 | `logo-motion.js` | Palette logo and intro animation. |
 | `name-motion.js` | About name spelling transitions and staggered whole-word hero tagline rolls. |
-| `dialog-motion.js` | Opening shutter animation. |
+| `dialog-motion.js` | Shared opening and closing shutter animations. Use `AXDDialogs.open` / `close` for every dialog dismissal path, including Escape and backdrop clicks. |
 | `section-navigation.js` | Horizontal chapters, touch/wheel/keyboard navigation. |
 | `image-downloads.js` | Watermarked save/copy exports. |
 | `ambient-gradient.css`, `ambient-gradient.js` | Shared background gradients and scroll response on standalone pages. |
