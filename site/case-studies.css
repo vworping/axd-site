@@ -82,12 +82,11 @@
 .pet-intro-device img { display: block; width: 100%; height: auto; border: 12px solid #22262b; border-radius: 22px; box-shadow: 0 20px 30px -22px #17212c99; }
 .pet-intro-links { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; }
 .pet-intro .pet-intro-links a { border-bottom: 0; display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font-size: .8125rem; text-decoration: underline; text-underline-offset: 5px; }
-.os-section.pet-live { padding-block: 24px 44px; }
+.os-section.pet-live { padding-block: 24px 16px; }
 .pet-live .section-heading { width: min(100%, 960px); margin-inline: auto; margin-bottom: 22px; }
 .pet-live .section-heading h2 { font-size: 1.35rem; }
 .pet-live .os-note { max-width: 64ch; }
 .pet-live #os-preview { width: min(100%, 960px); margin-inline: auto; }
-.pet-demo-note { margin-top: 14px; text-align: center; font-size: .6875rem; line-height: 1.5; color: var(--muted); }
 .case-study .case-compact-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
 .case-study .case-compact-notes > div { border: 0; padding: 0; }
 .case-study .case-compact-notes dt { font-size: .6875rem; text-transform: uppercase; letter-spacing: .06em; }
@@ -235,7 +234,7 @@
   .case-study .device-gallery { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-inline: 6px; }
   .case-study .pet-hardware > summary { column-gap: 10px; row-gap: 6px; }
   .pet-intro-copy .lead br { display: none; }
-  .os-section.pet-live { padding-block: 12px 32px; }
+  .os-section.pet-live { padding-block: 12px 16px; }
   .pet-live .section-heading { gap: 14px; align-items: start; }
   .pet-live .os-note { font-size: .75rem; }
   .case-study .case-compact-notes { gap: 20px; }

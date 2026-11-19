@@ -2,6 +2,7 @@
   'use strict';
   const embedded = window.parent !== window;
   document.body.classList.toggle('portfolio-embedded', embedded);
+  document.querySelector('.preview-foot > span').textContent = 'Current OS · simulated phone and NFC events · no live introductions';
   function reportHeight() {
     if (embedded) parent.postMessage({ type: 'pet:height', height: Math.ceil(document.querySelector('.workspace').getBoundingClientRect().height) + 4 }, location.origin);
   }
