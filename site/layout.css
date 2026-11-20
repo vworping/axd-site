@@ -909,6 +909,9 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .connect-footer .motion-controls { flex: 0 0 auto; justify-content: flex-end; gap: 18px; }
 .connect-footer .motion-controls button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 0; font-size: .6875rem; white-space: nowrap; }
 .connect-footer .motion-controls button[hidden] { display: none; }
+@media (max-width: 700px), (hover: none) and (pointer: coarse) {
+ .connect-footer { top: 0; }
+}
 
 @media (max-width: 700px) and (orientation: portrait) {
  .horizontal-layout .connect-section { padding-block: clamp(12px, 2dvh, 20px) 20px; gap: 10px; }

@@ -1,14 +1,15 @@
 /* A paper tab tucked into About's portrait; no extra chapter or navigation. */
+.portrait-card { isolation: isolate; }
 .baking-tab {
   position: absolute;
-  z-index: 2;
-  top: -22px;
+  z-index: -1;
+  top: -26px;
   right: 14px;
   display: inline-flex;
   align-items: flex-start;
   gap: 6px;
   min-height: 44px;
-  padding: 6px 10px 12px;
+  padding: 4px 10px 12px;
   isolation: isolate;
   background: transparent;
   color: #513d34;
@@ -30,7 +31,10 @@
   background: #dec1ab;
   box-shadow: inset 0 1px #fff6;
 }
-.baking-tab:hover, .baking-tab:focus-visible { transform: translateY(-3px) rotate(0); }
+.baking-tab:focus-visible { transform: translateY(-3px) rotate(0); }
+@media (hover: hover) and (pointer: fine) {
+  .baking-tab:hover { transform: translateY(-3px) rotate(0); }
+}
 .baking-tab svg { width: 15px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Warm paper and brown ink, with the portfolio’s taped photo frames. */
