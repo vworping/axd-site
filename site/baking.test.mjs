@@ -82,15 +82,18 @@ test('in-frame arrows wrap through photos and inline video, pausing the video wh
   const frame = grid.querySelector('.kitchen-media-frame'), stage = grid.querySelector('.kitchen-media-stage');
   const next = frame.querySelector('.kitchen-media-next'), previous = frame.querySelector('.kitchen-media-previous');
   assert.equal(stage.children[0].src, '/one.png');
+  assert.equal(stage.style.aspectRatio, '400 / 600');
   next.emit('click');
   const video = stage.children[0];
   assert.equal(video.src, '/two.mp4');
+  assert.equal(stage.style.aspectRatio, '600 / 400');
   assert.equal(video.playsInline, true);
   assert.match(video.getAttribute('controlslist'), /nofullscreen/);
   assert.equal(video.disablePictureInPicture, true);
   next.emit('click');
   assert.equal(video.wasPaused, true);
   assert.equal(stage.children[0].src, '/three.png');
+  assert.equal(stage.style.aspectRatio, '500 / 500');
   next.emit('click');
   assert.equal(stage.children[0].src, '/one.png');
   previous.emit('click');

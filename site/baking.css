@@ -1,19 +1,19 @@
 /* A paper tab tucked into About's portrait; no extra chapter or navigation. */
-.portrait-card:has(.baking-tab:not([hidden])) { padding-top: 40px; }
 .baking-tab {
   position: absolute;
-  top: -34px;
+  z-index: 2;
+  top: -22px;
   right: 14px;
   display: inline-flex;
   align-items: flex-start;
-  gap: 7px;
+  gap: 6px;
   min-height: 44px;
-  padding: 9px 14px 14px;
+  padding: 6px 10px 12px;
   isolation: isolate;
   background: transparent;
   color: #513d34;
-  font-size: .875rem;
-  line-height: 20px;
+  font-size: .75rem;
+  line-height: 18px;
   transform: rotate(2deg);
   transform-origin: bottom center;
   transition: transform 180ms ease;
@@ -31,7 +31,7 @@
   box-shadow: inset 0 1px #fff6;
 }
 .baking-tab:hover, .baking-tab:focus-visible { transform: translateY(-3px) rotate(0); }
-.baking-tab svg { width: 17px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.baking-tab svg { width: 15px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Warm paper and brown ink, with the portfolio’s taped photo frames. */
 .baking-dialog {
@@ -62,33 +62,34 @@
 .kitchen-actions > button { min-height: 44px; background: transparent; }
 .baking-dismiss { display: grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; background: transparent; font-size: 1.8rem; line-height: 1; }
 .baking-dismiss:hover { border-color: var(--baking-line); }
-.baking-pages { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #a5b4a0 transparent; padding: 36px 44px 40px; }
+.baking-pages { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #a5b4a0 transparent; padding: 26px 44px 32px; }
 .baking-pages:focus-visible { outline-offset: -5px; }
-.baking-heading { position: relative; margin-bottom: 34px; }
-.baking-aside { margin-bottom: 13px; color: var(--baking-accent); font: italic 1.125rem/1.4 Georgia, serif; }
+.baking-heading { position: relative; margin-bottom: 20px; }
+.baking-aside { margin-bottom: 7px; color: var(--baking-accent); font: italic 1.125rem/1.4 Georgia, serif; }
 .baking-heading h2 { font: 400 clamp(2.4rem, 5vw, 4.5rem)/1.08 var(--body); letter-spacing: -.065em; }
 .baking-heading h2 > span { color: var(--baking-accent); }
-.baking-heading #baking-intro { margin-top: 18px; color: var(--baking-muted); font-size: 1rem; line-height: 1.5; }
-.kitchen-underline { display: block; width: 168px; height: 12px; margin-top: 15px; fill: none; stroke: var(--baking-accent); stroke-width: 1.3; stroke-linecap: round; opacity: .7; }
+.baking-heading #baking-intro { margin-top: 9px; color: var(--baking-muted); font-size: 1rem; line-height: 1.5; }
+.kitchen-underline { display: block; width: 168px; height: 12px; margin-top: 8px; fill: none; stroke: var(--baking-accent); stroke-width: 1.3; stroke-linecap: round; opacity: .7; }
 .baking-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 38px 28px; padding: 16px 8px 12px; }
 /* Same translucent tape and shadow rim as the Constellation photo prints. */
-.baking-print { position: relative; min-width: 0; padding: 10px 10px 20px; border: 1px solid #c9c8c180; background: var(--photo-paper, #f8f7f3); color: #333e39; box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow); transform: rotate(-2deg); transition: transform 220ms ease; }
+.baking-print { position: relative; min-width: 0; padding: 10px 10px 12px; border: 1px solid #c9c8c180; background: var(--photo-paper, #f8f7f3); color: #333e39; box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow); transform: rotate(-2deg); transition: transform 220ms ease; }
 .baking-print::before { content: ''; position: absolute; top: -13px; left: 37%; width: 25%; height: 28px; z-index: 1; background: #ece3c6b3; border-inline: 1px dashed #a9a28b55; transform: rotate(-4deg); pointer-events: none; }
 .baking-print:nth-child(3n + 2) { margin-top: 15px; transform: rotate(2deg); }
 .baking-print:nth-child(3n) { transform: rotate(-1deg); }
 .baking-print:hover, .baking-print:focus-within { transform: rotate(0); }
-.kitchen-media-stage > :is(img, video) { display: block; width: 100%; height: 100%; object-fit: contain; background: #e6e3da; }
+.kitchen-media-stage > :is(img, video) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; background: #e6e3da; }
 .baking-placeholder { width: 100%; aspect-ratio: 1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background-color: #e7cbb9; background-image: repeating-linear-gradient(0deg, transparent 0 23px, #fff3 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, #fff3 23px 24px); }
 .baking-placeholder--savory { background-color: #d4d9c8; }
 .baking-placeholder--share { background-color: #d5dce1; }
 .baking-placeholder svg { width: 100%; max-width: 175px; min-height: 0; flex: 1; fill: none; stroke: #745742; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
 .baking-doodle-fill { fill: #fffcf533; }
 .baking-placeholder > span { flex: none; color: #655447; font-size: .75rem; letter-spacing: .025em; }
-.baking-print figcaption { padding: 13px 6px 0; overflow-wrap: anywhere; }
+.baking-print figcaption { padding: 10px 4px 0; overflow-wrap: anywhere; }
 .kitchen-sticker { display: inline-block; padding: 4px 8px; margin: 0 0 11px -2px; border: 1px solid #ac7f63; background: #e9c8ae; color: #5c402f; font-size: .625rem; line-height: 1.2; letter-spacing: .07em; transform: rotate(-3deg); box-shadow: 1px 2px 0 #27313f15; }
 .kitchen-sticker--cooking { background: #d7dec4; border-color: #869274; color: #3f513b; transform: rotate(2deg); }
 .kitchen-sticker--share { background: #d6dfe6; border-color: #8293a2; color: #344d5e; }
-.baking-print h3 { font-size: 1.125rem; font-weight: 500; line-height: 1.3; letter-spacing: -.035em; }
+.kitchen-media-frame > .kitchen-sticker { position: absolute; z-index: 1; bottom: -6px; left: 8px; margin: 0; padding: 3px 6px; pointer-events: none; }
+.baking-print h3 { font-size: 1.125rem; font-weight: 500; line-height: 1.3; letter-spacing: -.035em; text-transform: lowercase; }
 .baking-print h3:focus { outline: none; }
 .baking-print p { margin-top: 9px; color: #535c53; font-size: 1rem; line-height: 1.5; white-space: pre-line; }
 .kitchen-caption-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -145,11 +146,11 @@
 }
 @media (max-width: 600px) {
   .baking-dialog { width: calc(100% - 40px); max-height: 86dvh; }
-  .baking-topbar { padding: 6px 10px 6px 20px; gap: 10px; }
-  .baking-topbar > span { max-width: 12em; font-size: .6875rem; }
+  .baking-topbar { min-height: 56px; padding: 5px 8px 5px 18px; gap: 6px; }
+  .baking-topbar > span { font-size: .6875rem; letter-spacing: .07em; white-space: nowrap; }
   .kitchen-actions { gap: 2px; }
-  .baking-pages { padding: 27px 24px 28px; }
-  .baking-heading { margin-bottom: 25px; }
+  .baking-pages { padding: 20px 24px 24px; }
+  .baking-heading { margin-bottom: 16px; }
   .baking-heading h2 { font-size: clamp(2.5rem, 9vw, 3.5rem); }
   .baking-grid { grid-template-columns: minmax(0, 1fr); max-width: 380px; margin-inline: auto; gap: 32px; padding-inline: 4px; }
   .baking-print:nth-child(3n + 2) { margin-top: 0; }
@@ -165,7 +166,7 @@
 body:has(#motion-toggle[aria-pressed="true"]) :is(.baking-tab, .baking-print) { transition: none; }
 
 .kitchen-media-frame { position: relative; }
-.kitchen-media-stage { aspect-ratio: 3 / 4; max-height: 370px; overflow: hidden; background: #e6e3da; }
+.kitchen-media-stage { position: relative; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #e6e3da; }
 .kitchen-media-stage video::-webkit-media-controls-fullscreen-button { display: none; }
 .kitchen-media-arrow { position: absolute; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #f8f7f399; background: #302c29cc; color: #f8f7f3; font-size: 1.5rem; line-height: 1; transform: translateY(-50%); }
 .kitchen-media-arrow:hover { background: #302c29; }

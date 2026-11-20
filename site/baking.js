@@ -81,7 +81,6 @@
     const media = entry.media || (entry.photo ? [{ ...entry.photo, type: 'image' }] : []);
     const frame = node('div', 'kitchen-media-frame');
     const stage = node('div', 'kitchen-media-stage');
-    if (media[0]?.width && media[0]?.height) stage.style.aspectRatio = `${media[0].width} / ${media[0].height}`;
     frame.append(stage);
     let active = 0;
     const count = node('span', 'kitchen-media-count');
@@ -90,6 +89,7 @@
       stage.querySelector('video')?.pause();
       active = (index + media.length) % media.length;
       const item = media[active];
+      if (item.width && item.height) stage.style.aspectRatio = `${item.width} / ${item.height}`;
       const element = node(item.type === 'video' ? 'video' : 'img');
       element.src = item.src;
       element.width = item.width;
@@ -135,7 +135,8 @@
     title.tabIndex = -1;
     const heading = node('div', 'kitchen-caption-heading');
     heading.append(title);
-    caption.append(node('span', `kitchen-sticker${entry.kind === 'cooking' ? ' kitchen-sticker--cooking' : ''}`, entry.kind === 'baking' ? 'BAKING' : 'COOKING'), heading);
+    frame.append(node('span', `kitchen-sticker${entry.kind === 'cooking' ? ' kitchen-sticker--cooking' : ''}`, entry.kind === 'baking' ? 'BAKING' : 'COOKING'));
+    caption.append(heading);
     if (entry.description?.trim()) {
       const description = formattedText(entry.description);
       description.id = `description-${entry.id}`;
