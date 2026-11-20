@@ -9,6 +9,7 @@
   const placeholders = [...grid.children].map(child => child.cloneNode(true));
   let signature = '';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = matchMedia('(min-width: 701px)');
   let paused = document.getElementById('motion-toggle')?.getAttribute('aria-pressed') === 'true';
   document.addEventListener('axd:motion', event => { paused = event.detail.paused; });
   tab.hidden = false;
@@ -32,7 +33,7 @@
     }
     return content;
   }
-  function disclosure(panel, label) {
+  function disclosure(panel, label, layout) {
     const button = node('button', 'kitchen-toggle');
     const icon = node('span', '', '+');
     icon.setAttribute('aria-hidden', 'true');
@@ -47,10 +48,12 @@
       const turn = ++revision;
       expanded = !expanded;
       animation?.cancel();
+      layout.prepare();
       button.setAttribute('aria-expanded', String(expanded));
       button.setAttribute('aria-label', `${expanded ? 'Hide' : 'Show'} ${label}`);
       icon.textContent = expanded ? '−' : '+';
       panel.hidden = false;
+      if (expanded) layout.reveal(panel);
       if (!reduced.matches && !paused && typeof panel.animate === 'function') {
         animation = window.AXDSnapshot(panel, expanded);
         await animation.finished.catch(() => {});
@@ -58,16 +61,17 @@
       if (revision !== turn) return;
       panel.hidden = !expanded;
       animation = null;
+      layout.settle();
     });
     return button;
   }
-  function recipeSection(recipe, entry) {
+  function recipeSection(recipe, entry, layout) {
     if (!recipe?.ingredients?.trim() && !recipe?.method?.trim()) return null;
     const details = node('section', 'kitchen-recipe');
     const heading = node('div', 'kitchen-caption-heading');
     const body = node('div');
     body.id = `recipe-${entry.id}`;
-    heading.append(node('h4', '', 'Recipe'), disclosure(body, `recipe for ${entry.title}`));
+    heading.append(node('h4', '', 'Recipe'), disclosure(body, `recipe for ${entry.title}`, layout));
     details.append(heading, body);
     for (const [key, title, tag] of [['ingredients', 'Ingredients', 'ul'], ['method', 'Method', 'ol']]) {
       if (!recipe[key]?.trim()) continue;
@@ -78,6 +82,29 @@
   function card(entry) {
     const print = node('figure', 'baking-print');
     print.dataset.dish = entry.id;
+    const viewport = node('div', 'kitchen-card-pages');
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'group');
+    viewport.setAttribute('aria-label', `${entry.title}: photos and details`);
+    print.append(viewport);
+    let held = false;
+    const layout = {
+      prepare() {
+        // Hold this card's closed footprint; opening details never lengthens the board.
+        if (!desktop.matches || held) return;
+        viewport.style.setProperty('--kitchen-card-height', `${viewport.offsetHeight}px`);
+        held = true;
+      },
+      reveal(panel) {
+        if (desktop.matches) viewport.scrollTop = Math.max(0, panel.offsetTop - (panel.previousElementSibling?.offsetHeight || 44) - 8);
+      },
+      settle() {
+        if ([...viewport.querySelectorAll('.kitchen-toggle')].some(button => button.getAttribute('aria-expanded') === 'true')) return;
+        viewport.style.removeProperty('--kitchen-card-height');
+        viewport.scrollTop = 0;
+        held = false;
+      },
+    };
     const media = entry.media || (entry.photo ? [{ ...entry.photo, type: 'image' }] : []);
     const frame = node('div', 'kitchen-media-frame');
     const stage = node('div', 'kitchen-media-stage');
@@ -112,7 +139,7 @@
       stage.replaceChildren(element);
       count.textContent = `${active + 1} / ${media.length}${item.type === 'video' ? ' · video' : ''}`;
     }
-    print.append(frame);
+    viewport.append(frame);
     if (media.length) show(0);
     if (media.length > 1) {
       const previous = node('button', 'kitchen-media-arrow kitchen-media-previous');
@@ -128,7 +155,7 @@
       previous.addEventListener('click', () => show(active - 1));
       next.addEventListener('click', () => show(active + 1));
       frame.append(previous, next);
-      print.append(count);
+      viewport.append(count);
     }
     const caption = node('figcaption');
     const title = node('h3', '', entry.title);
@@ -140,12 +167,12 @@
     if (entry.description?.trim()) {
       const description = formattedText(entry.description);
       description.id = `description-${entry.id}`;
-      heading.append(disclosure(description, `description for ${entry.title}`));
+      heading.append(disclosure(description, `description for ${entry.title}`, layout));
       caption.append(description);
     }
-    const recipe = recipeSection(entry.recipe, entry);
+    const recipe = recipeSection(entry.recipe, entry, layout);
     if (recipe) caption.append(recipe);
-    print.append(caption);
+    viewport.append(caption);
     return print;
   }
   async function load() {

@@ -77,6 +77,11 @@
 .baking-print:nth-child(3n + 2) { margin-top: 15px; transform: rotate(2deg); }
 .baking-print:nth-child(3n) { transform: rotate(-1deg); }
 .baking-print:hover, .baking-print:focus-within { transform: rotate(0); }
+.kitchen-card-pages { position: relative; }
+.kitchen-card-pages:focus-visible { outline-offset: -2px; }
+@media (min-width: 701px) {
+  .kitchen-card-pages { height: var(--kitchen-card-height, auto); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d978c transparent; }
+}
 .kitchen-media-stage > :is(img, video) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; background: #e6e3da; }
 .baking-placeholder { width: 100%; aspect-ratio: 1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background-color: #e7cbb9; background-image: repeating-linear-gradient(0deg, transparent 0 23px, #fff3 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, #fff3 23px 24px); }
 .baking-placeholder--savory { background-color: #d4d9c8; }

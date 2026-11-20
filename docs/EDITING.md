@@ -65,6 +65,8 @@ To add a recipe or more media later, choose the existing dish in the editor. Its
 
 Descriptions and optional recipes start collapsed behind +/− controls. Pasted step labels (`1.`, `1)`, `(1)`, or `Step 1:`) become bold list numbers, including steps entered in a description. Multiple photos/videos use arrows inside the same frame; clicking media does not open an enlarged view.
 
+On desktop, opening a description or recipe keeps the card at its closed height and scrolls its contents inside the paper frame. Closing every disclosure returns to the photo. Mobile entries continue to expand naturally within the collection.
+
 The form accepts up to 12 media files per dish, with a 20 MB input limit per file and a 60 MB combined upload limit. Images are converted to WebP (PNG fallback), with a maximum 1800-pixel long edge and no crop. Videos must be browser-playable MP4 or WebM; they are preserved as uploaded and never autoplay. Each card has Previous/Next controls when it has multiple media. Closing the popup stops its videos.
 
 Saved data lives in `site/assets/data/kitchen.json`. Media live in `site/assets/media/kitchen/`. Both are included in the next build. Keep these files together when committing or moving the project. The source data updates immediately in local preview; no rebuild is needed for each new dish. Rebuild before publishing.

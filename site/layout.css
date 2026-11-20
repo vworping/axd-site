@@ -846,6 +846,9 @@ html[data-input="pointer"] :focus { outline: none !important; }
  max-width: 1440px;
  margin-inline: auto;
 }
+@media (min-width: 701px) and (min-height: 601px) {
+ .connect-layout { grid-template-columns: fit-content(38%) minmax(0, 1fr); column-gap: clamp(32px, 4vw, 64px); }
+}
 /* Reserve the corners in layout so their outer edges share the text gutter. */
 .portrait-card { display: flex; justify-content: flex-start; align-self: center; min-width: 0; padding: 10px; }
 .portrait-frame { --portrait-inset: 12px; --portrait-image-height: clamp(200px, calc(100cqh - 122px), 568px); position: relative; width: calc(var(--portrait-image-height) * 2 / 3 + var(--portrait-inset) * 2 + 2px); max-width: 100%; padding: var(--portrait-inset) var(--portrait-inset) 0; border: 1px solid #27313f40; background: #ffffff24; }
@@ -888,7 +891,7 @@ html[data-input="pointer"] :focus { outline: none !important; }
 .connect-socials svg { width: 23px; height: 23px; }
 .connect-footer {
  position: relative;
- top: -6px;
+ top: -12px;
  display: flex;
  flex: none;
  flex-wrap: wrap;

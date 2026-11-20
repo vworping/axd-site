@@ -6,12 +6,13 @@ import { runInNewContext } from 'node:vm';
 const source = await readFile(new URL('./baking.js', import.meta.url), 'utf8');
 const textSource = await readFile(new URL('./kitchen-text.js', import.meta.url), 'utf8');
 const flush = async () => { for (let i = 0; i < 12; i++) await Promise.resolve(); };
-async function kitchen({ reduced = false, recipe } = {}) {
+async function kitchen({ reduced = false, desktop = false, recipe } = {}) {
   const effects = [];
   function node(tag = 'div') {
     const events = new Map(), attrs = new Map();
     return {
-      tag, children: [], dataset: {}, style: {}, hidden: false,
+      tag, children: [], dataset: {}, hidden: false, offsetHeight: 420, offsetTop: 300,
+      style: { setProperty(key, value) { this[key] = value; }, removeProperty(key) { delete this[key]; } },
       append(...children) { this.children.push(...children); },
       replaceChildren(...children) { this.children = children; },
       addEventListener(type, fn) { events.set(type, fn); },
@@ -39,7 +40,7 @@ async function kitchen({ reduced = false, recipe } = {}) {
   const entry = { id: 'test', title: 'Test dish', kind: 'cooking', description: '1. Mix\n2. Share', recipe,
     media: [{ type: 'image', src: '/one.png', width: 400, height: 600 }, { type: 'video', src: '/two.mp4', width: 600, height: 400 }, { type: 'image', src: '/three.png', width: 500, height: 500 }] };
   runInNewContext(textSource, { window });
-  runInNewContext(source, { window, document, matchMedia: () => ({ matches: reduced }), URLSearchParams, location: { search: '' }, fetch: async () => ({ ok: true, json: async () => ({ entries: [entry] }) }) });
+  runInNewContext(source, { window, document, matchMedia: query => ({ matches: query.includes('min-width') ? desktop : reduced }), URLSearchParams, location: { search: '' }, fetch: async () => ({ ok: true, json: async () => ({ entries: [entry] }) }) });
   ids['baking-open'].emit('click');
   await flush();
   return { grid: ids['kitchen-grid'], document, effects };
@@ -75,6 +76,27 @@ test('reduced or paused motion settles disclosures immediately and recipes remai
   await p.grid.querySelector('.kitchen-toggle').emit('click');
   assert.equal(p.effects.length, 0);
   assert.deepEqual(p.grid.querySelector('.kitchen-recipe').querySelectorAll('li').map(li => li.textContent), ['Mix', 'Bake']);
+});
+
+test('desktop disclosures retain the closed card height until every panel is closed', async () => {
+  const { grid } = await kitchen({ reduced: true, desktop: true, recipe: { method: 'Mix and bake.' } });
+  const viewport = grid.querySelector('.kitchen-card-pages');
+  const [description, recipe] = grid.querySelectorAll('.kitchen-toggle');
+  await description.emit('click');
+  assert.equal(viewport.style['--kitchen-card-height'], '420px');
+  assert.ok(viewport.scrollTop > 0, 'opening details scrolls only inside the card');
+  viewport.offsetHeight = 700;
+  await recipe.emit('click');
+  assert.equal(viewport.style['--kitchen-card-height'], '420px');
+  await description.emit('click');
+  assert.equal(viewport.style['--kitchen-card-height'], '420px');
+  await recipe.emit('click');
+  assert.equal(viewport.style['--kitchen-card-height'], undefined);
+  assert.equal(viewport.scrollTop, 0);
+
+  const mobile = await kitchen({ reduced: true });
+  await mobile.grid.querySelector('.kitchen-toggle').emit('click');
+  assert.equal(mobile.grid.querySelector('.kitchen-card-pages').style['--kitchen-card-height'], undefined);
 });
 
 test('in-frame arrows wrap through photos and inline video, pausing the video when leaving', async () => {
