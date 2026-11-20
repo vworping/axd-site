@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Kitchen editor · AXD</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/baking.css">
+  <script src="/kitchen-editor.js" defer></script>
+</head>
+<body class="kitchen-editor-page">
+  <main class="kitchen-editor-shell">
+    <header class="kitchen-editor-nav"><a href="/about?kitchen=1" target="_blank" rel="noopener">Open the kitchen</a><span>AXD / LOCAL EDITOR</span></header>
+    <h1>A nibble on the side.</h1>
+    <p class="kitchen-editor-intro">Photos, little stories, and the occasional recipe. Choose a saved dish below to edit it. This editor is only available on your computer; changes go live the next time you publish.</p>
+      <section class="kitchen-editor" id="kitchen-editor" aria-labelledby="kitchen-editor-title">
+        <div class="kitchen-editor-heading"><h3 id="kitchen-editor-title">What’s cooking?</h3><span>A little something for the collection.</span></div>
+        <label class="kitchen-existing">Start something new or update a dish<select id="kitchen-existing"><option value="">New dish</option></select></label>
+        <form id="kitchen-form">
+          <fieldset id="kitchen-fields" disabled>
+            <legend class="sr-only">Add a dish to the kitchen</legend>
+            <div class="kitchen-form-row">
+              <label>Dish name<input id="kitchen-name" name="title" required maxlength="100" placeholder="What did you make?"></label>
+              <label class="kitchen-kind">From the<select name="kind"><option value="cooking">Stove · cooking</option><option value="baking">Oven · baking</option></select></label>
+            </div>
+            <label>A little about it<textarea name="description" required maxlength="1200" rows="2" placeholder="The story, the happy accident, who got a plate…"></textarea></label>
+            <div class="kitchen-photo-input">
+              <label>Photos &amp; videos<input id="kitchen-photo" name="media" type="file" multiple accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" required aria-describedby="kitchen-photo-hint"><span id="kitchen-photo-hint">Up to 12 files. Photos: JPG, PNG, WebP (20 MB each). Videos: MP4, WebM (20 MB each). 60 MB total after photo resizing.</span></label>
+            </div>
+            <div id="kitchen-media-preview" class="kitchen-media-preview"></div>
+            <label><span>Media description <span class="kitchen-optional">optional</span></span><input name="alt" maxlength="300" placeholder="A short description for someone who can’t see the dish"></label>
+            <details class="kitchen-recipe-fields">
+              <summary>Add a recipe <span>optional</span></summary>
+              <div class="kitchen-form-row">
+                <label>Ingredients<textarea name="ingredients" maxlength="8000" rows="5" placeholder="One ingredient per line, with amounts"></textarea></label>
+                <label>Method<textarea name="method" maxlength="12000" rows="5" placeholder="One step per line. Notes and improvisations welcome."></textarea></label>
+              </div>
+            </details>
+            <div class="kitchen-form-actions"><button class="kitchen-save" type="submit">Add to the kitchen</button><button id="kitchen-clear" type="button">Clear form</button></div>
+          </fieldset>
+          <p id="kitchen-form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    <p id="kitchen-editor-status" role="status" aria-live="polite">Connecting to your local project…</p>
+  </main>
+</body>
+</html>

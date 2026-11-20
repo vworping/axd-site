@@ -14,6 +14,11 @@ export default {
     const chapter = chapterPath(url.pathname);
     if (chapter) url.pathname = chapter;
     if (url.href !== request.url) return Response.redirect(url.href, 308);
+    // Authoring is a loopback preview feature, never a public submission endpoint.
+    if (!['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) &&
+        /^\/(?:__local(?:\/|$)|kitchen-editor(?:[./]|$)|kitchen-store\.mjs$)/.test(url.pathname)) {
+      return new Response('Not found', { status: 404, headers: securityHeaders });
+    }
     const assetURL = new URL(request.url);
     if (chapter) assetURL.pathname = '/';
     const asset = await env.ASSETS.fetch(chapter ? new Request(assetURL, request) : request);

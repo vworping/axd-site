@@ -57,6 +57,20 @@ OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 ../perceptual-palette-drift/.venv/bin/p
 
 This calls that project's `sample_lab_pixels` and `extract_palette` functions: 100,000 sampled pixels, five CIELAB clusters, fixed seeds, lightness range 10–95 with the existing low-sample fallback, no skin filtering, and a 1600-pixel analysis cap. Palette band widths represent shares of the retained sample. Re-extraction is only needed when photographs or extraction choices change; Python is not needed to build or run the site.
 
+## Baking and cooking
+
+Start `node site/build.mjs` and `node site/preview.mjs`, then open [the local kitchen editor](http://127.0.0.1:6767/kitchen-editor). This form lives separately from the About popup. Choose **New dish**, enter a name and description, and select one or more photos/videos. Recipe ingredients and method are optional; the recipe disclosure is omitted when both are blank.
+
+To add a recipe or more media later, choose the existing dish in the editor. Its saved media remain attached; newly selected files are appended. Updates retain the dish's place in the collection. The popup refreshes across local tabs, on window focus, and when reopened.
+
+Descriptions and optional recipes start collapsed behind +/− controls. Pasted step labels (`1.`, `1)`, `(1)`, or `Step 1:`) become bold list numbers, including steps entered in a description. Multiple photos/videos use arrows inside the same frame; clicking media does not open an enlarged view.
+
+The form accepts up to 12 media files per dish, with a 20 MB input limit per file and a 60 MB combined upload limit. Images are converted to WebP (PNG fallback), with a maximum 1800-pixel long edge and no crop. Videos must be browser-playable MP4 or WebM; they are preserved as uploaded and never autoplay. Each card has Previous/Next controls when it has multiple media. Closing the popup stops its videos.
+
+Saved data lives in `site/assets/data/kitchen.json`. Media live in `site/assets/media/kitchen/`. Both are included in the next build. Keep these files together when committing or moving the project. The source data updates immediately in local preview; no rebuild is needed for each new dish. Rebuild before publishing.
+
+`site/kitchen-editor.html`, `site/kitchen-editor.js`, and the local write handler `site/kitchen-store.mjs` are excluded from the public build. The public Worker also returns 404 for editor and local API routes. The loopback preview checks the request origin, host, and an editor session token before writing. Each submission is saved atomically; retries do not duplicate entries. The popup display uses `site/baking.js`, `site/kitchen-text.js`, and `site/baking.css`.
+
 ## Code map
 
 | File under `site/` | Responsibility |

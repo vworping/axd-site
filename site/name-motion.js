@@ -8,7 +8,7 @@
   const names = ['AX', 'AXD', 'AXDRE', 'ANDRE'];
   let current = 0;
   let introduction = true;
-  let timer, animation;
+  let timer, stepTimer, finishStep;
   let revision = 0;
   let ready = false;
   let visible = !('IntersectionObserver' in window);
@@ -173,7 +173,7 @@
     // Fit the entire greeting to the longest name, keeping both lines equal
     // throughout AX → ANDRE rather than shrinking only the bracketed name.
     greeting.style.fontSize = label.style.fontSize;
-    word.style.width = `${measure(word.textContent)}px`;
+    word.style.removeProperty('width');
   }
 
   function schedule() {
@@ -183,8 +183,9 @@
 
   function settle() {
     revision++;
-    animation?.cancel();
-    animation = undefined;
+    clearTimeout(stepTimer);
+    finishStep?.();
+    finishStep = undefined;
     // Never leave a partially spelled name when paused or navigating away.
     word.textContent = names[current];
     fitLabel();
@@ -197,18 +198,16 @@
     const next = introduction ? current + 1 : (current + 1 + Math.floor(Math.random() * (names.length - 1))) % names.length;
     try {
       for (const text of spellingSteps(names[current], names[next])) {
-        const before = word.getBoundingClientRect().width;
-        const after = measure(text);
+        // Type into one live text node. Animating a clipping width while
+        // replacing glyphs exposed letter fragments and stale paint in WebKit.
+        // Natural text layout moves both brackets with the complete spelling.
         word.textContent = text;
-        word.style.width = `${after}px`;
-        // Only the word's width changes. The complete bracket glyphs remain
-        // outside its clipping box, preventing the previous edge/line artifact.
-        animation = word.animate([{ width: `${before}px` }, { width: `${after}px` }], {
-          duration: 210, easing: 'cubic-bezier(.22,.7,.2,1)'
+        await new Promise(resolve => {
+          finishStep = resolve;
+          stepTimer = setTimeout(resolve, 190);
         });
-        await animation.finished;
         if (version !== revision || !canAnimate()) return;
-        animation = undefined;
+        finishStep = undefined;
       }
       current = next;
       if (current === names.length - 1) introduction = false;
@@ -216,8 +215,8 @@
       if (error.name !== 'AbortError') throw error;
     } finally {
       if (version === revision) {
-        animation?.cancel();
-        animation = undefined;
+        clearTimeout(stepTimer);
+        finishStep = undefined;
         word.textContent = names[current];
         fitLabel();
         schedule();

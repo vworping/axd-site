@@ -1,0 +1,191 @@
+/* A paper tab tucked into About's portrait; no extra chapter or navigation. */
+.portrait-card:has(.baking-tab:not([hidden])) { padding-top: 40px; }
+.baking-tab {
+  position: absolute;
+  top: -34px;
+  right: 14px;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 7px;
+  min-height: 44px;
+  padding: 9px 14px 14px;
+  isolation: isolate;
+  background: transparent;
+  color: #513d34;
+  font-size: .875rem;
+  line-height: 20px;
+  transform: rotate(2deg);
+  transform-origin: bottom center;
+  transition: transform 180ms ease;
+}
+.baking-tab[hidden] { display: none; }
+.baking-tab::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 3px 0 10px;
+  border: 1px solid #9e796b;
+  border-bottom: 0;
+  border-radius: 5px 5px 0 0;
+  background: #dec1ab;
+  box-shadow: inset 0 1px #fff6;
+}
+.baking-tab:hover, .baking-tab:focus-visible { transform: translateY(-3px) rotate(0); }
+.baking-tab svg { width: 17px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Warm paper and brown ink, with the portfolio’s taped photo frames. */
+.baking-dialog {
+  --baking-paper: #302c29;
+  --baking-ink: #f0e8dc;
+  --baking-muted: #c7b8a6;
+  --baking-line: #74665b;
+  --baking-accent: #e4ad91;
+  color-scheme: dark;
+  position: fixed;
+  width: min(980px, calc(100% - 64px));
+  max-width: none;
+  max-height: 84dvh;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--baking-line);
+  background-color: var(--baking-paper);
+  color: var(--baking-ink);
+  box-shadow: 0 24px 100px #0b111880;
+}
+.baking-dialog[open] { display: flex; flex-direction: column; }
+.baking-dialog:focus-visible { outline: none; }
+.baking-dialog::backdrop { background: #111d20b3; backdrop-filter: blur(6px); }
+.baking-topbar { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding: 10px 22px 10px 34px; border-bottom: 1px solid var(--baking-line); }
+.baking-topbar > span { color: var(--baking-muted); font-size: .8125rem; letter-spacing: .1em; }
+.kitchen-actions { display: flex; align-items: center; gap: 14px; }
+.kitchen-actions > button { min-height: 44px; background: transparent; }
+.baking-dismiss { display: grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; background: transparent; font-size: 1.8rem; line-height: 1; }
+.baking-dismiss:hover { border-color: var(--baking-line); }
+.baking-pages { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #a5b4a0 transparent; padding: 36px 44px 40px; }
+.baking-pages:focus-visible { outline-offset: -5px; }
+.baking-heading { position: relative; margin-bottom: 34px; }
+.baking-aside { margin-bottom: 13px; color: var(--baking-accent); font: italic 1.125rem/1.4 Georgia, serif; }
+.baking-heading h2 { font: 400 clamp(2.4rem, 5vw, 4.5rem)/1.08 var(--body); letter-spacing: -.065em; }
+.baking-heading h2 > span { color: var(--baking-accent); }
+.baking-heading #baking-intro { margin-top: 18px; color: var(--baking-muted); font-size: 1rem; line-height: 1.5; }
+.kitchen-underline { display: block; width: 168px; height: 12px; margin-top: 15px; fill: none; stroke: var(--baking-accent); stroke-width: 1.3; stroke-linecap: round; opacity: .7; }
+.baking-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 38px 28px; padding: 16px 8px 12px; }
+/* Same translucent tape and shadow rim as the Constellation photo prints. */
+.baking-print { position: relative; min-width: 0; padding: 10px 10px 20px; border: 1px solid #c9c8c180; background: var(--photo-paper, #f8f7f3); color: #333e39; box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow); transform: rotate(-2deg); transition: transform 220ms ease; }
+.baking-print::before { content: ''; position: absolute; top: -13px; left: 37%; width: 25%; height: 28px; z-index: 1; background: #ece3c6b3; border-inline: 1px dashed #a9a28b55; transform: rotate(-4deg); pointer-events: none; }
+.baking-print:nth-child(3n + 2) { margin-top: 15px; transform: rotate(2deg); }
+.baking-print:nth-child(3n) { transform: rotate(-1deg); }
+.baking-print:hover, .baking-print:focus-within { transform: rotate(0); }
+.kitchen-media-stage > :is(img, video) { display: block; width: 100%; height: 100%; object-fit: contain; background: #e6e3da; }
+.baking-placeholder { width: 100%; aspect-ratio: 1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background-color: #e7cbb9; background-image: repeating-linear-gradient(0deg, transparent 0 23px, #fff3 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, #fff3 23px 24px); }
+.baking-placeholder--savory { background-color: #d4d9c8; }
+.baking-placeholder--share { background-color: #d5dce1; }
+.baking-placeholder svg { width: 100%; max-width: 175px; min-height: 0; flex: 1; fill: none; stroke: #745742; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
+.baking-doodle-fill { fill: #fffcf533; }
+.baking-placeholder > span { flex: none; color: #655447; font-size: .75rem; letter-spacing: .025em; }
+.baking-print figcaption { padding: 13px 6px 0; overflow-wrap: anywhere; }
+.kitchen-sticker { display: inline-block; padding: 4px 8px; margin: 0 0 11px -2px; border: 1px solid #ac7f63; background: #e9c8ae; color: #5c402f; font-size: .625rem; line-height: 1.2; letter-spacing: .07em; transform: rotate(-3deg); box-shadow: 1px 2px 0 #27313f15; }
+.kitchen-sticker--cooking { background: #d7dec4; border-color: #869274; color: #3f513b; transform: rotate(2deg); }
+.kitchen-sticker--share { background: #d6dfe6; border-color: #8293a2; color: #344d5e; }
+.baking-print h3 { font-size: 1.125rem; font-weight: 500; line-height: 1.3; letter-spacing: -.035em; }
+.baking-print h3:focus { outline: none; }
+.baking-print p { margin-top: 9px; color: #535c53; font-size: 1rem; line-height: 1.5; white-space: pre-line; }
+.kitchen-caption-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.kitchen-toggle { display: grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; background: transparent; color: inherit; font: 400 1.5rem/1 var(--body); }
+.kitchen-toggle:hover { border-color: #8d978c; }
+.kitchen-toggle:focus-visible, .kitchen-media-arrow:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.kitchen-text { margin-top: 9px; color: #535c53; font-size: .9375rem; line-height: 1.55; }
+.kitchen-text :is(ul, ol) { padding-left: 1.65em; margin: 0; }
+.kitchen-text ol > li::marker { font-weight: 700; }
+.kitchen-text li { white-space: pre-line; padding-left: .15em; }
+.kitchen-text li + li { margin-top: 8px; }
+.kitchen-text > * + * { margin-top: 12px; }
+.kitchen-recipe { margin-top: 17px; border-top: 1px solid #8d978c77; color-scheme: light; }
+.kitchen-recipe h4 { margin: 12px 0 8px; font-size: .875rem; font-weight: 600; }
+.kitchen-recipe .kitchen-caption-heading h4 { margin: 0; }
+.kitchen-status:empty, #kitchen-form-status:empty { display: none; }
+.kitchen-status { margin-bottom: 22px; font-size: .875rem; line-height: 1.5; }
+
+/* The form is available only when the local preview provides an editor session. */
+.kitchen-editor { margin: 0 0 40px; padding: 24px; border: 1px dashed var(--baking-line); background: #231f1c66; }
+.baking-dialog [hidden] { display: none !important; }
+.kitchen-editor-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 22px; }
+.kitchen-editor-heading h3 { font: 400 1.75rem/1.2 var(--body); letter-spacing: -.045em; }
+.kitchen-editor-heading > span { color: var(--baking-muted); font-size: .875rem; }
+#kitchen-fields { min-width: 0; margin: 0; padding: 0; border: 0; }
+#kitchen-fields > * + * { margin-top: 18px; }
+.kitchen-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.kitchen-form-row:has(.kitchen-kind) { grid-template-columns: minmax(0, 2fr) minmax(160px, 1fr); }
+.kitchen-editor label { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; font-size: .875rem; }
+.kitchen-optional { display: inline; color: var(--baking-muted); font-size: .75rem; }
+.kitchen-editor input, .kitchen-editor select, .kitchen-editor textarea { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--baking-line); border-radius: 2px; background: #231f1c66; color: var(--baking-ink); font: 1rem/1.5 var(--body); }
+.kitchen-editor textarea { resize: vertical; }
+.kitchen-editor input::placeholder, .kitchen-editor textarea::placeholder { color: #bec9bb; opacity: .85; }
+.kitchen-editor select { appearance: none; padding-right: 34px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m4 6 4 4 4-4' fill='none' stroke='%23f5f0df' stroke-width='1.4'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; }
+.kitchen-editor select option { background: var(--baking-paper); }
+.kitchen-photo-input { display: flex; align-items: center; gap: 20px; padding: 15px; border: 1px dashed var(--baking-line); }
+.kitchen-photo-input > label { flex: 1; }
+.kitchen-photo-input input { padding: 0; border: 0; background: none; font-size: .875rem; }
+.kitchen-photo-input input::file-selector-button { min-height: 40px; margin-right: 12px; padding: 8px 12px; border: 1px solid var(--baking-line); border-radius: 2px; background: #f5f0df0d; color: var(--baking-ink); font: inherit; cursor: pointer; }
+#kitchen-photo-hint { color: var(--baking-muted); font-size: .75rem; }
+.kitchen-recipe-fields { border-block: 1px solid var(--baking-line); }
+.kitchen-recipe-fields summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; cursor: pointer; font-size: .875rem; }
+.kitchen-recipe-fields summary span { color: var(--baking-muted); font-size: .75rem; }
+.kitchen-recipe-fields > div { padding: 10px 0 20px; }
+.kitchen-form-actions { display: flex; align-items: center; gap: 18px; }
+.kitchen-form-actions button { min-height: 44px; padding: 10px 16px; background: transparent; font-size: .875rem; }
+.kitchen-form-actions .kitchen-save { border: 1px solid #f5f0df; background: var(--baking-ink); color: #302c29; }
+.kitchen-form-actions .kitchen-save:hover { background: #edc8a0; }
+.kitchen-editor :disabled { cursor: wait; opacity: .6; }
+#kitchen-form-status { margin-top: 16px; font-size: .875rem; line-height: 1.5; color: var(--baking-accent); }
+
+@media (max-width: 850px) {
+  .baking-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .baking-dialog { width: calc(100% - 40px); max-height: 86dvh; }
+  .baking-topbar { padding: 6px 10px 6px 20px; gap: 10px; }
+  .baking-topbar > span { max-width: 12em; font-size: .6875rem; }
+  .kitchen-actions { gap: 2px; }
+  .baking-pages { padding: 27px 24px 28px; }
+  .baking-heading { margin-bottom: 25px; }
+  .baking-heading h2 { font-size: clamp(2.5rem, 9vw, 3.5rem); }
+  .baking-grid { grid-template-columns: minmax(0, 1fr); max-width: 380px; margin-inline: auto; gap: 32px; padding-inline: 4px; }
+  .baking-print:nth-child(3n + 2) { margin-top: 0; }
+  .baking-placeholder { aspect-ratio: 1.25; }
+  .kitchen-editor { padding: 18px 15px; margin-inline: -8px; }
+  .kitchen-form-row, .kitchen-form-row:has(.kitchen-kind) { grid-template-columns: minmax(0, 1fr); }
+  .kitchen-photo-input { flex-direction: column; align-items: stretch; }
+  .kitchen-photo-input input { font-size: .8125rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .baking-tab, .baking-print { transition: none; }
+}
+body:has(#motion-toggle[aria-pressed="true"]) :is(.baking-tab, .baking-print) { transition: none; }
+
+.kitchen-media-frame { position: relative; }
+.kitchen-media-stage { aspect-ratio: 3 / 4; max-height: 370px; overflow: hidden; background: #e6e3da; }
+.kitchen-media-stage video::-webkit-media-controls-fullscreen-button { display: none; }
+.kitchen-media-arrow { position: absolute; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #f8f7f399; background: #302c29cc; color: #f8f7f3; font-size: 1.5rem; line-height: 1; transform: translateY(-50%); }
+.kitchen-media-arrow:hover { background: #302c29; }
+.kitchen-media-previous { left: 6px; }
+.kitchen-media-next { right: 6px; }
+.kitchen-media-count { display: block; margin-top: 7px; font-size: .75rem; color: #535c53; text-align: center; }
+.kitchen-editor-page { --baking-paper: #302c29; --baking-ink: #f0e8dc; --baking-muted: #c7b8a6; --baking-line: #74665b; --baking-accent: #e4ad91; background: #262320; color: var(--baking-ink); min-height: 100dvh; }
+.kitchen-editor-shell { max-width: 940px; margin: auto; padding: 28px 24px 64px; }
+.kitchen-editor-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; padding-bottom: 28px; margin-bottom: 30px; border-bottom: 1px solid var(--baking-line); font-size: .875rem; }
+.kitchen-editor-nav > span { color: var(--baking-muted); font-size: .75rem; letter-spacing: .08em; }
+.kitchen-editor-nav a { text-decoration: underline; text-underline-offset: 5px; }
+.kitchen-editor-shell > h1 { font: 400 clamp(2.25rem, 6vw, 3.5rem)/1.1 var(--body); letter-spacing: -.055em; }
+.kitchen-editor-intro { max-width: 35em; margin: 16px 0 28px; color: var(--baking-muted); font-size: 1rem; line-height: 1.5; }
+.kitchen-editor-page .kitchen-editor { background: var(--baking-paper); border-style: solid; }
+.kitchen-editor-page [hidden] { display: none !important; }
+.kitchen-media-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px; }
+.kitchen-media-preview:empty { display: none; }
+.kitchen-media-preview figure { min-width: 0; padding: 5px; background: #e6e3da; color: #493a32; }
+.kitchen-media-preview :is(img, video) { display: block; width: 100%; height: 110px; object-fit: contain; }
+.kitchen-media-preview figcaption { padding: 5px; font-size: .75rem; overflow-wrap: anywhere; }
+.kitchen-editor-page .kitchen-optional { display: inline; }
+#kitchen-editor-status { font-size: 1rem; line-height: 1.5; }
+.kitchen-existing { display: block; margin-bottom: 24px; }

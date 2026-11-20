@@ -40,6 +40,7 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | Hero tagline pairings and About name animation | [`site/name-motion.js`](site/name-motion.js) |
 | Hero tagline markup, initial wording, and screen-reader text | [`site/index.html`](site/index.html) |
 | About text, contact links, background | [`site/index.html`](site/index.html) |
+| Kitchen dishes, photos/videos, and optional recipes | Local [kitchen editor](http://127.0.0.1:6767/kitchen-editor); saved in `site/assets/data/kitchen.json` and `site/assets/media/kitchen/` |
 | About portraits and measured palettes | [`site/assets/data/about-portraits.js`](site/assets/data/about-portraits.js) |
 | [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
 | Constellation explorer and snapshot updates | [`docs/CONSTELLATION.md`](docs/CONSTELLATION.md) |
@@ -51,6 +52,8 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 The portfolio follows the visitor's system appearance. Light mode retains the pale warm/cool canvas; dark mode uses a deeper blue/charcoal gradient with soft ivory photo mats and dark captions. The mats use separate `--photo-paper` and `--photo-edge` tokens. Every frame, including borderless Constellation prints, has a fine shadow rim: white in dark mode and slate in light mode. The rim preserves photo sizing and keyboard focus outlines. Native `color-scheme` support is declared before rendering so Safari Adaptive Dark Mode leaves the authored colors alone. Photographs and extracted palette swatches keep their original colors. The shared canvas colors live in `site/chapters.css`, with dark overrides in `site/theme.css`.
 
 For the visible project copy, edit `caseStudy.title`, `caseStudy.summary`, `caseStudy.body`, and `caseStudy.facts`. Change `year` for the date and `caseStudy.links` for external links. The [editing guide](docs/EDITING.md) describes each field.
+
+The About name types one spelling step at a time in a single text node, without clipping or animating the text width. The copyright and motion controls sit 6px above their previous position.
 
 For the rotating tagline, edit `pairs` inside `startTagline()` in `site/name-motion.js`. Each pair supplies the role and possessive perspective in “A [photographer] with a [researcher’s] mind.” Pairings cycle in random order, holding for three seconds, with 400ms whole-word rolls and a 100ms stagger. Each word window resizes smoothly so the brackets fit the current phrase without empty padding. Type size is fitted against the longest phrases and stays constant; screens up to 700px use two lines. The animation respects the shared pause control and reduced-motion preference, settles on complete words, and stops while offscreen or in a hidden tab. Keep the initial wording and stable screen-reader description in `site/index.html` in sync when changing the opening pair. Tagline styling and mobile alignment of the hero’s period with the E live in `site/layout.css`.
 
@@ -64,6 +67,8 @@ node site/preview.mjs
 ```
 
 Open **http://127.0.0.1:6767/**. If that port is occupied, use `PORT=6770 node site/preview.mjs`. This local server runs the same routing and security handler as production. Rebuild and reload after editing.
+
+In About, the small **kitchen** tab above the portrait opens the baking and cooking collection. Add or update dishes using **http://127.0.0.1:6767/kitchen-editor**. This separate local form saves descriptions, up to 12 photos/videos per dish, and optional recipe details into the project. Photos are resized; MP4 and WebM videos retain their original files (up to 20 MB each). The popup refreshes when a dish is saved or reopened, and each dish has its own media controls. Empty collections use illustrated placeholders. Rebuild before publishing to include saved entries. The editor and write API are local preview features and are excluded from the public build.
 
 Direct links: `/constellation`, `/PET`, `/collaborations`, and `/about`. Old `/work`, `/pet`, `/pet.html`, and `/constellation/` links redirect to their canonical chapters. Browser titles follow the current chapter: Palace, Palace: Constellation, Palace: PET, Palace: Collaborations, and Palace: About.
 

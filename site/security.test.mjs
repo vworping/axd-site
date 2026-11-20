@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { test } from 'node:test';
 import worker from './worker.mjs';
 import { chapterMetadata, chapterRoutes } from './chapter-routes.mjs';
@@ -16,6 +16,28 @@ const routes = {
   '/pet-preview/': 'pet-preview/index.html',
   '/pet-preview/index.html': 'pet-preview/index.html',
 };
+
+test('public builds contain the kitchen display but no editor or write handler', async () => {
+  const files = await readdir(new URL('./dist/', import.meta.url));
+  for (const file of ['kitchen-editor.html', 'kitchen-editor.js', 'kitchen-store.mjs', 'preview.mjs']) assert.ok(!files.includes(file));
+  const html = await readFile(new URL('./dist/index.html', import.meta.url), 'utf8');
+  assert.ok(html.includes('/baking.js?v='));
+  assert.ok(!html.includes('kitchen-editor'));
+  assert.ok(!html.includes('/__local/'));
+});
+
+test('production refuses editor and local API routes before touching the asset binding', async () => {
+  for (const host of ['mindofaxd.com', 'axd-site.example.workers.dev']) {
+    for (const path of ['/kitchen-editor', '/kitchen-editor.html', '/kitchen-editor.js', '/kitchen-store.mjs', '/__local/kitchen']) {
+      for (const method of ['GET', 'POST']) {
+        const response = await worker.fetch(new Request(`https://${host}${path}`, { method }), {
+          ASSETS: { fetch() { assert.fail('Private authoring paths must not reach assets'); } },
+        });
+        assert.equal(response.status, 404);
+      }
+    }
+  }
+});
 
 for (const [route, file] of Object.entries(routes)) {
   test(`browser protections and executable inline scripts: ${route}`, async () => {

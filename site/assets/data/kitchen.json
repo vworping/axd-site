@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "417a5481-d2ce-4bf5-b998-4305547b77c5",
+      "submissionId": "417a5481-d2ce-4bf5-b998-4305547b77c5",
+      "title": "Chocolate chip chunk cookies",
+      "description": "1. brown 113 g salted butter and let cool slightly\n2. mix in 60 g brown sugar and 45 g white sugar\n3. mix in 1 medium egg and 1½ tsp vanilla extract\n4. fold in 175 g flour and ½ tsp baking soda\n5. fold in 45 g chocolate chips and 45 g chopped chocolate\n6. refrigerate for 30–45 minutes\n7. divide into 8 balls and flatten slightly\n8. bake at 375°F for 12–15 minutes\n9. cool on the baking sheet for 5–8 minutes, wire rack for 10 minutes",
+      "kind": "baking",
+      "createdAt": "2026-11-20T06:17:42.155Z",
+      "media": [
+        {
+          "type": "image",
+          "src": "/assets/media/kitchen/417a5481-d2ce-4bf5-b998-4305547b77c5-1.webp",
+          "width": 1320,
+          "height": 1744,
+          "alt": "cookie"
+        }
+      ]
+    }
+  ]
+}

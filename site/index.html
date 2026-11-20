@@ -50,6 +50,7 @@
   <link rel="stylesheet" href="/pet-chapter.css">
   <link rel="stylesheet" href="/chapters.css">
   <link rel="stylesheet" href="/theme.css">
+  <link rel="stylesheet" href="/baking.css">
   <script src="/section-navigation.js" defer></script>
   <script src="/cue-path.js" defer></script>
   <script src="/constellation-chapter.js" defer></script>
@@ -58,6 +59,8 @@
   <script src="/logo-motion.js?v=9" defer></script>
   <script src="/photo-deck.js?v=8" defer></script>
   <script src="/about-portraits.js" defer></script>
+  <script src="/kitchen-text.js" defer></script>
+  <script src="/baking.js" defer></script>
   <script src="/name-motion.js?v=19" defer></script>
   <script src="/story-shelf.js?v=15" defer></script>
   <script src="/script.js?v=24" defer></script>
@@ -132,6 +135,10 @@
         <div class="connect-layout">
           <figure class="portrait-card" role="group" aria-label="Portraits of Andre Weiss">
             <div class="portrait-frame">
+              <button class="baking-tab" id="baking-open" type="button" aria-label="Kitchen: baking and cooking" aria-haspopup="dialog" aria-controls="baking-dialog" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 9a4 4 0 0 1-4-4 4 4 0 0 1-4-3 10 10 0 1 0 11 11 4 4 0 0 1-3-4Z"/><path d="m8 7 .01 0M6 13h.01M11 17h.01M14 11h.01M17 16h.01"/></svg>
+                kitchen
+              </button>
               <button class="portrait-window" id="portrait-open" type="button" aria-label="Expand portrait of Andre Weiss" aria-haspopup="dialog">
                 <span class="portrait-image-stage">
                   <!-- Portrait derivatives and source mapping: docs/image-sources.json. -->
@@ -170,6 +177,47 @@
     </nav>
   </div>
 
+  <dialog class="baking-dialog" id="baking-dialog" aria-labelledby="baking-title" aria-describedby="baking-intro" tabindex="-1">
+    <div class="baking-topbar">
+      <span>A NIBBLE ON THE SIDE</span>
+      <div class="kitchen-actions">
+        <button class="baking-dismiss" id="baking-dismiss" type="button" aria-label="Close kitchen"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+    <div class="baking-pages" tabindex="0" aria-label="Baking and cooking collection">
+      <header class="baking-heading">
+        <p class="baking-aside">baking + cooking</p>
+        <h2 id="baking-title">Made a little extra<span>.</span></h2>
+        <p id="baking-intro">Always yummy. Always shared.</p>
+        <svg class="kitchen-underline" viewBox="0 0 220 12" aria-hidden="true" focusable="false"><path d="M3 7Q88 1 214 5M37 10Q131 6 196 9"/></svg>
+      </header>
+      <p class="kitchen-status" id="kitchen-status" role="status" aria-live="polite"></p>
+      <div class="baking-grid" id="kitchen-grid" aria-label="Dishes from the kitchen">
+        <figure class="baking-print kitchen-placeholder">
+          <div class="baking-placeholder baking-placeholder--cookies">
+            <svg viewBox="0 0 200 180" aria-hidden="true" focusable="false"><path class="baking-doodle-fill" d="M125 43a47 47 0 1 0 42 64c-12 0-18-8-17-17-13 1-23-8-21-21-11-3-14-15-4-26Z"/><path d="m82 58-5 8 8 5 5-8Zm-24 44 5 7 7-5-5-8Zm42-8-6 7 6 6 7-7Zm-9 34 2 8 9-2-2-8Zm38-10 6 6 6-7-7-6Z"/><path d="m144 43 5-7m13 24 8-2m-26 14 4 3"/></svg>
+            <span>photo to come</span>
+          </div>
+          <figcaption><span class="kitchen-sticker">BAKING</span><h3>Something sweet.</h3></figcaption>
+        </figure>
+        <figure class="baking-print kitchen-placeholder">
+          <div class="baking-placeholder baking-placeholder--savory">
+            <svg viewBox="0 0 200 180" aria-hidden="true" focusable="false"><path class="baking-doodle-fill" d="M40 87h120c-6 39-27 52-60 52S46 126 40 87Z"/><path d="M35 87h130M72 142h56M65 80c-9-11 7-14 0-25m30 24c-10-15 10-19 1-33m29 33c-9-11 9-17 2-28M57 100c5 10 10 14 18 17"/></svg>
+            <span>photo to come</span>
+          </div>
+          <figcaption><span class="kitchen-sticker kitchen-sticker--cooking">COOKING</span><h3>Something savory.</h3></figcaption>
+        </figure>
+        <figure class="baking-print kitchen-placeholder">
+          <div class="baking-placeholder baking-placeholder--share">
+            <svg viewBox="0 0 200 180" aria-hidden="true" focusable="false"><ellipse cx="100" cy="98" rx="47" ry="43"/><ellipse cx="100" cy="98" rx="33" ry="30"/><path d="M30 58v28q0 10 9 10V145m0-87v28m9-28v28q0 10-9 10m128 49V58q-17 15-12 44h12"/><path class="baking-doodle-fill" d="M100 110c-30-17-16-36 0-24 16-12 30 7 0 24Z"/></svg>
+            <span>photo to come</span>
+          </div>
+          <figcaption><span class="kitchen-sticker kitchen-sticker--share">FOR THE TABLE</span><h3>Something to share.</h3></figcaption>
+        </figure>
+      </div>
+    </div>
+  </dialog>
+
   <dialog class="background-dialog" id="background-dialog" aria-labelledby="background-title" tabindex="-1">
     <div class="background-heading"><h2 id="background-title">A little more background.</h2><button type="button" class="dismiss-button" id="background-dismiss" aria-label="Dismiss background"><span aria-hidden="true">×</span></button></div>
     <dl class="background-timeline" id="background-timeline" tabindex="0" aria-label="Experience timeline">
@@ -205,7 +253,7 @@
 
   <dialog class="image-save-dialog" id="image-save-dialog" aria-labelledby="image-save-title" tabindex="-1">
     <div class="image-save-top"><h2 id="image-save-title">Take a copy.</h2><button id="image-save-dismiss" type="button" aria-label="Dismiss image options">×</button></div>
-    <p>Saved and copied images include an AXD watermark.</p>
+    <p>Saved and copied images include<br>an AXD watermark.</p>
     <div class="image-save-actions"><button type="button" id="image-save">Save image ↧</button><button type="button" id="image-copy">Copy image</button></div>
     <p id="image-save-status" role="status" aria-live="polite"></p>
   </dialog>
