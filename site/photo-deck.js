@@ -166,6 +166,14 @@
     const cue = candidates.sort((a,b) => a.score - b.score)[0];
     hint.style.visibility = cue ? '' : 'hidden';
     if (!cue) return;
+    // Lower the complete mobile cue into the space beneath the prints, while
+    // keeping the curve intact and the label clear of the tagline divider.
+    if (position === 'corner') {
+      const drop = Math.max(0, Math.min(48, bounds.height - label.offsetHeight - 16 - cue.labelY));
+      cue.tip[1] += drop;
+      cue.tail[1] += drop;
+      cue.labelY += drop;
+    }
     hint.style.setProperty('--cue-label-x', `${cue.labelX}px`);
     hint.style.setProperty('--cue-label-y', `${cue.labelY}px`);
     svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);

@@ -281,3 +281,12 @@
   .project-chapter :is(.pet-intro-copy, .spotlight-context-inner) > :is(#p-pet-title, #c-constellation-title) { margin-block: 10px 14px; }
   .project-chapter .project-intro-actions { gap: 8px 20px; margin-bottom: 16px; }
 }
+
+/* Fit the complete prototype invitation above the rail on smaller phones. */
+@media (max-width: 700px) and (orientation: portrait) {
+  .horizontal-layout .pet-chapter { container-type: size; }
+  .pet-chapter .pet-intro { gap: 20px; padding-bottom: 20px; }
+  .pet-chapter .pet-intro-device {
+    width: min(92%, 300px, max(160px, calc((100cqh - 340px) * 1.55)));
+  }
+}
