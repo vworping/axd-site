@@ -38,17 +38,23 @@
 .baking-tab svg { width: 15px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Warm paper and brown ink, with the portfolio’s taped photo frames. */
+:root {
+  --about-window-width: min(980px, calc(100% - 64px));
+  --about-window-height: 84dvh;
+}
 .baking-dialog {
   --baking-paper: #302c29;
   --baking-ink: #f0e8dc;
   --baking-muted: #c7b8a6;
   --baking-line: #74665b;
   --baking-accent: #e4ad91;
+  --baking-gutter: 28px;
   color-scheme: dark;
   position: fixed;
-  width: min(980px, calc(100% - 64px));
+  width: var(--about-window-width);
+  height: var(--about-window-height);
   max-width: none;
-  max-height: 84dvh;
+  max-height: var(--about-window-height);
   margin: auto;
   padding: 0;
   overflow: hidden;
@@ -60,13 +66,13 @@
 .baking-dialog[open] { display: flex; flex-direction: column; }
 .baking-dialog:focus-visible { outline: none; }
 .baking-dialog::backdrop { background: #111d20b3; backdrop-filter: blur(6px); }
-.baking-topbar { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding: 10px 22px 10px 34px; border-bottom: 1px solid var(--baking-line); }
+.baking-topbar { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding: 10px 22px 10px var(--baking-gutter); border-bottom: 1px solid var(--baking-line); }
 .baking-topbar > span { color: var(--baking-muted); font-size: .8125rem; letter-spacing: .1em; }
 .kitchen-actions { display: flex; align-items: center; gap: 14px; }
 .kitchen-actions > button { min-height: 44px; background: transparent; }
 .baking-dismiss { display: grid; place-items: center; flex: none; width: 44px; height: 44px; padding: 0; border: 1px solid transparent; background: transparent; font-size: 1.8rem; line-height: 1; }
 .baking-dismiss:hover { border-color: var(--baking-line); }
-.baking-pages { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #a5b4a0 transparent; padding: 26px 44px 32px; }
+.baking-pages { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-color: #a5b4a0 transparent; padding: 26px var(--baking-gutter) 32px; }
 .baking-pages:focus-visible { outline-offset: -5px; }
 .baking-heading { position: relative; margin-bottom: 20px; }
 .baking-aside { margin-bottom: 7px; color: var(--baking-accent); font: italic 1.125rem/1.4 Georgia, serif; }
@@ -74,17 +80,23 @@
 .baking-heading h2 > span { color: var(--baking-accent); }
 .baking-heading #baking-intro { margin-top: 9px; color: var(--baking-muted); font-size: 1rem; line-height: 1.5; }
 .kitchen-underline { display: block; width: 168px; height: 12px; margin-top: 8px; fill: none; stroke: var(--baking-accent); stroke-width: 1.3; stroke-linecap: round; opacity: .7; }
-.baking-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 38px 28px; padding: 16px 8px 12px; }
+.baking-grid { display: grid; isolation: isolate; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 38px 0; padding: 16px 8px 12px; }
 /* Same translucent tape and shadow rim as the Constellation photo prints. */
-.baking-print { position: relative; min-width: 0; padding: 10px 10px 12px; border: 1px solid #c9c8c180; background: var(--photo-paper, #f8f7f3); color: #333e39; box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow); transform: rotate(-2deg); transition: transform 220ms ease; }
+.baking-print { position: relative; min-width: 0; padding: 10px 10px 12px; border: 1px solid #c9c8c180; background: var(--photo-paper, #f8f7f3); color: #333e39; box-shadow: 0 0 0 1px var(--photo-edge), 0 14px 28px -16px var(--photo-shadow); transform: rotate(-2deg); transition: box-shadow 220ms ease; }
 .baking-print::before { content: ''; position: absolute; top: -13px; left: 37%; width: 25%; height: 28px; z-index: 1; background: #ece3c6b3; border-inline: 1px dashed #a9a28b55; transform: rotate(-4deg); pointer-events: none; }
 .baking-print:nth-child(3n + 2) { margin-top: 15px; transform: rotate(2deg); }
 .baking-print:nth-child(3n) { transform: rotate(-1deg); }
-.baking-print:hover, .baking-print:focus-within { transform: rotate(0); }
+/* Keep the tilted hit area fixed so overlapping cards cannot trade hover. */
+.baking-print:hover, .baking-print:focus-within { z-index: 3; box-shadow: 0 0 0 1px var(--photo-edge), 0 18px 30px -14px var(--photo-shadow); }
+/* Let the paper edges tuck together, like Constellation's neighboring prints. */
+@media (min-width: 601px) {
+  .baking-print { margin-inline: -8px; }
+}
 .kitchen-card-pages { position: relative; }
 .kitchen-card-pages:focus-visible { outline-offset: -2px; }
 @media (min-width: 701px) {
-  .kitchen-card-pages { height: var(--kitchen-card-height, auto); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8d978c transparent; }
+  /* At a card's scroll limit, continue scrolling the surrounding collection. */
+  .kitchen-card-pages { height: var(--kitchen-card-height, auto); overflow-y: auto; overscroll-behavior: auto; scrollbar-width: thin; scrollbar-color: #8d978c transparent; }
 }
 .kitchen-media-stage > :is(img, video) { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; background: #e6e3da; }
 .baking-placeholder { width: 100%; aspect-ratio: 1.1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background-color: #e7cbb9; background-image: repeating-linear-gradient(0deg, transparent 0 23px, #fff3 23px 24px), repeating-linear-gradient(90deg, transparent 0 23px, #fff3 23px 24px); }
@@ -154,11 +166,12 @@
   .baking-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .baking-dialog { width: calc(100% - 40px); max-height: 86dvh; }
-  .baking-topbar { min-height: 56px; padding: 5px 8px 5px 18px; gap: 6px; }
+  :root { --about-window-width: calc(100% - 40px); --about-window-height: 86dvh; }
+  .baking-dialog { --baking-gutter: 18px; }
+  .baking-topbar { min-height: 56px; padding: 5px 8px 5px var(--baking-gutter); gap: 6px; }
   .baking-topbar > span { font-size: .6875rem; letter-spacing: .07em; white-space: nowrap; }
   .kitchen-actions { gap: 2px; }
-  .baking-pages { padding: 20px 24px 24px; }
+  .baking-pages { padding: 20px var(--baking-gutter) 24px; }
   .baking-heading { margin-bottom: 16px; }
   .baking-heading h2 { font-size: clamp(2.5rem, 9vw, 3.5rem); }
   .baking-grid { grid-template-columns: minmax(0, 1fr); max-width: 380px; margin-inline: auto; gap: 32px; padding-inline: 4px; }
@@ -177,11 +190,18 @@ body:has(#motion-toggle[aria-pressed="true"]) :is(.baking-tab, .baking-print) { 
 .kitchen-media-frame { position: relative; }
 .kitchen-media-stage { position: relative; width: 100%; aspect-ratio: 3 / 4; overflow: hidden; background: #e6e3da; }
 .kitchen-media-stage video::-webkit-media-controls-fullscreen-button { display: none; }
-.kitchen-media-arrow { position: absolute; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid #f8f7f399; background: #302c29cc; color: #f8f7f3; font-size: 1.5rem; line-height: 1; transform: translateY(-50%); }
-.kitchen-media-arrow:hover { background: #302c29; }
-.kitchen-media-previous { left: 6px; }
-.kitchen-media-next { right: 6px; }
-.kitchen-media-count { display: block; margin-top: 7px; font-size: .75rem; color: #535c53; text-align: center; }
+.kitchen-media-arrow { position: absolute; top: 50%; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: #333e39; font-size: 1.125rem; line-height: 1; transform: translateY(-50%); }
+.kitchen-media-arrow > span { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid #535c5380; background: #eee9df; box-shadow: 0 1px 3px #302c2926; }
+.kitchen-media-arrow:hover > span { background: #f8f7f3; }
+.kitchen-media-previous { left: 0; }
+.kitchen-media-next { right: 0; }
+.kitchen-media-count { position: absolute; right: 8px; bottom: -5px; z-index: 1; padding: 2px 5px; background: var(--photo-paper, #f8f7f3); color: #535c53; font-size: .625rem; line-height: 1.3; font-variant-numeric: tabular-nums; pointer-events: none; }
+@media (hover: hover) and (pointer: fine) {
+  .kitchen-media-arrow { opacity: 0; transition: opacity 140ms ease; }
+  .kitchen-media-frame:hover .kitchen-media-arrow,
+  .kitchen-media-frame:focus-within .kitchen-media-arrow { opacity: 1; }
+}
+.kitchen-media-stage video::-webkit-media-controls { display: none !important; }
 .kitchen-editor-page { --baking-paper: #302c29; --baking-ink: #f0e8dc; --baking-muted: #c7b8a6; --baking-line: #74665b; --baking-accent: #e4ad91; background: #262320; color: var(--baking-ink); min-height: 100dvh; }
 .kitchen-editor-shell { max-width: 940px; margin: auto; padding: 28px 24px 64px; }
 .kitchen-editor-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 18px; padding-bottom: 28px; margin-bottom: 30px; border-bottom: 1px solid var(--baking-line); font-size: .875rem; }

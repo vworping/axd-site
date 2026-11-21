@@ -25,7 +25,7 @@
               <label>Dish name<input id="kitchen-name" name="title" required maxlength="100" placeholder="What did you make?"></label>
               <label class="kitchen-kind">From the<select name="kind"><option value="cooking">Stove · cooking</option><option value="baking">Oven · baking</option></select></label>
             </div>
-            <label>A little about it<textarea name="description" required maxlength="1200" rows="2" placeholder="The story, the happy accident, who got a plate…"></textarea></label>
+            <label>A little about it<textarea name="description" required data-max-length="20000" rows="4" placeholder="The story, the happy accident, who got a plate…"></textarea><span class="kitchen-optional">Blank lines are kept. Up to 20,000 characters.</span></label>
             <div class="kitchen-photo-input">
               <label>Photos &amp; videos<input id="kitchen-photo" name="media" type="file" multiple accept="image/jpeg,image/png,image/webp,video/mp4,video/webm" required aria-describedby="kitchen-photo-hint"><span id="kitchen-photo-hint">Up to 12 files. Photos: JPG, PNG, WebP (20 MB each). Videos: MP4, WebM (20 MB each). 60 MB total after photo resizing.</span></label>
             </div>
@@ -34,8 +34,8 @@
             <details class="kitchen-recipe-fields">
               <summary>Add a recipe <span>optional</span></summary>
               <div class="kitchen-form-row">
-                <label>Ingredients<textarea name="ingredients" maxlength="8000" rows="5" placeholder="One ingredient per line, with amounts"></textarea></label>
-                <label>Method<textarea name="method" maxlength="12000" rows="5" placeholder="One step per line. Notes and improvisations welcome."></textarea></label>
+                <label>Ingredients<textarea name="ingredients" data-max-length="8000" rows="5" placeholder="One ingredient per line, with amounts"></textarea></label>
+                <label>Method<textarea name="method" data-max-length="20000" rows="5" placeholder="One step per line. Blank lines separate sections."></textarea></label>
               </div>
             </details>
             <div class="kitchen-form-actions"><button class="kitchen-save" type="submit">Add to the kitchen</button><button id="kitchen-clear" type="button">Clear form</button></div>

@@ -52,6 +52,15 @@ test('blank recipes are omitted, and a partial recipe keeps only supplied conten
   assert.deepEqual(withRecipe.entry.recipe, { ingredients: '', method: 'Mix and bake.' });
 });
 
+test('long recipes and extra blank lines persist without truncation', async t => {
+  const { post, read } = await setup(t);
+  const description = 'Pastry\n\n\n' + 'Mix and bake.\n'.repeat(180) + '\n\nMeringue\nFinish and share.';
+  const response = await post(dish({ description }));
+  assert.equal(response.status, 201);
+  assert.equal((await read()).entries[0].description, description);
+  assert.equal((await post(dish({ description: 'x'.repeat(20001) }))).status, 400);
+});
+
 test('one dish keeps several photos and a video in their selected order', async t => {
   const { post, directory } = await setup(t);
   const form = dish({ mediaInfo: JSON.stringify([{ width: 1, height: 1 }, { width: 1, height: 1 }, { width: 640, height: 480 }]) });

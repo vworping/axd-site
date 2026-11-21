@@ -11,7 +11,36 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = matchMedia('(min-width: 701px)');
   let paused = document.getElementById('motion-toggle')?.getAttribute('aria-pressed') === 'true';
-  document.addEventListener('axd:motion', event => { paused = event.detail.paused; });
+  let stopCards = [];
+  const visibleVideos = new WeakMap();
+  const videoPlayers = new WeakMap();
+  const videoObserver = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+    entries.forEach(entry => visibleVideos.set(entry.target, entry.isIntersecting && entry.intersectionRatio > .1));
+    syncVideos();
+  }, { root: pages, threshold: [0, .1] }) : null;
+  const canPlayVideo = video => dialog.open && !document.hidden && !paused && !reduced.matches && (!videoObserver || visibleVideos.get(video));
+  function syncVideos(resumed = false) {
+    grid.querySelectorAll('video').forEach(video => {
+      if (resumed && videoObserver) {
+        // A sleeping tab can retain an obsolete IntersectionObserver result.
+        const rect = video.getBoundingClientRect(), board = pages.getBoundingClientRect();
+        const card = video.closest('.kitchen-card-pages').getBoundingClientRect();
+        const width = Math.max(0, Math.min(rect.right, board.right, card.right) - Math.max(rect.left, board.left, card.left));
+        const height = Math.max(0, Math.min(rect.bottom, board.bottom, card.bottom) - Math.max(rect.top, board.top, card.top));
+        visibleVideos.set(video, width * height / Math.max(1, rect.width * rect.height) > .1);
+      }
+      videoPlayers.get(video)?.sync(resumed);
+    });
+  }
+  document.addEventListener('axd:motion', event => {
+    paused = event.detail.paused;
+    if (paused) stopCards.forEach(stop => stop());
+    syncVideos();
+  });
+  reduced.addEventListener('change', () => {
+    if (reduced.matches) stopCards.forEach(stop => stop());
+    syncVideos();
+  });
   tab.hidden = false;
 
   const node = (tag, className, text) => {
@@ -24,6 +53,7 @@
     const content = node('div', 'kitchen-text');
     for (const block of window.AXDKitchenText(text, defaultList)) {
       const element = node(block.type, '', block.text);
+      if (block.blankLines) element.style.marginTop = `${block.blankLines * 1.55}em`;
       for (const item of block.items || []) {
         const li = node('li', '', item.text);
         if (block.type === 'ol') li.value = item.number;
@@ -109,36 +139,117 @@
     const frame = node('div', 'kitchen-media-frame');
     const stage = node('div', 'kitchen-media-stage');
     frame.append(stage);
-    let active = 0;
+    let active = 0, requested = 0, busy = false, generation = 0, shutter = null, resize = null;
     const count = node('span', 'kitchen-media-count');
     count.setAttribute('aria-live', 'polite');
-    function show(index) {
-      stage.querySelector('video')?.pause();
-      active = (index + media.length) % media.length;
-      const item = media[active];
-      if (item.width && item.height) stage.style.aspectRatio = `${item.width} / ${item.height}`;
+    function createMedia(item) {
       const element = node(item.type === 'video' ? 'video' : 'img');
-      element.src = item.src;
       element.width = item.width;
       element.height = item.height;
       if (item.type === 'video') {
-        element.controls = true;
+        element.controls = false;
+        element.muted = true;
+        element.defaultMuted = true;
+        element.loop = true;
         element.playsInline = true;
+        element.setAttribute('muted', '');
         element.setAttribute('webkit-playsinline', '');
-        element.setAttribute('controlslist', 'nofullscreen noremoteplayback');
+        element.setAttribute('controlslist', 'nodownload noplaybackrate nofullscreen noremoteplayback');
         element.disablePictureInPicture = true;
         element.disableRemotePlayback = true;
         element.addEventListener('dblclick', event => event.preventDefault());
+        element.addEventListener('contextmenu', event => event.preventDefault());
         element.preload = 'metadata';
+        element.poster = media.find(candidate => candidate.type === 'image')?.src || '';
         element.setAttribute('aria-label', item.alt || entry.title);
       } else {
         element.alt = item.alt || entry.title;
         element.loading = 'lazy';
         element.decoding = 'async';
       }
-      stage.replaceChildren(element);
-      count.textContent = `${active + 1} / ${media.length}${item.type === 'video' ? ' · video' : ''}`;
+      element.src = item.src;
+      return element;
     }
+    function show(index, element = createMedia(media[index])) {
+      const previousVideo = stage.querySelector('video');
+      previousVideo?.pause();
+      if (previousVideo) { videoObserver?.unobserve(previousVideo); videoPlayers.get(previousVideo)?.dispose(); }
+      active = index;
+      const item = media[active];
+      if (item.width && item.height) stage.style.aspectRatio = `${item.width} / ${item.height}`;
+      stage.replaceChildren(element);
+      count.textContent = `${active + 1} / ${media.length}`;
+      count.setAttribute('aria-label', `${item.type === 'video' ? 'Video' : 'Photo'} ${active + 1} of ${media.length}`);
+      if (item.type === 'video') {
+        videoPlayers.set(element, window.AXDKitchenVideo(element, () => canPlayVideo(element)));
+        videoObserver?.observe(element);
+      }
+      syncVideos();
+    }
+    function ready(element, item) {
+      if (item.type !== 'video') { element.loading = 'eager'; return element.decode(); }
+      element.preload = 'auto';
+      if (element.readyState >= 2) return Promise.resolve();
+      return new Promise((resolve, reject) => {
+        const done = error => {
+          clearTimeout(timeout);
+          element.removeEventListener('loadeddata', loaded);
+          element.removeEventListener('error', failed);
+          error ? reject(error) : resolve();
+        };
+        const loaded = () => done();
+        const failed = () => done(new Error('Video could not load'));
+        const timeout = setTimeout(failed, 15000);
+        element.addEventListener('loadeddata', loaded, { once: true });
+        element.addEventListener('error', failed, { once: true });
+      });
+    }
+    async function advance(direction) {
+      requested = (requested + direction + media.length) % media.length;
+      if (busy) return;
+      busy = true;
+      const turn = generation;
+      try {
+        // Finish each shutter before taking the latest queued selection.
+        // Decoding first keeps an unloaded image from flashing into the frame.
+        while (active !== requested && turn === generation) {
+          const next = requested, item = media[next], incoming = createMedia(item);
+          await ready(incoming, item);
+          if (turn !== generation || !dialog.open) break;
+          if (next !== requested) continue;
+          const previousHeight = stage.offsetHeight;
+          const moving = !reduced.matches && !paused && typeof stage.animate === 'function';
+          if (moving) {
+            shutter = window.AXDSnapshot(stage, false, { fill: 'forwards' });
+            await shutter.finished.catch(() => {});
+          }
+          if (turn !== generation || !dialog.open) break;
+          show(next, incoming);
+          shutter?.cancel();
+          if (moving) {
+            if (previousHeight !== stage.offsetHeight) resize = stage.animate([
+              { height: `${previousHeight}px` }, { height: `${stage.offsetHeight}px` }
+            ], { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+            shutter = window.AXDSnapshot(stage, true);
+            await Promise.all([shutter.finished, resize?.finished].map(pending => pending?.catch(() => {})));
+          }
+          shutter = null;
+          resize = null;
+        }
+      } catch {
+        if (turn === generation) {
+          requested = active;
+          status.textContent = 'That photo or video could not load. Please try the arrow again.';
+        }
+      } finally {
+        shutter?.cancel();
+        resize?.cancel();
+        shutter = null;
+        resize = null;
+        busy = false;
+      }
+    }
+    stopCards.push(() => { generation++; requested = active; shutter?.cancel(); resize?.cancel(); shutter = null; resize = null; });
     viewport.append(frame);
     if (media.length) show(0);
     if (media.length > 1) {
@@ -152,10 +263,9 @@
       }
       previous.setAttribute('aria-label', `Previous photo or video of ${entry.title}`);
       next.setAttribute('aria-label', `Next photo or video of ${entry.title}`);
-      previous.addEventListener('click', () => show(active - 1));
-      next.addEventListener('click', () => show(active + 1));
-      frame.append(previous, next);
-      viewport.append(count);
+      previous.addEventListener('click', () => advance(-1));
+      next.addEventListener('click', () => advance(1));
+      frame.append(previous, next, count);
     }
     const caption = node('figcaption');
     const title = node('h3', '', entry.title);
@@ -182,18 +292,27 @@
       const data = await response.json();
       const next = JSON.stringify(data.entries);
       if (next !== signature) {
-        grid.querySelectorAll('video').forEach(video => video.pause());
+        stopCards.forEach(stop => stop());
+        stopCards = [];
+        grid.querySelectorAll('video').forEach(video => videoPlayers.get(video)?.dispose());
+        videoObserver?.disconnect();
         grid.replaceChildren(...(data.entries.length ? data.entries.map(card) : placeholders.map(child => child.cloneNode(true))));
         signature = next;
       }
       status.textContent = '';
+      syncVideos();
     } catch (error) { status.textContent = error.message || 'The kitchen could not be loaded. Please refresh to try again.'; }
   }
   const updates = 'BroadcastChannel' in window ? new BroadcastChannel('axd-kitchen') : null;
   if (updates) updates.onmessage = () => load();
-  window.addEventListener('focus', () => { if (dialog.open) load(); });
+  const resumeVideos = () => { if (dialog.open) { syncVideos(true); load(); } };
+  window.addEventListener('focus', resumeVideos);
+  window.addEventListener('pageshow', resumeVideos);
+  window.addEventListener('online', resumeVideos);
+  document.addEventListener('resume', resumeVideos);
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) grid.querySelectorAll('video').forEach(video => video.pause());
+    syncVideos(!document.hidden);
+    if (document.hidden) stopCards.forEach(stop => stop());
     else if (dialog.open) load();
   });
 
@@ -202,6 +321,7 @@
     window.AXDDialogs.open(dialog);
     pages.scrollTop = 0;
     document.getElementById('baking-dismiss').focus({ preventScroll: true });
+    syncVideos(true);
   }
   tab.addEventListener('click', open);
   if (new URLSearchParams(location.search).get('kitchen') === '1') open();
@@ -212,7 +332,8 @@
     close();
   });
   dialog.addEventListener('close', () => {
-    grid.querySelectorAll('video').forEach(video => video.pause());
+    stopCards.forEach(stop => stop());
+    syncVideos();
     tab.focus({ preventScroll: true });
   });
 

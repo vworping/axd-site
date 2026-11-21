@@ -12,7 +12,7 @@ const port = Number(process.env.PORT || 6767);
 const source = fileURLToPath(new URL('./', import.meta.url));
 const origins = [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
 const kitchen = createKitchenHandler({ directory: source, origins });
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.mp4': 'video/mp4', '.webm': 'video/webm', '.svg': 'image/svg+xml', '.ttf': 'font/ttf', '.ico': 'image/x-icon', '.xml': 'application/xml', '.txt': 'text/plain' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.pdf': 'application/pdf', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.mp4': 'video/mp4', '.webm': 'video/webm', '.svg': 'image/svg+xml', '.ttf': 'font/ttf', '.ico': 'image/x-icon', '.xml': 'application/xml', '.txt': 'text/plain' };
 const ASSETS = {
   async fetch(request) {
     let path;

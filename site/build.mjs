@@ -6,9 +6,24 @@ const root = new URL('./', import.meta.url);
 const output = new URL('./dist/', root);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
-for (const file of ['index.html', 'constellation', 'pet-preview', 'favicon.ico', 'styles.css', 'layout.css', 'chapters.css', 'theme.css', 'baking.css', 'chapter-experience.js', 'cue-path.js', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'about-portraits.js', 'kitchen-text.js', 'baking.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
+for (const file of ['index.html', 'constellation', 'pet-preview', 'favicon.ico', 'styles.css', 'layout.css', 'chapters.css', 'theme.css', 'baking.css', 'about-library.css', 'document-zoom.js', 'about-library.js', 'chapter-experience.js', 'cue-path.js', 'script.js', 'story-shelf.js', 'dialog-motion.js', 'logo-motion.js', 'photo-deck.js', 'about-portraits.js', 'kitchen-text.js', 'kitchen-video.js', 'baking.js', 'name-motion.js', 'section-navigation.js', 'image-downloads.js', 'assets']) {
   await cp(new URL(file, root), new URL(file, output), { recursive: true, filter: path => !path.endsWith('/.DS_Store') });
 }
+// Only the CV and poster are offered as downloads. Keep the source PPTX and
+// research manuscript in the project archive; never copy that folder wholesale.
+const documentCatalogue = JSON.parse(await readFile(new URL('assets/data/about-documents.json', output), 'utf8'));
+await mkdir(new URL('assets/documents/', output), { recursive: true });
+for (const [id, source, name] of [
+  ['cv', 'andre-weiss-cv.pdf', 'Andre-Weiss-CV.pdf'],
+  ['conformity', 'ps326-poster.pdf', 'Andre-Weiss-Conformity-Poster.pdf'],
+]) {
+  const bytes = await readFile(new URL(`../documents/about/${source}`, root));
+  const hash = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+  const path = `assets/documents/${source.replace('.pdf', '')}-${hash}.pdf`;
+  await writeFile(new URL(path, output), bytes);
+  documentCatalogue.documents.find(doc => doc.id === id).download = { href: `/${path}`, name };
+}
+await writeFile(new URL('assets/data/about-documents.json', output), JSON.stringify(documentCatalogue));
 // Source uses relative preview images so local phone sharing stays on the LAN.
 // Published cards use an absolute URL, without baking a local IP into the site.
 const siteURL = new URL(process.env.SITE_URL || 'https://mindofaxd.com/');

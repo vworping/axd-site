@@ -12,6 +12,15 @@
   const allowed = ['image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/webm'];
   let entries = [], token, submissionId, editing, urls = [];
   const field = name => form.elements.namedItem(name);
+  // Validate long pastes without letting maxlength silently discard their ending.
+  const longFields = [...form.querySelectorAll('textarea[data-max-length]')];
+  function validateText() {
+    longFields.forEach(input => {
+      const limit = Number(input.dataset.maxLength);
+      input.setCustomValidity(input.value.length > limit ? `Please keep this field under ${limit.toLocaleString()} characters. Your pasted text has been kept so you can edit it.` : '');
+    });
+  }
+  longFields.forEach(input => input.addEventListener('input', validateText));
 
   function populate() {
     existingSelect.replaceChildren(new Option('New dish', ''), ...entries.map(entry => new Option(entry.title, entry.id)));
@@ -48,7 +57,14 @@
       const figure = document.createElement('figure');
       const media = document.createElement(item.type === 'video' ? 'video' : 'img');
       media.src = item.src;
-      if (item.type === 'video') { media.controls = true; media.playsInline = true; media.preload = 'metadata'; }
+      if (item.type === 'video') {
+        media.muted = true; media.defaultMuted = true; media.loop = true;
+        media.autoplay = true; media.playsInline = true; media.preload = 'metadata';
+        media.setAttribute('muted', '');
+        media.setAttribute('controlslist', 'nodownload noplaybackrate nofullscreen noremoteplayback');
+        media.disablePictureInPicture = true;
+        media.addEventListener('contextmenu', event => event.preventDefault());
+      }
       else media.alt = item.alt || 'Dish preview';
       const caption = document.createElement('figcaption');
       caption.textContent = `${index + 1} · ${item.type === 'video' ? 'Video' : 'Photo'}${item.incoming ? ' · new' : ''}`;
@@ -70,6 +86,7 @@
     form.querySelector('.kitchen-recipe-fields').open = Boolean(editing?.recipe);
     submit.textContent = editing ? 'Save changes' : 'Add to the kitchen';
     renderPreview();
+    validateText();
   }
   existingSelect.addEventListener('change', selectEntry);
   document.getElementById('kitchen-clear').addEventListener('click', () => {
@@ -128,6 +145,7 @@
   }
   form.addEventListener('submit', async event => {
     event.preventDefault();
+    validateText();
     if (fields.disabled || !token || !form.reportValidity()) return;
     const data = new FormData(form);
     data.delete('media');

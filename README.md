@@ -41,6 +41,7 @@ Page content lives in `site/pet.html`; the saved OS snapshot lives in `site/pet-
 | Hero tagline markup, initial wording, and screen-reader text | [`site/index.html`](site/index.html) |
 | About text, contact links, background | [`site/index.html`](site/index.html) |
 | Kitchen dishes, photos/videos, and optional recipes | Local [kitchen editor](http://127.0.0.1:6767/kitchen-editor); saved in `site/assets/data/kitchen.json` and `site/assets/media/kitchen/` |
+| CV and research documents | Project originals in [`documents/about/`](documents/about/README.md); reader styles and behavior in `site/about-library.css` and `site/about-library.js` |
 | About portraits and measured palettes | [`site/assets/data/about-portraits.js`](site/assets/data/about-portraits.js) |
 | [pet.] page copy and enclosure photos | [`site/pet.html`](site/pet.html) |
 | Constellation explorer and snapshot updates | [`docs/CONSTELLATION.md`](docs/CONSTELLATION.md) |
@@ -71,6 +72,8 @@ Open **http://127.0.0.1:6767/**. If that port is occupied, use `PORT=6770 node s
 In About, the small **kitchen** tab above the portrait opens the baking and cooking collection. Add or update dishes using **http://127.0.0.1:6767/kitchen-editor**. This separate local form saves descriptions, up to 12 photos/videos per dish, and optional recipe details into the project. Photos are resized; MP4 and WebM videos retain their original files (up to 20 MB each). The popup refreshes when a dish is saved or reopened, and each dish has its own media controls. Empty collections use illustrated placeholders. Rebuild before publishing to include saved entries. The editor and write API are local preview features and are excluded from the public build.
 
 Direct links: `/constellation`, `/PET`, `/collaborations`, and `/about`. Old `/work`, `/pet`, `/pet.html`, and `/constellation/` links redirect to their canonical chapters. Browser titles follow the current chapter: Palace, Palace: Constellation, Palace: PET, Palace: Collaborations, and Palace: About.
+
+About also has direct links to the [CV](https://mindofaxd.com/about?library=cv), [research collection](https://mindofaxd.com/about?library=research), [Conformity poster](https://mindofaxd.com/about?library=conformity), and [procedure-extraction paper](https://mindofaxd.com/about?library=procedure-extraction). The reader matches the kitchen window, scrolls through all pages, and offers zoom controls with a current-page counter. The CV and poster have PDF downloads; the research paper is view-only in the reader. See the [document editing notes](documents/about/README.md) for replacing source files.
 
 `site/compose-chapters.mjs` composes the Constellation snapshot and PET source into the main page, namespaces their IDs and styles, and emits chapter scripts/styles in `site/dist/`. Edit source files, not generated output. Shared chapter styling lives in `site/chapters.css`; the spotlight and gradient depth live in `site/chapter-experience.js`. The spotlight starts in the markup, before Constellation enters view, and clears after a photo opens, vertical scrolling, Exit spotlight, or Escape. It never gates the map. Vertical scrolling stays within a chapter; horizontal gestures, left/right arrow keys, and navigation controls change chapters.
 

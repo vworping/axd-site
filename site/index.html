@@ -51,6 +51,7 @@
   <link rel="stylesheet" href="/chapters.css">
   <link rel="stylesheet" href="/theme.css">
   <link rel="stylesheet" href="/baking.css">
+  <link rel="stylesheet" href="/about-library.css">
   <script src="/section-navigation.js" defer></script>
   <script src="/cue-path.js" defer></script>
   <script src="/constellation-chapter.js" defer></script>
@@ -60,7 +61,10 @@
   <script src="/photo-deck.js?v=8" defer></script>
   <script src="/about-portraits.js" defer></script>
   <script src="/kitchen-text.js" defer></script>
+  <script src="/kitchen-video.js" defer></script>
   <script src="/baking.js" defer></script>
+  <script src="/document-zoom.js" defer></script>
+  <script src="/about-library.js" defer></script>
   <script src="/name-motion.js?v=19" defer></script>
   <script src="/story-shelf.js?v=15" defer></script>
   <script src="/script.js?v=24" defer></script>
@@ -135,10 +139,14 @@
         <div class="connect-layout">
           <figure class="portrait-card" role="group" aria-label="Portraits of Andre Weiss">
             <div class="portrait-frame">
+              <div class="portrait-tabs" role="group" aria-label="More from Andre">
+              <button class="baking-tab about-cv-tab" id="cv-open" type="button" aria-label="Read CV" aria-haspopup="dialog" aria-controls="about-library" hidden>CV</button>
+              <button class="baking-tab about-research-tab" id="research-open" type="button" aria-label="Explore research" aria-haspopup="dialog" aria-controls="about-library" hidden>research</button>
               <button class="baking-tab" id="baking-open" type="button" aria-label="Kitchen: baking and cooking" aria-haspopup="dialog" aria-controls="baking-dialog" hidden>
                 <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M19 9a4 4 0 0 1-4-4 4 4 0 0 1-4-3 10 10 0 1 0 11 11 4 4 0 0 1-3-4Z"/><path d="m8 7 .01 0M6 13h.01M11 17h.01M14 11h.01M17 16h.01"/></svg>
                 kitchen
               </button>
+              </div>
               <button class="portrait-window" id="portrait-open" type="button" aria-label="Expand portrait of Andre Weiss" aria-haspopup="dialog">
                 <span class="portrait-image-stage">
                   <!-- Portrait derivatives and source mapping: docs/image-sources.json. -->
@@ -176,6 +184,34 @@
       <button id="section-next" type="button" aria-label="Next section: Constellation"><span id="section-next-label">Explore Constellation</span><span class="round-arrow" aria-hidden="true">→</span></button>
     </nav>
   </div>
+
+  <dialog class="about-library" id="about-library" aria-labelledby="library-title" tabindex="-1">
+    <div class="library-surface" id="library-surface">
+    <div class="library-topbar">
+      <div class="library-heading">
+        <a id="library-back" href="/about?library=research" hidden>← Research</a>
+        <h2 id="library-title">Research</h2>
+        <p id="library-detail">Papers &amp; posters.</p>
+      </div>
+      <button class="library-dismiss" id="library-dismiss" type="button" aria-label="Close document collection"><span aria-hidden="true">×</span></button>
+    </div>
+    <p id="library-status" class="library-status" role="status" aria-live="polite"></p>
+    <div class="library-index" id="library-index" aria-label="Research documents"></div>
+    <div class="library-reader" id="library-reader" hidden>
+      <p id="library-help" class="sr-only">Scroll to read every page. Pinch or Control-scroll to zoom. Double-click to zoom in or reset. With the document focused, use plus and minus to zoom, and zero to fit.</p>
+      <div class="library-viewport" id="library-viewport" tabindex="0" aria-label="Document pages" aria-describedby="library-help" aria-keyshortcuts="+ - 0" title="Pinch or Ctrl-scroll to zoom. Double-click to zoom in or reset.">
+        <div class="library-canvas" id="library-canvas"></div>
+      </div>
+      <div class="library-tools" role="group" aria-label="Document controls">
+        <a class="library-control" id="library-download" download hidden aria-label="Download PDF" title="Download PDF"><span aria-hidden="true">↓</span></a>
+        <button class="library-control" id="library-zoom-out" type="button" aria-label="Zoom out" title="Zoom out"><span aria-hidden="true">−</span></button>
+        <button class="library-control library-fit" id="library-fit" type="button" aria-label="Fit document to window" title="Fit document to window"><span>100%</span></button>
+        <button class="library-control" id="library-zoom-in" type="button" aria-label="Zoom in" title="Zoom in"><span aria-hidden="true">+</span></button>
+        <output class="library-page-count" id="library-page-count" aria-live="polite" aria-atomic="true">1 / 1</output>
+      </div>
+    </div>
+    </div>
+  </dialog>
 
   <dialog class="baking-dialog" id="baking-dialog" aria-labelledby="baking-title" aria-describedby="baking-intro" tabindex="-1">
     <div class="baking-topbar">

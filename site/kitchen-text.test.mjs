@@ -20,9 +20,16 @@ test('quantities stay intact, wrapped steps stay together, and paragraphs remain
   assert.deepEqual(parse('1.5 cups flour\n1 egg'), [{ type: 'p', text: '1.5 cups flour\n1 egg' }]);
   assert.deepEqual(parse('A family favorite.\n\n3. Mix\n  until smooth\n4. Bake\n\nShare warmly.'), [
     { type: 'p', text: 'A family favorite.' },
-    { type: 'ol', items: [{ number: 3, text: 'Mix\nuntil smooth' }, { number: 4, text: 'Bake' }] },
-    { type: 'p', text: 'Share warmly.' },
+    { type: 'ol', blankLines: 1, items: [{ number: 3, text: 'Mix\nuntil smooth' }, { number: 4, text: 'Bake' }] },
+    { type: 'p', blankLines: 1, text: 'Share warmly.' },
   ]);
+});
+
+test('extra blank lines keep their spacing and automatic steps continue across sections', () => {
+  const blocks = parse('Mix.\n\n\nBake.\n\nShare.', 'ol');
+  assert.deepEqual(blocks.map(block => block.blankLines || 0), [0, 2, 1]);
+  assert.deepEqual(blocks.map(block => block.items[0].number), [1, 2, 3]);
+  assert.deepEqual(parse('Pastry\n\n1. Mix\n\n\nMeringue\n\n1. Whisk').map(block => block.blankLines || 0), [0, 1, 2, 1]);
 });
 
 test('optional recipe fields format unnumbered methods and ingredient amounts', () => {

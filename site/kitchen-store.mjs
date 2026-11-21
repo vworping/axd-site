@@ -44,7 +44,7 @@ export function createKitchenHandler({ directory, origins }) {
   }
   async function save(form) {
     const title = textField(form, 'title', 100, true);
-    const description = textField(form, 'description', 1200, true);
+    const description = textField(form, 'description', 20000, true);
     const kind = textField(form, 'kind', 20, true);
     if (!['baking', 'cooking'].includes(kind)) throw new InputError('Choose baking or cooking.');
     const submissionId = textField(form, 'submissionId', 36, true);
@@ -57,7 +57,7 @@ export function createKitchenHandler({ directory, origins }) {
     if (entryId && !existing) throw new InputError('This dish could not be found. Refresh the editor.');
     if (existing && (existing.submissionId === submissionId || (!entryId && existing.id === submissionId))) return existing;
     const ingredients = textField(form, 'ingredients', 8000);
-    const method = textField(form, 'method', 12000);
+    const method = textField(form, 'method', 20000);
     const alt = textField(form, 'alt', 300) || title;
     const files = form.getAll('media');
     const previousMedia = existing?.media || (existing?.photo ? [{ ...existing.photo, type: 'image' }] : []);
